@@ -1,24 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import './firebase/config';
+import { Route, Switch, BrowserRouter, Router } from 'react-router-dom';
+
+import HomePage from './components/homepage.component';
+import Signup from './pages/Signup.component';
+import ScorePage from './components/score/score.component';
+import AddPlayerPage from './components/add-player/addPlayer.component';
+import MatchDetails from './components/match-details/match-details.component';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/signup" component={Signup} />
+        <Route path="/matchDetails" component={MatchDetails} />
+        <Route
+          path="/addPlayers"
+          component={() => <AddPlayerPage isHomeTeam="true" />}
+        />
+        <Route
+          path="/score"
+          component={() => <ScorePage awayTeam="Infosys" homeTeam="TCS" />}
+        />
+      </Switch>
+      {/* <HomePage /> */}
+    </BrowserRouter>
   );
 }
 
