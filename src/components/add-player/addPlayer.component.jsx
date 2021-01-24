@@ -5,39 +5,47 @@ import { Button, Input, Form } from 'semantic-ui-react';
 import PlayerListPage from '../../pages/player-list/player-list';
 
 import { MatchContext } from '../../providers/match/match.provider';
+import AddPlayerFormPage from './add-player-form.component';
 
-const AddPlayerPage = ({ isHomeTeam }) => {
+const AddPlayerPage = () => {
   const { addPlayer, removePlayer, playerList } = useContext(MatchContext);
-  // const [awayPlayer, setAwayPlayer] = useState('');
+  const [awayPlayer, setAwayPlayer] = useState('');
   const [homePlayer, setHomePlayer] = useState('');
   // const [homeTeamList, setHomeTeamList] = useState([]);
   // const [awayTeamList, setAwayTeamList] = useState([]);
   const [isPlayerListFinalized, setIsPlayerListFinalized] = useState(false);
 
-  const handleHomeTeamSubmit = (evt) => {
+  const handleHomeTeamSubmit = (evt, isHomeTeam, teamCategory) => {
     evt.preventDefault();
-    const homePlayerObj = { id: uuid(), playerName: homePlayer };
+    const homePlayerObj = {
+      id: uuid(),
+      playerName: isHomeTeam ? homePlayer : awayPlayer,
+    };
     addPlayer(homePlayerObj, isHomeTeam);
-    setHomePlayer('');
+    isHomeTeam ? setHomePlayer('') : setAwayPlayer('');
     // setHomeTeamList(homeTeamList.concat(homePlayerCopy));
     // setHomePlayer('');
-    if (playerList['homeTeam'].length === 10) {
-      updateDb();
+    if (playerList[teamCategory].length === 10) {
+      updateDb(teamCategory);
     }
   };
 
-  const handleDelete = (playerId) => {
+  const addPlayerName = (playerName, isHomeTeam) => {
+    isHomeTeam ? setHomePlayer(playerName) : setAwayPlayer(playerName);
+  };
+
+  const handleDelete = (playerId, isHomeTeam) => {
     removePlayer(playerId, isHomeTeam);
   };
 
-  const updateDb = async () => {
+  const updateDb = async (teamCategory) => {
     setIsPlayerListFinalized(true);
     await firestore
       .collection('matches')
       .doc()
       .set({
         playerList: {
-          homeTeam: playerList['homeTeam'],
+          homeTeam: playerList[teamCategory],
         },
       });
   };
@@ -45,24 +53,33 @@ const AddPlayerPage = ({ isHomeTeam }) => {
   return (
     <div className="flex justify-center pa2">
       <div className="outline w-100 pa3 mr2">
-        <h2>Add Home Team Players</h2>
-        <Form onSubmit={handleHomeTeamSubmit}>
-          <Form.Field>
-            <label>First Name</label>
-            <Input
-              placeholder="First Name"
-              name="homeTeam"
-              value={homePlayer}
-              onChange={(e) => setHomePlayer(e.target.value)}
-            />
-          </Form.Field>
-          <Button type="submit" disabled={playerList['homeTeam'].length >= 10}>
-            Submit
-          </Button>
-        </Form>
+        <AddPlayerFormPage
+          handleHomeTeamSubmit={handleHomeTeamSubmit}
+          playerList={playerList}
+          addPlayerName={addPlayerName}
+          homePlayer={homePlayer}
+          teamCategory="homeTeam"
+          isHomeTeam={true}
+        />
         <PlayerListPage
           playerList={playerList.homeTeam}
           handleDelete={handleDelete}
+          isHomeTeam={true}
+        />
+      </div>
+      <div className="outline w-100 pa3 mr2">
+        <AddPlayerFormPage
+          handleHomeTeamSubmit={handleHomeTeamSubmit}
+          playerList={playerList}
+          addPlayerName={addPlayerName}
+          homePlayer={awayPlayer}
+          teamCategory="awayTeam"
+          isHomeTeam={false}
+        />
+        <PlayerListPage
+          playerList={playerList.awayTeam}
+          handleDelete={handleDelete}
+          isHomeTeam={false}
         />
       </div>
     </div>

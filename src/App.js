@@ -14,10 +14,12 @@ function App() {
       <Switch>
         <Route path="/signup" component={Signup} />
         <Route path="/matchDetails" component={MatchDetails} />
-        <Route
+        <Route path="/score" component={ScorePage} />
+        <Route path="/addPlayers" component={AddPlayerPage} />
+        {/* <Route
           path="/addPlayers"
           component={() => <AddPlayerPage isHomeTeam="true" />}
-        />
+        /> */}
         <Route
           path="/score"
           component={() => <ScorePage awayTeam="Infosys" homeTeam="TCS" />}

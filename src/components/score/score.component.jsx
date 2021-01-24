@@ -17,7 +17,7 @@ const exampleReducer = (state, action) => {
   }
 };
 
-export const ScorePage = ({ homeTeam, awayTeam }) => {
+const ScorePage = ({ homeTeam, awayTeam }) => {
   const [playerDoc, setPlayerDoc] = useState(null);
   const [totalScore, setTotalScore] = useState(0);
   const [totalWickets, setTotalWickets] = useState(0);

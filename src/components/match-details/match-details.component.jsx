@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import { Button, Input, Form } from 'semantic-ui-react';
 import { MatchContext } from '../../providers/match/match.provider';
 
 const MatchDetails = () => {
   const { addMatchDetails } = useContext(MatchContext);
+  let history = useHistory();
 
   const [state, setstate] = useState({
     homeTeamName: '',
@@ -23,7 +24,7 @@ const MatchDetails = () => {
       venue: '',
       tournametName: '',
     });
-    <Redirect to="/addPlayers" />;
+    history.push('/addPlayers');
   };
 
   return (

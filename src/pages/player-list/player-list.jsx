@@ -1,7 +1,7 @@
 import React from 'react';
 import { List } from 'semantic-ui-react';
 
-const PlayerListPage = ({ playerList, handleDelete }) => {
+const PlayerListPage = ({ playerList, handleDelete, isHomeTeam }) => {
   return (
     <>
       <List animated divided verticalAlign="middle">
@@ -13,7 +13,7 @@ const PlayerListPage = ({ playerList, handleDelete }) => {
                 name="delete"
                 size="small"
                 verticalAlign="middle"
-                onClick={() => handleDelete(player.id)}
+                onClick={() => handleDelete(player.id, isHomeTeam)}
               />
             </List.Content>
             <List.Icon name="user circle" />
