@@ -1,17 +1,17 @@
-import React, { useState, useContext } from 'react';
-import { Link, Redirect, useHistory } from 'react-router-dom';
-import { Button, Input, Form } from 'semantic-ui-react';
-import { MatchContext } from '../../providers/match/match.provider';
+import React, { useState, useContext } from "react";
+import { Link, Redirect, useHistory } from "react-router-dom";
+import { Button, Input, Form } from "semantic-ui-react";
+import { MatchContext } from "../../providers/match/match.provider";
 
 const MatchDetails = () => {
   const { addMatchDetails } = useContext(MatchContext);
   let history = useHistory();
 
   const [state, setstate] = useState({
-    homeTeamName: '',
-    awayTeamName: '',
-    venue: '',
-    tournametName: '',
+    homeTeamName: "",
+    awayTeamName: "",
+    venue: "",
+    tournametName: "",
   });
 
   const handleSubmit = (e) => {
@@ -19,16 +19,16 @@ const MatchDetails = () => {
     console.log(state);
     addMatchDetails(state);
     setstate({
-      homeTeamName: '',
-      awayTeamName: '',
-      venue: '',
-      tournametName: '',
+      homeTeamName: "",
+      awayTeamName: "",
+      venue: "",
+      tournametName: "",
     });
-    history.push('/addPlayers');
+    history.push("/addPlayers");
   };
 
   return (
-    <>
+    <div className="pa3">
       <h3>Add Match Details</h3>
       <Form onSubmit={handleSubmit}>
         <Form.Field>
@@ -75,7 +75,7 @@ const MatchDetails = () => {
         </Form.Field>
         <Button type="submit">Submit</Button>
       </Form>
-    </>
+    </div>
   );
 };
 

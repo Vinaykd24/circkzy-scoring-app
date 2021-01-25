@@ -1,12 +1,13 @@
-import './App.css';
-import './firebase/config';
-import { Route, Switch, BrowserRouter, Router } from 'react-router-dom';
+import "./App.css";
+import "./firebase/config";
+import { Route, Switch, BrowserRouter, Router } from "react-router-dom";
 
-import HomePage from './components/homepage.component';
-import Signup from './pages/Signup.component';
-import ScorePage from './components/score/score.component';
-import AddPlayerPage from './components/add-player/addPlayer.component';
-import MatchDetails from './components/match-details/match-details.component';
+import HomePage from "./components/homepage.component";
+import Signup from "./pages/Signup.component";
+import ScorePage from "./components/score/score.component";
+import AddPlayerPage from "./components/add-player/addPlayer.component";
+import MatchDetails from "./components/match-details/match-details.component";
+import InitialPlayerDetails from "./components/initial-player-details/initial-player-details.component";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/matchDetails" component={MatchDetails} />
         <Route path="/score" component={ScorePage} />
         <Route path="/addPlayers" component={AddPlayerPage} />
+        <Route path="/currentStats" component={InitialPlayerDetails} />
         {/* <Route
           path="/addPlayers"
           component={() => <AddPlayerPage isHomeTeam="true" />}
