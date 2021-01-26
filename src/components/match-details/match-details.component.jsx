@@ -12,6 +12,9 @@ const MatchDetails = () => {
     awayTeamName: "",
     venue: "",
     tournametName: "",
+    tossWonBy: "",
+    electedTo: "",
+    teamBatingFirst: "",
   });
 
   const handleSubmit = (e) => {
@@ -23,6 +26,9 @@ const MatchDetails = () => {
       awayTeamName: "",
       venue: "",
       tournametName: "",
+      tossWonBy: "",
+      electedTo: "",
+      teamBatingFirst: "",
     });
     history.push("/addPlayers");
   };
@@ -72,6 +78,56 @@ const MatchDetails = () => {
               setstate({ ...state, awayTeamName: e.target.value })
             }
           />
+        </Form.Field>
+        <Form.Field>
+          <label>Toss Won By</label>
+          <select
+            className="ui selection dropdown mr3"
+            placeholder="Toss Won By"
+            value={state.tossWonBy}
+            onChange={(e) => setstate({ ...state, tossWonBy: e.target.value })}
+          >
+            <option key="homeTeamName" value={state.homeTeamName}>
+              {state.homeTeamName}
+            </option>
+            <option key="awayTeamName" value={state.awayTeamName}>
+              {state.awayTeamName}
+            </option>
+          </select>
+        </Form.Field>
+        <Form.Field>
+          <label>Elected To</label>
+          <select
+            className="ui selection dropdown mr3"
+            placeholder="Elected To"
+            value={state.electedTo}
+            onChange={(e) => setstate({ ...state, electedTo: e.target.value })}
+          >
+            <option key="bat" value="BAT">
+              BAT
+            </option>
+            <option key="bowl" value="BOWL">
+              BOWL
+            </option>
+          </select>
+        </Form.Field>
+        <Form.Field>
+          <label>Team Batting First</label>
+          <select
+            className="ui selection dropdown mr3"
+            placeholder="Toss Won By"
+            value={state.tossWonBy}
+            onChange={(e) =>
+              setstate({ ...state, teamBatingFirst: e.target.value })
+            }
+          >
+            <option key="key01" value={state.homeTeamName}>
+              {state.homeTeamName}
+            </option>
+            <option key="key02" value={state.awayTeamName}>
+              {state.awayTeamName}
+            </option>
+          </select>
         </Form.Field>
         <Button type="submit">Submit</Button>
       </Form>

@@ -1,7 +1,12 @@
-import React from 'react';
-import { List } from 'semantic-ui-react';
+import React from "react";
+import { Divider, List } from "semantic-ui-react";
 
-const PlayerListPage = ({ playerList, handleDelete, isHomeTeam }) => {
+const PlayerListPage = ({
+  playerList,
+  handleDelete,
+  isHomeTeam,
+  playerListClone,
+}) => {
   return (
     <>
       <List animated divided verticalAlign="middle">
@@ -22,6 +27,30 @@ const PlayerListPage = ({ playerList, handleDelete, isHomeTeam }) => {
             </List.Content>
           </List.Item>
         ))}
+      </List>
+      <Divider />
+      <List animated divided verticalAlign="middle">
+        {playerListClone !== null || playerListClone !== undefined
+          ? Object.keys(playerListClone).map((keyName) => (
+              <List.Item key={playerListClone[keyName]["id"]}>
+                <List.Content floated="right">
+                  <List.Icon
+                    link
+                    name="delete"
+                    size="small"
+                    verticalAlign="middle"
+                    onClick={() => handleDelete(keyName, isHomeTeam)}
+                  />
+                </List.Content>
+                <List.Icon name="user circle" />
+                <List.Content>
+                  <List.Header>
+                    {playerListClone[keyName]["playerName"]}
+                  </List.Header>
+                </List.Content>
+              </List.Item>
+            ))
+          : ""}
       </List>
     </>
   );

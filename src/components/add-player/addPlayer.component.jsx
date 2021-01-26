@@ -66,11 +66,18 @@ const AddPlayerPage = () => {
             teamCategory="homeTeam"
             isHomeTeam={true}
           />
-          <PlayerListPage
-            playerList={playerList.homeTeam}
-            handleDelete={handleDelete}
-            isHomeTeam={true}
-          />
+
+          {playerList.homeTeamClone !== null ||
+          playerList.homeTeamClone !== undefined ? (
+            <PlayerListPage
+              playerList={playerList.homeTeam}
+              playerListClone={playerList.homeTeamClone}
+              handleDelete={handleDelete}
+              isHomeTeam={true}
+            />
+          ) : (
+            ""
+          )}
         </div>
         <div className="outline w-100 pa3 mr2">
           <AddPlayerFormPage
@@ -81,11 +88,17 @@ const AddPlayerPage = () => {
             teamCategory="awayTeam"
             isHomeTeam={false}
           />
-          <PlayerListPage
-            playerList={playerList.awayTeam}
-            handleDelete={handleDelete}
-            isHomeTeam={false}
-          />
+          {playerList.homeTeamClone !== null ||
+          playerList.homeTeamClone !== undefined ? (
+            <PlayerListPage
+              playerList={playerList.awayTeam}
+              playerListClone={playerList.awayTeamClone}
+              handleDelete={handleDelete}
+              isHomeTeam={true}
+            />
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <div className="flex justify-center">
@@ -96,6 +109,20 @@ const AddPlayerPage = () => {
         >
           Confirm Teams
         </Button>
+      </div>
+      <div>
+        {playerList.homeTeamClone !== null ||
+        playerList.homeTeamClone !== undefined ? (
+          Object.keys(playerList.homeTeamClone).map((keyName, i) => (
+            <li className="travelcompany-input" key={i}>
+              <span className="input-label">
+                key: {i} Name: {playerList.homeTeamClone[keyName]["playerName"]}
+              </span>
+            </li>
+          ))
+        ) : (
+          <p>List is not ready</p>
+        )}
       </div>
     </>
   );

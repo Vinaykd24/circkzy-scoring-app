@@ -15,3 +15,17 @@ export const addMatchDetailsToDb = (matchDetails) => {
     tournametName: matchDetails.tournametName,
   };
 };
+
+export const addPlayerObj = (state, player) => {
+  console.log([...state, { ...player }]);
+};
+
+export const convertArrayToObject = (array) => {
+  const initialValue = {};
+  return array.reduce((obj, item) => {
+    return {
+      ...obj,
+      [item["id"]]: item,
+    };
+  }, initialValue);
+};
