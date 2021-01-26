@@ -116,7 +116,7 @@ const MatchDetails = () => {
           <select
             className="ui selection dropdown mr3"
             placeholder="Toss Won By"
-            value={state.tossWonBy}
+            value={state.teamBatingFirst}
             onChange={(e) =>
               setstate({ ...state, teamBatingFirst: e.target.value })
             }

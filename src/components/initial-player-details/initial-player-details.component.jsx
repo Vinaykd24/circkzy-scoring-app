@@ -9,11 +9,11 @@ const InitialPlayerDetails = () => {
     nonStriker: "",
     currentBowler: "",
   });
-  const { playerList } = useContext(MatchContext);
-  const { homeTeam, awayTeam } = playerList;
-  //   const updateCurrentStats = (playerId) = {
-  //       setCurrentStats({...currentStats, striker: playerId})
-  //   }
+  const { playerList, addCurrentStatsDetails } = useContext(MatchContext);
+  const { homeTeamClone, awayTeamClone } = playerList;
+  const _updateCurrentStats = () => {
+    addCurrentStatsDetails(currentStats);
+  };
   return (
     <>
       <div className="pa3">
@@ -26,11 +26,16 @@ const InitialPlayerDetails = () => {
             setCurrentStats({ ...currentStats, striker: e.target.value })
           }
         >
-          {homeTeam.map((option) => (
-            <option key={option.id} value={option.playerName}>
-              {option.playerName}
-            </option>
-          ))}
+          {homeTeamClone !== null || homeTeamClone !== undefined
+            ? Object.keys(homeTeamClone).map((keyName) => (
+                <option
+                  key={keyName}
+                  value={homeTeamClone[keyName]["playerName"]}
+                >
+                  {homeTeamClone[keyName]["playerName"]}
+                </option>
+              ))
+            : ""}
         </select>
         <label className="f6 b db mb2 pr2">Select Non-Striker</label>
         <select
@@ -41,11 +46,16 @@ const InitialPlayerDetails = () => {
             setCurrentStats({ ...currentStats, nonStriker: e.target.value })
           }
         >
-          {homeTeam.map((option) => (
-            <option key={option.id} value={option.playerName}>
-              {option.playerName}
-            </option>
-          ))}
+          {homeTeamClone !== null || homeTeamClone !== undefined
+            ? Object.keys(homeTeamClone).map((keyName) => (
+                <option
+                  key={keyName}
+                  value={homeTeamClone[keyName]["playerName"]}
+                >
+                  {homeTeamClone[keyName]["playerName"]}
+                </option>
+              ))
+            : ""}
         </select>
         <label className="f6 b db mb2 pr2">Select Opening Bowler</label>
         <select
@@ -56,12 +66,22 @@ const InitialPlayerDetails = () => {
             setCurrentStats({ ...currentStats, currentBowler: e.target.value })
           }
         >
-          {awayTeam.map((option) => (
-            <option key={option.id} value={option.playerName}>
-              {option.playerName}
-            </option>
-          ))}
+          {awayTeamClone !== null || awayTeamClone !== undefined
+            ? Object.keys(awayTeamClone).map((keyName) => (
+                <option
+                  key={keyName}
+                  value={awayTeamClone[keyName]["playerName"]}
+                >
+                  {awayTeamClone[keyName]["playerName"]}
+                </option>
+              ))
+            : ""}
         </select>
+      </div>
+      <div className="flex justify-center">
+        <Button type="button" onClick={_updateCurrentStats}>
+          Confirm Teams
+        </Button>
       </div>
     </>
   );

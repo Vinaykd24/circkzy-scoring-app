@@ -4,6 +4,7 @@ import {
   removePlayerFromList,
   addMatchDetailsToDb,
   addPlayerObj,
+  removeObj,
 } from "./match.util";
 
 export const MatchContext = createContext({
@@ -19,6 +20,7 @@ export const MatchContext = createContext({
     venue: "",
     tournametName: "",
   },
+  currentStats: {},
   addMatchDetails: () => {},
   addPlayer: () => {},
   removePlayer: () => {},
@@ -39,6 +41,10 @@ const MatchProvider = ({ children }) => {
     homeTeamClone: {},
     awayTeamClone: {},
   });
+  const [currentStats, setCurrentStats] = useState({});
+  const addCurrentStatsDetails = (statDetails) => {
+    setCurrentStats(statDetails);
+  };
   const addPlayer = (player, isHomeTeam) =>
     isHomeTeam
       ? setPlayerList({
@@ -51,20 +57,20 @@ const MatchProvider = ({ children }) => {
         })
       : setPlayerList({
           ...playerList,
-          awayTeam: addPlayerToList(playerList.awayTeam, player),
+          // awayTeam: addPlayerToList(playerList.awayTeam, player),
           awayTeamClone: { ...playerList.awayTeamClone, [player.id]: player },
         });
   const removePlayer = (playerId, isHomeTeam) =>
     isHomeTeam
       ? setPlayerList({
           ...playerList,
-          homeTeam: removePlayerFromList(playerList.homeTeam, playerId),
-          homeTeamClone: delete playerList.homeTeamClone[playerId],
+          // homeTeam: removePlayerFromList(playerList.homeTeam, playerId),
+          homeTeamClone: removeObj(playerList.homeTeamClone, playerId),
         })
       : setPlayerList({
           ...playerList,
           awayTeam: removePlayerFromList(playerList.awayTeam, playerId),
-          awayTeamClone: delete playerList.awayTeamClone[playerId],
+          awayTeamClone: removeObj(playerList.awayTeamClone, playerId),
         });
   // const homeTeamClone = setPlayerList({
   //   ...playerList,
@@ -78,6 +84,8 @@ const MatchProvider = ({ children }) => {
         removePlayer,
         matchDetails,
         addMatchDetails,
+        currentStats,
+        addCurrentStatsDetails,
       }}
     >
       {children}

@@ -9,7 +9,7 @@ const PlayerListPage = ({
 }) => {
   return (
     <>
-      <List animated divided verticalAlign="middle">
+      {/* <List animated divided verticalAlign="middle">
         {playerList.map((player) => (
           <List.Item key={player.id}>
             <List.Content floated="right">
@@ -27,8 +27,7 @@ const PlayerListPage = ({
             </List.Content>
           </List.Item>
         ))}
-      </List>
-      <Divider />
+      </List> */}
       <List animated divided verticalAlign="middle">
         {playerListClone !== null || playerListClone !== undefined
           ? Object.keys(playerListClone).map((keyName) => (

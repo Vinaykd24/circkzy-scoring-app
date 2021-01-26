@@ -6,6 +6,11 @@ export const removePlayerFromList = (playerList, playerId) => {
   return playerList.filter((player) => player.id !== playerId);
 };
 
+export const removeObj = (list, objKey) => {
+  delete list[objKey];
+  return list;
+};
+
 export const addMatchDetailsToDb = (matchDetails) => {
   return {
     ...matchDetails,
