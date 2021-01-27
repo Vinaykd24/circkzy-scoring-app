@@ -1,20 +1,24 @@
-import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import uuid from 'react-uuid';
-import { firestore } from '../../firebase/config';
-import { Button, Input, Form } from 'semantic-ui-react';
-import PlayerListPage from '../../pages/player-list/player-list';
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import uuid from "react-uuid";
+import { firestore } from "../../firebase/config";
+import { Button, Input, Form } from "semantic-ui-react";
+import PlayerListPage from "../../pages/player-list/player-list";
 
-import { MatchContext } from '../../providers/match/match.provider';
-import AddPlayerFormPage from './add-player-form.component';
+import { MatchContext } from "../../providers/match/match.provider";
+import AddPlayerFormPage from "./add-player-form.component";
 
 const AddPlayerPage = () => {
   let history = useHistory();
-  const { addPlayer, removePlayer, playerList, matchDetails } = useContext(
-    MatchContext
-  );
-  const [awayPlayer, setAwayPlayer] = useState('');
-  const [homePlayer, setHomePlayer] = useState('');
+  const {
+    addPlayer,
+    removePlayer,
+    playerList,
+    matchDetails,
+    updateBattingTeam,
+  } = useContext(MatchContext);
+  const [awayPlayer, setAwayPlayer] = useState("");
+  const [homePlayer, setHomePlayer] = useState("");
   // const [homeTeamList, setHomeTeamList] = useState([]);
   // const [awayTeamList, setAwayTeamList] = useState([]);
   const [isPlayerListFinalized, setIsPlayerListFinalized] = useState(false);
@@ -26,7 +30,7 @@ const AddPlayerPage = () => {
       playerName: isHomeTeam ? homePlayer : awayPlayer,
     };
     addPlayer(homePlayerObj, isHomeTeam);
-    isHomeTeam ? setHomePlayer('') : setAwayPlayer('');
+    isHomeTeam ? setHomePlayer("") : setAwayPlayer("");
     // setHomeTeamList(homeTeamList.concat(homePlayerCopy));
     // setHomePlayer('');
     // if (playerList[teamCategory].length === 10) {
@@ -44,7 +48,7 @@ const AddPlayerPage = () => {
 
   const updateDb = async (teamCategory) => {
     await firestore
-      .collection('matches')
+      .collection("matches")
       .doc()
       .set({
         playerList: {
@@ -54,7 +58,8 @@ const AddPlayerPage = () => {
   };
 
   const confirmPlayerList = () => {
-    history.push('/currentStats');
+    updateBattingTeam();
+    history.push("/currentStats");
   };
   return (
     <>
@@ -79,7 +84,7 @@ const AddPlayerPage = () => {
               isHomeTeam={true}
             />
           ) : (
-            ''
+            ""
           )}
         </div>
         <div className="outline w-100 pa3 mr2">
@@ -101,7 +106,7 @@ const AddPlayerPage = () => {
               isHomeTeam={true}
             />
           ) : (
-            ''
+            ""
           )}
         </div>
       </div>

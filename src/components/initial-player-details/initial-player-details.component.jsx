@@ -1,19 +1,19 @@
-import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Button } from 'semantic-ui-react';
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { Button } from "semantic-ui-react";
 
-import { MatchContext } from '../../providers/match/match.provider';
+import { MatchContext } from "../../providers/match/match.provider";
 
 const InitialPlayerDetails = () => {
   let history = useHistory();
-  const { playerList, addCurrentStatsDetails, matchDetails } = useContext(
+  const { inn1, addCurrentStatsDetails, matchDetails } = useContext(
     MatchContext
   );
-  const { homeTeamClone, awayTeamClone } = playerList;
+  const { battingTeam, bowlingTeam } = inn1;
   const [currentStats, setCurrentStats] = useState({
-    striker: '',
-    nonStriker: '',
-    currentBowler: '',
+    striker: "",
+    nonStriker: "",
+    currentBowler: "",
   });
   // const [battingTeam, setBattingTeam] = useState(
   //   matchDetails.isHomTeamBattingFirst ? homeTeamClone : awayTeamClone
@@ -39,11 +39,11 @@ const InitialPlayerDetails = () => {
   const _updateCurrentStats = () => {
     addCurrentStatsDetails(currentStats);
     setCurrentStats({
-      striker: '',
-      nonStriker: '',
-      currentBowler: '',
+      striker: "",
+      nonStriker: "",
+      currentBowler: "",
     });
-    history.push('/score');
+    history.push("/score");
   };
   return (
     <>
@@ -59,13 +59,13 @@ const InitialPlayerDetails = () => {
           <option key="striker" value="select striker">
             Select Striker
           </option>
-          {homeTeamClone !== null || homeTeamClone !== undefined
-            ? Object.keys(homeTeamClone).map((keyName) => (
-                <option key={keyName} value={homeTeamClone[keyName]['id']}>
-                  {homeTeamClone[keyName]['playerName']}
+          {battingTeam !== null || battingTeam !== undefined
+            ? Object.keys(battingTeam).map((keyName) => (
+                <option key={keyName} value={battingTeam[keyName]["id"]}>
+                  {battingTeam[keyName]["playerName"]}
                 </option>
               ))
-            : ''}
+            : ""}
         </select>
         <label className="f6 b db mb2 pr2">Select Non-Striker</label>
         <select
@@ -78,13 +78,13 @@ const InitialPlayerDetails = () => {
           <option key="nonStriker" value="select non striker">
             Select Non Striker
           </option>
-          {homeTeamClone !== null || homeTeamClone !== undefined
-            ? Object.keys(homeTeamClone).map((keyName) => (
-                <option key={keyName} value={homeTeamClone[keyName]['id']}>
-                  {homeTeamClone[keyName]['playerName']}
+          {battingTeam !== null || battingTeam !== undefined
+            ? Object.keys(battingTeam).map((keyName) => (
+                <option key={keyName} value={battingTeam[keyName]["id"]}>
+                  {battingTeam[keyName]["playerName"]}
                 </option>
               ))
-            : ''}
+            : ""}
         </select>
         <label className="f6 b db mb2 pr2">Select Opening Bowler</label>
         <select
@@ -97,13 +97,13 @@ const InitialPlayerDetails = () => {
           <option key="currentBowler" value="select bowler">
             Select Bowler
           </option>
-          {awayTeamClone !== null || awayTeamClone !== undefined
-            ? Object.keys(awayTeamClone).map((keyName) => (
-                <option key={keyName} value={awayTeamClone[keyName]['id']}>
-                  {awayTeamClone[keyName]['playerName']}
+          {bowlingTeam !== null || bowlingTeam !== undefined
+            ? Object.keys(bowlingTeam).map((keyName) => (
+                <option key={keyName} value={bowlingTeam[keyName]["id"]}>
+                  {bowlingTeam[keyName]["playerName"]}
                 </option>
               ))
-            : ''}
+            : ""}
         </select>
       </div>
       <div className="flex justify-center">

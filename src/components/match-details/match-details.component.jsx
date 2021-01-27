@@ -1,20 +1,20 @@
-import React, { useState, useContext } from 'react';
-import { Link, Redirect, useHistory } from 'react-router-dom';
-import { Button, Input, Form } from 'semantic-ui-react';
-import { MatchContext } from '../../providers/match/match.provider';
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { Button, Input, Form } from "semantic-ui-react";
+import { MatchContext } from "../../providers/match/match.provider";
 
 const MatchDetails = () => {
   const { addMatchDetails, matchDetails } = useContext(MatchContext);
   let history = useHistory();
 
   const [state, setstate] = useState({
-    homeTeamName: '',
-    awayTeamName: '',
-    venue: '',
-    tournametName: '',
-    tossWonBy: '',
-    electedTo: '',
-    teamBatingFirst: '',
+    homeTeamName: "",
+    awayTeamName: "",
+    venue: "",
+    tournametName: "",
+    tossWonBy: "",
+    electedTo: "",
+    teamBatingFirst: "",
     isHomTeamBattingFirst: false,
   });
 
@@ -24,25 +24,40 @@ const MatchDetails = () => {
     updateTeamBattingFirst();
     addMatchDetails(state);
     setstate({
-      homeTeamName: '',
-      awayTeamName: '',
-      venue: '',
-      tournametName: '',
-      tossWonBy: '',
-      electedTo: '',
-      teamBatingFirst: '',
+      homeTeamName: "",
+      awayTeamName: "",
+      venue: "",
+      tournametName: "",
+      tossWonBy: "",
+      electedTo: "",
+      teamBatingFirst: "",
       isHomTeamBattingFirst: false,
     });
-    history.push('/addPlayers');
+    history.push("/addPlayers");
   };
 
-  const updateTeamBattingFirst = () => {
+  const updateSelection = (e) => {
     if (
-      state.homeTeamName.toLowerCase() === state.teamBatingFirst.toLowerCase()
+      state.homeTeamName.toLowerCase() ===
+        state.tossWonBy.toLocaleLowerCase() &&
+      e.target.value === "BAT"
     ) {
-      state.isHomTeamBattingFirst = true;
+      setstate({
+        ...state,
+        electedTo: e.target.value,
+        isHomTeamBattingFirst: true,
+        teamBatingFirst: state.homeTeamName,
+      });
+    } else {
+      setstate({
+        ...state,
+        electedTo: e.target.value,
+        teamBatingFirst: state.awayTeamName,
+      });
     }
   };
+
+  const updateTeamBattingFirst = () => {};
 
   return (
     <div className="pa3">
@@ -115,7 +130,7 @@ const MatchDetails = () => {
             className="ui selection dropdown mr3"
             placeholder="Elected To"
             value={state.electedTo}
-            onChange={(e) => setstate({ ...state, electedTo: e.target.value })}
+            onChange={(e) => updateSelection(e)}
           >
             <option key="selection" value="Select">
               Select Your Option
@@ -133,6 +148,7 @@ const MatchDetails = () => {
           <select
             className="ui selection dropdown mr3"
             value={state.teamBatingFirst}
+            disabled
             onChange={(e) =>
               setstate({ ...state, teamBatingFirst: e.target.value })
             }
