@@ -1,43 +1,54 @@
-import React, { useState, useContext } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
-import { Button, Input, Form } from "semantic-ui-react";
-import { MatchContext } from "../../providers/match/match.provider";
+import React, { useState, useContext } from 'react';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Button, Input, Form } from 'semantic-ui-react';
+import { MatchContext } from '../../providers/match/match.provider';
 
 const MatchDetails = () => {
-  const { addMatchDetails } = useContext(MatchContext);
+  const { addMatchDetails, matchDetails } = useContext(MatchContext);
   let history = useHistory();
 
   const [state, setstate] = useState({
-    homeTeamName: "",
-    awayTeamName: "",
-    venue: "",
-    tournametName: "",
-    tossWonBy: "",
-    electedTo: "",
-    teamBatingFirst: "",
+    homeTeamName: '',
+    awayTeamName: '',
+    venue: '',
+    tournametName: '',
+    tossWonBy: '',
+    electedTo: '',
+    teamBatingFirst: '',
+    isHomTeamBattingFirst: false,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(state);
+    updateTeamBattingFirst();
     addMatchDetails(state);
     setstate({
-      homeTeamName: "",
-      awayTeamName: "",
-      venue: "",
-      tournametName: "",
-      tossWonBy: "",
-      electedTo: "",
-      teamBatingFirst: "",
+      homeTeamName: '',
+      awayTeamName: '',
+      venue: '',
+      tournametName: '',
+      tossWonBy: '',
+      electedTo: '',
+      teamBatingFirst: '',
+      isHomTeamBattingFirst: false,
     });
-    history.push("/addPlayers");
+    history.push('/addPlayers');
+  };
+
+  const updateTeamBattingFirst = () => {
+    if (
+      state.homeTeamName.toLowerCase() === state.teamBatingFirst.toLowerCase()
+    ) {
+      state.isHomTeamBattingFirst = true;
+    }
   };
 
   return (
     <div className="pa3">
       <h3>Add Match Details</h3>
       <Form onSubmit={handleSubmit}>
-        <Form.Field>
+        <Form.Field required>
           <label>Tournamet Name</label>
           <Input
             placeholder="Tournamet Name"
@@ -48,7 +59,7 @@ const MatchDetails = () => {
             }
           />
         </Form.Field>
-        <Form.Field>
+        <Form.Field required>
           <label>Venue Name</label>
           <Input
             placeholder="Venue Name"
@@ -57,7 +68,7 @@ const MatchDetails = () => {
             onChange={(e) => setstate({ ...state, venue: e.target.value })}
           />
         </Form.Field>
-        <Form.Field>
+        <Form.Field required>
           <label>Home Team</label>
           <Input
             placeholder="Home Team Name"
@@ -68,7 +79,7 @@ const MatchDetails = () => {
             }
           />
         </Form.Field>
-        <Form.Field>
+        <Form.Field required>
           <label>Away Team</label>
           <Input
             placeholder="Away Team Name"
@@ -79,7 +90,7 @@ const MatchDetails = () => {
             }
           />
         </Form.Field>
-        <Form.Field>
+        <Form.Field required>
           <label>Toss Won By</label>
           <select
             className="ui selection dropdown mr3"
@@ -87,6 +98,9 @@ const MatchDetails = () => {
             value={state.tossWonBy}
             onChange={(e) => setstate({ ...state, tossWonBy: e.target.value })}
           >
+            <option key="tossSelection" value="SelectToss">
+              Select Your Option
+            </option>
             <option key="homeTeamName" value={state.homeTeamName}>
               {state.homeTeamName}
             </option>
@@ -95,7 +109,7 @@ const MatchDetails = () => {
             </option>
           </select>
         </Form.Field>
-        <Form.Field>
+        <Form.Field required>
           <label>Elected To</label>
           <select
             className="ui selection dropdown mr3"
@@ -103,6 +117,9 @@ const MatchDetails = () => {
             value={state.electedTo}
             onChange={(e) => setstate({ ...state, electedTo: e.target.value })}
           >
+            <option key="selection" value="Select">
+              Select Your Option
+            </option>
             <option key="bat" value="BAT">
               BAT
             </option>
@@ -111,16 +128,18 @@ const MatchDetails = () => {
             </option>
           </select>
         </Form.Field>
-        <Form.Field>
+        <Form.Field required>
           <label>Team Batting First</label>
           <select
             className="ui selection dropdown mr3"
-            placeholder="Toss Won By"
             value={state.teamBatingFirst}
             onChange={(e) =>
               setstate({ ...state, teamBatingFirst: e.target.value })
             }
           >
+            <option key="teamBattingFirst" value="SelectBattingTeam">
+              Select Batting Team
+            </option>
             <option key="key01" value={state.homeTeamName}>
               {state.homeTeamName}
             </option>

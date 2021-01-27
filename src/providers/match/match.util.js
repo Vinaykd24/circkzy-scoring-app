@@ -18,6 +18,9 @@ export const addMatchDetailsToDb = (matchDetails) => {
     homeTeamName: matchDetails.homeTeamName,
     awayTeamName: matchDetails.awayTeamName,
     tournametName: matchDetails.tournametName,
+    tossWonBy: matchDetails.tossWonBy,
+    electedTo: matchDetails.electedTo,
+    teamBatingFirst: matchDetails.teamBatingFirst,
   };
 };
 
@@ -30,7 +33,7 @@ export const convertArrayToObject = (array) => {
   return array.reduce((obj, item) => {
     return {
       ...obj,
-      [item["id"]]: item,
+      [item['id']]: item,
     };
   }, initialValue);
 };

@@ -7,11 +7,12 @@ const AddPlayerFormPage = ({
   addPlayerName,
   playerList,
   teamCategory,
+  teamName,
   isHomeTeam,
 }) => {
   return (
     <Form onSubmit={(e) => handleHomeTeamSubmit(e, isHomeTeam, teamCategory)}>
-      <h2>Add Home Team Players</h2>
+      <h2>Add {teamName} Team Players</h2>
       <Form.Field>
         <label>First Name</label>
         <Input

@@ -1,18 +1,20 @@
-import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import uuid from "react-uuid";
-import { firestore } from "../../firebase/config";
-import { Button, Input, Form } from "semantic-ui-react";
-import PlayerListPage from "../../pages/player-list/player-list";
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import uuid from 'react-uuid';
+import { firestore } from '../../firebase/config';
+import { Button, Input, Form } from 'semantic-ui-react';
+import PlayerListPage from '../../pages/player-list/player-list';
 
-import { MatchContext } from "../../providers/match/match.provider";
-import AddPlayerFormPage from "./add-player-form.component";
+import { MatchContext } from '../../providers/match/match.provider';
+import AddPlayerFormPage from './add-player-form.component';
 
 const AddPlayerPage = () => {
   let history = useHistory();
-  const { addPlayer, removePlayer, playerList } = useContext(MatchContext);
-  const [awayPlayer, setAwayPlayer] = useState("");
-  const [homePlayer, setHomePlayer] = useState("");
+  const { addPlayer, removePlayer, playerList, matchDetails } = useContext(
+    MatchContext
+  );
+  const [awayPlayer, setAwayPlayer] = useState('');
+  const [homePlayer, setHomePlayer] = useState('');
   // const [homeTeamList, setHomeTeamList] = useState([]);
   // const [awayTeamList, setAwayTeamList] = useState([]);
   const [isPlayerListFinalized, setIsPlayerListFinalized] = useState(false);
@@ -24,7 +26,7 @@ const AddPlayerPage = () => {
       playerName: isHomeTeam ? homePlayer : awayPlayer,
     };
     addPlayer(homePlayerObj, isHomeTeam);
-    isHomeTeam ? setHomePlayer("") : setAwayPlayer("");
+    isHomeTeam ? setHomePlayer('') : setAwayPlayer('');
     // setHomeTeamList(homeTeamList.concat(homePlayerCopy));
     // setHomePlayer('');
     // if (playerList[teamCategory].length === 10) {
@@ -42,7 +44,7 @@ const AddPlayerPage = () => {
 
   const updateDb = async (teamCategory) => {
     await firestore
-      .collection("matches")
+      .collection('matches')
       .doc()
       .set({
         playerList: {
@@ -52,7 +54,7 @@ const AddPlayerPage = () => {
   };
 
   const confirmPlayerList = () => {
-    history.push("/currentStats");
+    history.push('/currentStats');
   };
   return (
     <>
@@ -63,6 +65,7 @@ const AddPlayerPage = () => {
             playerList={playerList}
             addPlayerName={addPlayerName}
             homePlayer={homePlayer}
+            teamName={matchDetails.homeTeamName}
             teamCategory="homeTeam"
             isHomeTeam={true}
           />
@@ -76,7 +79,7 @@ const AddPlayerPage = () => {
               isHomeTeam={true}
             />
           ) : (
-            ""
+            ''
           )}
         </div>
         <div className="outline w-100 pa3 mr2">
@@ -85,6 +88,7 @@ const AddPlayerPage = () => {
             playerList={playerList}
             addPlayerName={addPlayerName}
             homePlayer={awayPlayer}
+            teamName={matchDetails.awayTeamName}
             teamCategory="awayTeam"
             isHomeTeam={false}
           />
@@ -97,7 +101,7 @@ const AddPlayerPage = () => {
               isHomeTeam={true}
             />
           ) : (
-            ""
+            ''
           )}
         </div>
       </div>
@@ -111,18 +115,18 @@ const AddPlayerPage = () => {
         </Button>
       </div>
       <div>
-        {playerList.homeTeamClone !== null ||
+        {/* {playerList.homeTeamClone !== null ||
         playerList.homeTeamClone !== undefined ? (
           Object.keys(playerList.homeTeamClone).map((keyName, i) => (
             <li className="travelcompany-input" key={i}>
               <span className="input-label">
-                key: {i} Name: {playerList.homeTeamClone[keyName]["playerName"]}
+                key: {i} Name: {playerList.homeTeamClone[keyName]['playerName']}
               </span>
             </li>
           ))
         ) : (
           <p>List is not ready</p>
-        )}
+        )} */}
       </div>
     </>
   );

@@ -1,11 +1,11 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState } from 'react';
 import {
   addPlayerToList,
   removePlayerFromList,
   addMatchDetailsToDb,
   addPlayerObj,
   removeObj,
-} from "./match.util";
+} from './match.util';
 
 export const MatchContext = createContext({
   playerList: {
@@ -15,10 +15,14 @@ export const MatchContext = createContext({
     awayTeamClone: {},
   },
   matchDetails: {
-    homeTeamName: "",
-    awayTeamName: "",
-    venue: "",
-    tournametName: "",
+    homeTeamName: '',
+    awayTeamName: '',
+    venue: '',
+    tournametName: '',
+    tossWonBy: '',
+    electedTo: '',
+    teamBatingFirst: '',
+    isHomTeamBattingFirst: false,
   },
   currentStats: {},
   addMatchDetails: () => {},
@@ -28,10 +32,14 @@ export const MatchContext = createContext({
 
 const MatchProvider = ({ children }) => {
   const [matchDetails, setMatchDetails] = useState({
-    homeTeamName: "",
-    awayTeamName: "",
-    venue: "",
-    tournametName: "",
+    homeTeamName: '',
+    awayTeamName: '',
+    venue: '',
+    tournametName: '',
+    tossWonBy: '',
+    electedTo: '',
+    teamBatingFirst: '',
+    isHomTeamBattingFirst: false,
   });
   const addMatchDetails = (matchDetails) =>
     setMatchDetails(addMatchDetailsToDb(matchDetails));
