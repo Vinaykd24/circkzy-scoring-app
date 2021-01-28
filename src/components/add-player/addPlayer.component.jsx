@@ -103,7 +103,7 @@ const AddPlayerPage = () => {
               playerList={playerList.awayTeam}
               playerListClone={playerList.awayTeamClone}
               handleDelete={handleDelete}
-              isHomeTeam={true}
+              isHomeTeam={false}
             />
           ) : (
             ""

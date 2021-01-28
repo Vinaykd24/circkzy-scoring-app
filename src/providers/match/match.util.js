@@ -28,12 +28,21 @@ export const addPlayerObj = (state, player) => {
   console.log([...state, { ...player }]);
 };
 
+export const updateCurrentStats = (stats, battingList, bowlingList) => {
+  return {
+    ...stats,
+    striker: battingList[stats.striker],
+    nonStriker: battingList[stats.nonStriker],
+    currentBowler: bowlingList[stats.currentBowler],
+  };
+};
+
 export const convertArrayToObject = (array) => {
   const initialValue = {};
   return array.reduce((obj, item) => {
     return {
       ...obj,
-      [item['id']]: item,
+      [item["id"]]: item,
     };
   }, initialValue);
 };

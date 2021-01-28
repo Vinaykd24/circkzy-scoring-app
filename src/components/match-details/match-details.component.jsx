@@ -38,9 +38,12 @@ const MatchDetails = () => {
 
   const updateSelection = (e) => {
     if (
-      state.homeTeamName.toLowerCase() ===
+      (state.homeTeamName.toLowerCase() ===
         state.tossWonBy.toLocaleLowerCase() &&
-      e.target.value === "BAT"
+        e.target.value === "BAT") ||
+      (state.awayTeamName.toLowerCase() ===
+        state.tossWonBy.toLocaleLowerCase() &&
+        e.target.value === "BOWL")
     ) {
       setstate({
         ...state,

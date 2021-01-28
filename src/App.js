@@ -8,6 +8,7 @@ import ScorePage from "./components/score/score.component";
 import AddPlayerPage from "./components/add-player/addPlayer.component";
 import MatchDetails from "./components/match-details/match-details.component";
 import InitialPlayerDetails from "./components/initial-player-details/initial-player-details.component";
+import ScoreBoardPage from "./components/score/score-book.component";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signup" component={Signup} />
         <Route path="/matchDetails" component={MatchDetails} />
         <Route path="/score" component={ScorePage} />
+        <Route path="/scoreboard" component={ScoreBoardPage} />
         <Route path="/addPlayers" component={AddPlayerPage} />
         <Route path="/currentStats" component={InitialPlayerDetails} />
         {/* <Route

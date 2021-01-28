@@ -43,7 +43,7 @@ const InitialPlayerDetails = () => {
       nonStriker: "",
       currentBowler: "",
     });
-    history.push("/score");
+    history.push("/scoreboard");
   };
   return (
     <>

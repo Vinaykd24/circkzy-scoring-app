@@ -5,6 +5,7 @@ import {
   addMatchDetailsToDb,
   addPlayerObj,
   removeObj,
+  updateCurrentStats,
 } from "./match.util";
 
 export const MatchContext = createContext({
@@ -24,7 +25,7 @@ export const MatchContext = createContext({
     teamBatingFirst: "",
     isHomTeamBattingFirst: false,
   },
-  currentStats: {},
+  currentStats: { striker: "", nonStriker: "", currentBowler: "" },
   inn1: {
     battingTeam: {},
     bowlingTeam: {},
@@ -53,7 +54,11 @@ const MatchProvider = ({ children }) => {
     homeTeamClone: {},
     awayTeamClone: {},
   });
-  const [currentStats, setCurrentStats] = useState({});
+  const [currentStats, setCurrentStats] = useState({
+    striker: "",
+    nonStriker: "",
+    currentBowler: "",
+  });
   const [inn1, setInn1] = useState({ battingTeam: {}, bowlingTeam: {} });
   const updateBattingTeam = () => {
     if (matchDetails.isHomTeamBattingFirst) {
@@ -62,10 +67,18 @@ const MatchProvider = ({ children }) => {
         battingTeam: playerList.homeTeamClone,
         bowlingTeam: playerList.awayTeamClone,
       });
+    } else {
+      setInn1({
+        ...inn1,
+        battingTeam: playerList.awayTeamClone,
+        bowlingTeam: playerList.homeTeamClone,
+      });
     }
   };
   const addCurrentStatsDetails = (statDetails) => {
-    setCurrentStats(statDetails);
+    setCurrentStats(
+      updateCurrentStats(statDetails, inn1.battingTeam, inn1.bowlingTeam)
+    );
   };
   const addPlayer = (player, isHomeTeam) =>
     isHomeTeam
@@ -74,13 +87,40 @@ const MatchProvider = ({ children }) => {
           homeTeam: addPlayerToList(playerList.homeTeam, player),
           homeTeamClone: {
             ...playerList.homeTeamClone,
-            [player.id]: player,
+            [player.id]: {
+              ...player,
+              runs: 0,
+              ballsPlayed: 0,
+              fours: 0,
+              sixes: 0,
+              overs: 0,
+              balls: 0,
+              maidens: 0,
+              wkts: 0,
+              wbs: 0,
+              nbs: 0,
+            },
           },
         })
       : setPlayerList({
           ...playerList,
           awayTeam: addPlayerToList(playerList.awayTeam, player),
-          awayTeamClone: { ...playerList.awayTeamClone, [player.id]: player },
+          awayTeamClone: {
+            ...playerList.awayTeamClone,
+            [player.id]: {
+              ...player,
+              runs: 0,
+              ballsPlayed: 0,
+              fours: 0,
+              sixes: 0,
+              overs: 0,
+              balls: 0,
+              maidens: 0,
+              wkts: 0,
+              wbs: 0,
+              nbs: 0,
+            },
+          },
         });
   const removePlayer = (playerId, isHomeTeam) =>
     isHomeTeam
