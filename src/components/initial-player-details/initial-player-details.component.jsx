@@ -1,15 +1,20 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "semantic-ui-react";
+import { SET_INITIAL_STATS } from "../../providers/match/match.actions";
 
 import { MatchContext } from "../../providers/match/match.provider";
 
 const InitialPlayerDetails = () => {
   let history = useHistory();
-  const { inn1, addCurrentStatsDetails, matchDetails } = useContext(
-    MatchContext
-  );
-  const { battingTeam, bowlingTeam } = inn1;
+  const {
+    inn1,
+    addCurrentStatsDetails,
+    matchDetails,
+    rootState,
+    rootDispatch,
+  } = useContext(MatchContext);
+  const { battingTeam, bowlingTeam } = rootState.inn1;
   const [currentStats, setCurrentStats] = useState({
     striker: "",
     nonStriker: "",
@@ -37,6 +42,7 @@ const InitialPlayerDetails = () => {
   //   setBowlingTeam(homeTeamClone);
   // }
   const _updateCurrentStats = () => {
+    rootDispatch({ type: SET_INITIAL_STATS, currentStats: currentStats });
     addCurrentStatsDetails(currentStats);
     setCurrentStats({
       striker: "",

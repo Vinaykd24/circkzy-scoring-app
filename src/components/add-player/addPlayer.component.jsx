@@ -7,16 +7,27 @@ import PlayerListPage from "../../pages/player-list/player-list";
 
 import { MatchContext } from "../../providers/match/match.provider";
 import AddPlayerFormPage from "./add-player-form.component";
+import {
+  ADD_AWAY_TEAM_PLAYER,
+  ADD_HOME_TEAM_PLAYER,
+  REMOVE_HOME_PLAYER,
+  REMOVE_AWAY_PLAYER,
+  SET_BATTING_TEAM,
+} from "../../providers/match/match.actions";
 
 const AddPlayerPage = () => {
   let history = useHistory();
   const {
-    addPlayer,
-    removePlayer,
-    playerList,
-    matchDetails,
+    // addPlayer,
+    // removePlayer,
+    // playerList,
+    // matchDetails,
     updateBattingTeam,
+    rootState,
+    rootDispatch,
   } = useContext(MatchContext);
+  console.log(rootState);
+  const { playerList } = rootState;
   const [awayPlayer, setAwayPlayer] = useState("");
   const [homePlayer, setHomePlayer] = useState("");
   // const [homeTeamList, setHomeTeamList] = useState([]);
@@ -29,7 +40,10 @@ const AddPlayerPage = () => {
       id: uuid(),
       playerName: isHomeTeam ? homePlayer : awayPlayer,
     };
-    addPlayer(homePlayerObj, isHomeTeam);
+    // addPlayer(homePlayerObj, isHomeTeam);
+    isHomeTeam
+      ? rootDispatch({ type: ADD_HOME_TEAM_PLAYER, player: homePlayerObj })
+      : rootDispatch({ type: ADD_AWAY_TEAM_PLAYER, player: homePlayerObj });
     isHomeTeam ? setHomePlayer("") : setAwayPlayer("");
     // setHomeTeamList(homeTeamList.concat(homePlayerCopy));
     // setHomePlayer('');
@@ -43,7 +57,10 @@ const AddPlayerPage = () => {
   };
 
   const handleDelete = (playerId, isHomeTeam) => {
-    removePlayer(playerId, isHomeTeam);
+    isHomeTeam
+      ? rootDispatch({ type: REMOVE_HOME_PLAYER, playerId: playerId })
+      : rootDispatch({ type: REMOVE_AWAY_PLAYER, playerId: playerId });
+    // removePlayer(playerId, isHomeTeam);
   };
 
   const updateDb = async (teamCategory) => {
@@ -58,6 +75,7 @@ const AddPlayerPage = () => {
   };
 
   const confirmPlayerList = () => {
+    rootDispatch({ type: SET_BATTING_TEAM });
     updateBattingTeam();
     history.push("/currentStats");
   };
@@ -70,7 +88,7 @@ const AddPlayerPage = () => {
             playerList={playerList}
             addPlayerName={addPlayerName}
             homePlayer={homePlayer}
-            teamName={matchDetails.homeTeamName}
+            teamName={rootState.matchDetails.homeTeamName}
             teamCategory="homeTeam"
             isHomeTeam={true}
           />
@@ -93,7 +111,7 @@ const AddPlayerPage = () => {
             playerList={playerList}
             addPlayerName={addPlayerName}
             homePlayer={awayPlayer}
-            teamName={matchDetails.awayTeamName}
+            teamName={rootState.matchDetails.awayTeamName}
             teamCategory="awayTeam"
             isHomeTeam={false}
           />

@@ -9,12 +9,14 @@ import AddPlayerPage from "./components/add-player/addPlayer.component";
 import MatchDetails from "./components/match-details/match-details.component";
 import InitialPlayerDetails from "./components/initial-player-details/initial-player-details.component";
 import ScoreBoardPage from "./components/score/score-book.component";
+import TestComponent from "./components/match-details/test.component";
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/signup" component={Signup} />
+        <Route path="/test" component={TestComponent} />
         <Route path="/matchDetails" component={MatchDetails} />
         <Route path="/score" component={ScorePage} />
         <Route path="/scoreboard" component={ScoreBoardPage} />

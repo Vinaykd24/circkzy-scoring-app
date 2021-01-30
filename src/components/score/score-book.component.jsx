@@ -10,15 +10,14 @@ const ScoreBoardPage = () => {
     totalWickets: 0,
     totalExtras: 0,
   };
-  const { inn1, currentStats } = useContext(MatchContext);
-  const { battingTeam, bowlingTeam } = inn1;
-  const { striker, nonStriker, currentBowler } = currentStats;
+  const { rootState } = useContext(MatchContext);
+  const { battingTeam, bowlingTeam } = rootState.inn1;
+  const { striker, nonStriker, currentBowler } = rootState.currentStats;
   const [scoreBoardState, dispatch] = useReducer(
     matchReducer,
     initialScoreBoardState
   );
   const { totalRuns, totalWickets, totalExtras } = scoreBoardState;
-  console.log(currentStats);
   const currentPartnerShip = () => {
     const partnershipRuns = striker.runs + nonStriker.runs;
     const partnershipBallsPlayed = striker.ballsPlayed + nonStriker.ballsPlayed;
@@ -49,26 +48,28 @@ const ScoreBoardPage = () => {
       </div>
       <div className="flex justify-center pa3">
         <div className="outline w-25 pa3 mr2">
-          <code>{striker.playerName}</code>
+          <code>{battingTeam[striker].playerName}</code>
           <p>
             <code>
-              {striker.runs}({striker.ballsPlayed})
+              {battingTeam[striker].runs}({battingTeam[striker].ballsPlayed})
             </code>
           </p>
         </div>
         <div className="outline w-25 pa3 mr2">
-          <code>{nonStriker.playerName}</code>
+          <code>{battingTeam[nonStriker].playerName}</code>
           <p>
             <code>
-              {nonStriker.runs}({nonStriker.ballsPlayed})
+              {battingTeam[nonStriker].runs}(
+              {battingTeam[nonStriker].ballsPlayed})
             </code>
           </p>
         </div>
         <div className="outline w-25 pa3 mr2">
-          <code>{currentBowler.playerName}</code>
+          <code>{bowlingTeam[currentBowler].playerName}</code>
           <p>
             <code>
-              {currentBowler.overs}({currentBowler.wkts})
+              {bowlingTeam[currentBowler].overs}(
+              {bowlingTeam[currentBowler].wkts})
             </code>
           </p>
         </div>

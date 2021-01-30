@@ -1,10 +1,13 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Input, Form } from "semantic-ui-react";
+import { ADD_MATCH_DETAILS } from "../../providers/match/match.actions";
 import { MatchContext } from "../../providers/match/match.provider";
 
 const MatchDetails = () => {
-  const { addMatchDetails, matchDetails } = useContext(MatchContext);
+  const { addMatchDetails, matchDetails, rootDispatch } = useContext(
+    MatchContext
+  );
   let history = useHistory();
 
   const [state, setstate] = useState({
@@ -22,7 +25,9 @@ const MatchDetails = () => {
     e.preventDefault();
     console.log(state);
     updateTeamBattingFirst();
-    addMatchDetails(state);
+    // addMatchDetails(state);
+    rootDispatch({ type: ADD_MATCH_DETAILS, matchDetails: state });
+
     setstate({
       homeTeamName: "",
       awayTeamName: "",
