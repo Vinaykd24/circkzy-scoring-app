@@ -41,6 +41,8 @@ import { addMatchDetailsToDb, removeObj, updateRuns } from './match.util';
 //     totalRuns: 0,
 //     totalWickets: 0,
 //     totalExtras: 0,
+// totalOvers: 0,
+// totalBalls: 0,
 //   },
 // };
 
@@ -257,6 +259,8 @@ export const initialState = {
     totalRuns: 0,
     totalWickets: 0,
     totalExtras: 0,
+    totalOvers: 0,
+    totalBalls: 0,
   },
 };
 

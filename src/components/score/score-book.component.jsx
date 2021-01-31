@@ -21,16 +21,24 @@ const ScoreBoardPage = () => {
   };
   const { rootState, rootDispatch } = useContext(MatchContext);
   console.log(rootState);
-  const { battingTeam, bowlingTeam } = rootState.inn1;
+  const {
+    battingTeam,
+    bowlingTeam,
+    totalRuns,
+    totalWickets,
+    totalExtras,
+  } = rootState.inn1;
   const { striker, nonStriker, currentBowler } = rootState.currentStats;
   const [scoreBoardState, dispatch] = useReducer(
     matchReducer,
     initialScoreBoardState
   );
-  const { totalRuns, totalWickets, totalExtras } = scoreBoardState;
+  // const { totalRuns, totalWickets, totalExtras } = scoreBoardState;
   const currentPartnerShip = () => {
-    const partnershipRuns = striker.runs + nonStriker.runs;
-    const partnershipBallsPlayed = striker.ballsPlayed + nonStriker.ballsPlayed;
+    const partnershipRuns =
+      battingTeam[striker].runs + battingTeam[nonStriker].runs;
+    const partnershipBallsPlayed =
+      battingTeam[striker].ballsPlayed + battingTeam[nonStriker].ballsPlayed;
     return `${partnershipRuns}(${partnershipBallsPlayed})`;
   };
 

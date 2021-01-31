@@ -47,9 +47,14 @@ export const convertArrayToObject = (array) => {
   }, initialValue);
 };
 
+const calcOver = (balls) => {
+  return Math.floor(balls / 6) + (balls % 6) / 10;
+};
+
 export const updateRuns = (state, player, runs) => {
   const bowlerId = state.currentStats.currentBowler;
   const bowler = state.inn1.bowlingTeam[bowlerId];
+  const _totalBalls = state.inn1.totalBalls + 1;
   if (runs === 1 || runs === 3) {
     const { striker, nonStriker } = state.currentStats;
     const temp = striker;
@@ -62,6 +67,9 @@ export const updateRuns = (state, player, runs) => {
       },
       inn1: {
         ...state.inn1,
+        totalRuns: state.inn1.totalRuns + runs,
+        totalBalls: _totalBalls,
+        totalOvers: calcOver(_totalBalls),
         battingTeam: {
           ...state.inn1.battingTeam,
           [player.id]: {
@@ -85,6 +93,7 @@ export const updateRuns = (state, player, runs) => {
       ...state,
       inn1: {
         ...state.inn1,
+        totalRuns: state.inn1.totalRuns + runs,
         battingTeam: {
           ...state.inn1.battingTeam,
           [player.id]: {
