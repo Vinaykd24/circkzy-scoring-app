@@ -1,8 +1,17 @@
-import React, { useContext, useState, useReducer } from "react";
-import { Button, Modal, Label, Radio, Form, Icon } from "semantic-ui-react";
-import { matchReducer, reducer } from "./score.reducer";
+import React, { useContext, useState, useReducer } from 'react';
+import { Button, Modal, Label, Radio, Form, Icon } from 'semantic-ui-react';
+import { matchReducer, reducer } from './score.reducer';
 
-import { MatchContext } from "../../providers/match/match.provider";
+import { MatchContext } from '../../providers/match/match.provider';
+import {
+  CHANGE_STRIKER,
+  SET_DOT_BALL,
+  SET_FOUR_RUNS,
+  SET_ONE_RUN,
+  SET_SIX_RUNS,
+  SET_THREE_RUNS,
+  SET_TWO_RUNS,
+} from '../../providers/match/match.actions';
 
 const ScoreBoardPage = () => {
   const initialScoreBoardState = {
@@ -10,7 +19,8 @@ const ScoreBoardPage = () => {
     totalWickets: 0,
     totalExtras: 0,
   };
-  const { rootState } = useContext(MatchContext);
+  const { rootState, rootDispatch } = useContext(MatchContext);
+  console.log(rootState);
   const { battingTeam, bowlingTeam } = rootState.inn1;
   const { striker, nonStriker, currentBowler } = rootState.currentStats;
   const [scoreBoardState, dispatch] = useReducer(
@@ -24,6 +34,9 @@ const ScoreBoardPage = () => {
     return `${partnershipRuns}(${partnershipBallsPlayed})`;
   };
 
+  const changeStriker = () => {
+    rootDispatch({ type: CHANGE_STRIKER });
+  };
   const Counter = () => {
     const initialState = { count: 0 };
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -31,8 +44,8 @@ const ScoreBoardPage = () => {
     return (
       <>
         Count: {state.count}
-        <button onClick={() => dispatch({ type: "decrement" })}>-</button>
-        <button onClick={() => dispatch({ type: "increment" })}>+</button>
+        <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+        <button onClick={() => dispatch({ type: 'increment' })}>+</button>
       </>
     );
   };
@@ -83,22 +96,70 @@ const ScoreBoardPage = () => {
       <div className="flex flex-column items-center justify-center tc">
         <div className="ma3">
           <Button.Group size="small">
-            <Button size="huge" onClick={() => dispatch({ type: "ONE_RUN" })}>
+            <Button
+              size="huge"
+              onClick={() =>
+                rootDispatch({
+                  type: SET_DOT_BALL,
+                  player: battingTeam[striker],
+                })
+              }
+            >
+              0
+            </Button>
+            <Button
+              size="huge"
+              onClick={() =>
+                rootDispatch({
+                  type: SET_ONE_RUN,
+                  player: battingTeam[striker],
+                })
+              }
+            >
               1
             </Button>
-            <Button size="huge" onClick={() => dispatch({ type: "TWO_RUNS" })}>
+            <Button
+              size="huge"
+              onClick={() =>
+                rootDispatch({
+                  type: SET_TWO_RUNS,
+                  player: battingTeam[striker],
+                })
+              }
+            >
               2
             </Button>
             <Button
               size="huge"
-              onClick={() => dispatch({ type: "THREE_RUNS" })}
+              onClick={() =>
+                rootDispatch({
+                  type: SET_THREE_RUNS,
+                  player: battingTeam[striker],
+                })
+              }
             >
               3
             </Button>
-            <Button size="huge" onClick={() => dispatch({ type: "FOUR_RUNS" })}>
+            <Button
+              size="huge"
+              onClick={() =>
+                rootDispatch({
+                  type: SET_FOUR_RUNS,
+                  player: battingTeam[striker],
+                })
+              }
+            >
               4
             </Button>
-            <Button size="huge" onClick={() => dispatch({ type: "SIX_RUNS" })}>
+            <Button
+              size="huge"
+              onClick={() =>
+                rootDispatch({
+                  type: SET_SIX_RUNS,
+                  player: battingTeam[striker],
+                })
+              }
+            >
               6
             </Button>
             <Counter />
@@ -111,7 +172,7 @@ const ScoreBoardPage = () => {
             <Button size="huge">NB</Button>
             <Button size="huge">B</Button>
             <Button size="huge">LB</Button>
-            <Button icon size="huge">
+            <Button icon size="huge" onClick={changeStriker}>
               <Icon name="refresh" />
             </Button>
           </Button.Group>
