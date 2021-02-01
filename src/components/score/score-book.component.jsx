@@ -1,17 +1,21 @@
-import React, { useContext, useState, useReducer } from 'react';
-import { Button, Modal, Label, Radio, Form, Icon } from 'semantic-ui-react';
-import { matchReducer, reducer } from './score.reducer';
+import React, { useContext, useState, useReducer } from "react";
+import { Button, Modal, Label, Radio, Form, Icon } from "semantic-ui-react";
+import { matchReducer, reducer } from "./score.reducer";
 
-import { MatchContext } from '../../providers/match/match.provider';
+import { MatchContext } from "../../providers/match/match.provider";
 import {
   CHANGE_STRIKER,
+  SET_BYES,
   SET_DOT_BALL,
   SET_FOUR_RUNS,
+  SET_LEG_BYES,
+  SET_NO_BALL,
   SET_ONE_RUN,
   SET_SIX_RUNS,
   SET_THREE_RUNS,
   SET_TWO_RUNS,
-} from '../../providers/match/match.actions';
+  SET_WIDE_BALL,
+} from "../../providers/match/match.actions";
 
 const ScoreBoardPage = () => {
   const initialScoreBoardState = {
@@ -52,8 +56,8 @@ const ScoreBoardPage = () => {
     return (
       <>
         Count: {state.count}
-        <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
-        <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+        <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+        <button onClick={() => dispatch({ type: "increment" })}>+</button>
       </>
     );
   };
@@ -64,7 +68,7 @@ const ScoreBoardPage = () => {
           <div className="f1">
             {totalRuns}/{totalWickets}
           </div>
-          <span className="f5 mt3 dib">Extras: {totalExtras}</span>
+          <span className="f5 mt3 dib">Extras: {totalExtras.total}</span>
         </div>
       </div>
       <div className="flex justify-center pa3">
@@ -176,10 +180,50 @@ const ScoreBoardPage = () => {
         <div className="mh3 w-100">
           <Button.Group size="small">
             <Button size="huge">W</Button>
-            <Button size="huge">WB</Button>
-            <Button size="huge">NB</Button>
-            <Button size="huge">B</Button>
-            <Button size="huge">LB</Button>
+            <Button
+              size="huge"
+              onClick={() =>
+                rootDispatch({
+                  type: SET_WIDE_BALL,
+                  bowler: bowlingTeam[currentBowler],
+                })
+              }
+            >
+              WB
+            </Button>
+            <Button
+              size="huge"
+              onClick={() =>
+                rootDispatch({
+                  type: SET_NO_BALL,
+                  bowler: bowlingTeam[currentBowler],
+                })
+              }
+            >
+              NB
+            </Button>
+            <Button
+              size="huge"
+              onClick={() =>
+                rootDispatch({
+                  type: SET_BYES,
+                  bowler: bowlingTeam[currentBowler],
+                })
+              }
+            >
+              B
+            </Button>
+            <Button
+              size="huge"
+              onClick={() =>
+                rootDispatch({
+                  type: SET_LEG_BYES,
+                  bowler: bowlingTeam[currentBowler],
+                })
+              }
+            >
+              LB
+            </Button>
             <Button icon size="huge" onClick={changeStriker}>
               <Icon name="refresh" />
             </Button>
