@@ -47,6 +47,20 @@ export const convertArrayToObject = (array) => {
   }, initialValue);
 };
 
+const updateOver = (state) => {
+  const _totalBalls = state.inn1.totalBalls + 1;
+  const _totalOvers = calcOver(_totalBalls);
+  // const _currentBowlerTotalBalls = currentBowler["balls"] + 1;
+  return {
+    ...state,
+    inn1: {
+      ...state.inn1,
+      totalOvers: _totalOvers,
+      totalBalls: _totalBalls,
+    },
+  };
+};
+
 const calcOver = (balls) => {
   return Math.floor(balls / 6) + (balls % 6) / 10;
 };
@@ -55,6 +69,8 @@ export const updateRuns = (state, player, runs) => {
   const bowlerId = state.currentStats.currentBowler;
   const bowler = state.inn1.bowlingTeam[bowlerId];
   const _totalBalls = state.inn1.totalBalls + 1;
+  updateOver(state);
+
   switch (runs) {
     case 1:
     case 3:
@@ -90,6 +106,8 @@ export const updateRuns = (state, player, runs) => {
           },
         },
       };
+    case 0:
+    case 2:
     case 4:
     case 6:
       return {
@@ -97,6 +115,8 @@ export const updateRuns = (state, player, runs) => {
         inn1: {
           ...state.inn1,
           totalRuns: state.inn1.totalRuns + runs,
+          totalBalls: _totalBalls,
+          totalOvers: calcOver(_totalBalls),
           battingTeam: {
             ...state.inn1.battingTeam,
             [player.id]: {
@@ -117,69 +137,8 @@ export const updateRuns = (state, player, runs) => {
           },
         },
       };
-
     default:
       break;
-  }
-  if (runs === 1 || runs === 3) {
-    const { striker, nonStriker } = state.currentStats;
-    const temp = striker;
-    return {
-      ...state,
-      currentStats: {
-        ...state.currentStats,
-        striker: nonStriker,
-        nonStriker: temp,
-      },
-      inn1: {
-        ...state.inn1,
-        totalRuns: state.inn1.totalRuns + runs,
-        totalBalls: _totalBalls,
-        totalOvers: calcOver(_totalBalls),
-        battingTeam: {
-          ...state.inn1.battingTeam,
-          [player.id]: {
-            ...player,
-            ballsPlayed: player.ballsPlayed + 1,
-            runs: player.runs + runs,
-          },
-        },
-        bowlingTeam: {
-          ...state.inn1.bowlingTeam,
-          [bowlerId]: {
-            ...bowler,
-            balls: bowler.balls + 1,
-            runsGiven: bowler.runsGiven + runs,
-          },
-        },
-      },
-    };
-  } else {
-    return {
-      ...state,
-      inn1: {
-        ...state.inn1,
-        totalRuns: state.inn1.totalRuns + runs,
-        battingTeam: {
-          ...state.inn1.battingTeam,
-          [player.id]: {
-            ...player,
-            ballsPlayed: player.ballsPlayed + 1,
-            runs: player.runs + runs,
-            fours: runs === 4 ? player.fours + 1 : player.fours,
-            sixes: runs === 6 ? player.sixes + 1 : player.sixes,
-          },
-        },
-        bowlingTeam: {
-          ...state.inn1.bowlingTeam,
-          [bowlerId]: {
-            ...bowler,
-            balls: bowler.balls + 1,
-            runsGiven: bowler.runsGiven + runs,
-          },
-        },
-      },
-    };
   }
 };
 

@@ -50,6 +50,15 @@ import {
 //     totalRuns: 0,
 //     totalWickets: 0,
 //     totalExtras: 0,
+// totalRuns: 0,
+// totalWickets: 0,
+// totalExtras: {
+//   wbs: 0,
+//   nbs: 0,
+//   byes: 0,
+//   lBye: 0,
+//   total: 0,
+// },
 // totalOvers: 0,
 // totalBalls: 0,
 //   },
@@ -392,26 +401,29 @@ export const matchReducer = (state, action) => {
     case SET_DOT_BALL:
       const bowlerId = state.currentStats.currentBowler;
       const bowler = state.inn1.bowlingTeam[bowlerId];
-      return {
-        ...state,
-        inn1: {
-          ...state.inn1,
-          battingTeam: {
-            ...state.inn1.battingTeam,
-            [action.player.id]: {
-              ...action.player,
-              ballsPlayed: action.player.ballsPlayed + 1,
-            },
-          },
-          bowlingTeam: {
-            ...state.inn1.bowlingTeam,
-            [bowlerId]: {
-              ...bowler,
-              balls: bowler.balls + 1,
-            },
-          },
-        },
-      };
+      return updateRuns(state, action.player, 0);
+    // return {
+    //   ...state,
+    //   inn1: {
+    //     ...state.inn1,
+    //     totalBalls: _totalBalls,
+    //     totalOvers: calcOver(_totalBalls),
+    //     battingTeam: {
+    //       ...state.inn1.battingTeam,
+    //       [action.player.id]: {
+    //         ...action.player,
+    //         ballsPlayed: action.player.ballsPlayed + 1,
+    //       },
+    //     },
+    //     bowlingTeam: {
+    //       ...state.inn1.bowlingTeam,
+    //       [bowlerId]: {
+    //         ...bowler,
+    //         balls: bowler.balls + 1,
+    //       },
+    //     },
+    //   },
+    // };
     case SET_ONE_RUN:
       return updateRuns(state, action.player, 1);
     case SET_TWO_RUNS:

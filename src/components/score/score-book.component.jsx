@@ -1,4 +1,4 @@
-import React, { useContext, useState, useReducer } from "react";
+import React, { useContext, useState, useReducer, useEffect } from "react";
 import { Button, Modal, Label, Radio, Form, Icon } from "semantic-ui-react";
 import { matchReducer, reducer } from "./score.reducer";
 
@@ -24,13 +24,14 @@ const ScoreBoardPage = () => {
     totalExtras: 0,
   };
   const { rootState, rootDispatch } = useContext(MatchContext);
-  console.log(rootState);
+  // console.log(rootState);
   const {
     battingTeam,
     bowlingTeam,
     totalRuns,
     totalWickets,
     totalExtras,
+    totalOvers,
   } = rootState.inn1;
   const { striker, nonStriker, currentBowler } = rootState.currentStats;
   const [scoreBoardState, dispatch] = useReducer(
@@ -49,6 +50,18 @@ const ScoreBoardPage = () => {
   const changeStriker = () => {
     rootDispatch({ type: CHANGE_STRIKER });
   };
+
+  const checkAndChange = () => {
+    if (totalOvers % 1 === 0 && totalOvers !== 0) {
+      rootDispatch({ type: CHANGE_STRIKER });
+    }
+  };
+  const updateRuns = (type) => {
+    rootDispatch({ type, player: battingTeam[striker] });
+  };
+
+  useEffect(() => checkAndChange(), [rootState.inn1.totalOvers]);
+
   const Counter = () => {
     const initialState = { count: 0 };
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -68,6 +81,7 @@ const ScoreBoardPage = () => {
           <div className="f1">
             {totalRuns}/{totalWickets}
           </div>
+          <span className="f5 mt3 dib mr3">Overs: {totalOvers}/20</span>
           <span className="f5 mt3 dib">Extras: {totalExtras.total}</span>
         </div>
       </div>
@@ -108,15 +122,7 @@ const ScoreBoardPage = () => {
       <div className="flex flex-column items-center justify-center tc">
         <div className="ma3">
           <Button.Group size="small">
-            <Button
-              size="huge"
-              onClick={() =>
-                rootDispatch({
-                  type: SET_DOT_BALL,
-                  player: battingTeam[striker],
-                })
-              }
-            >
+            <Button size="huge" onClick={() => updateRuns(SET_DOT_BALL)}>
               0
             </Button>
             <Button
