@@ -16,8 +16,26 @@ import {
   SET_TWO_RUNS,
   SET_WIDE_BALL,
 } from "../../providers/match/match.actions";
+// import SelectionModalPage from "../../pages/modal/selection-modal";
+
+const exampleReducer = (state, action) => {
+  switch (action.type) {
+    case "OPEN_MODAL":
+      return { open: true, dimmer: action.dimmer };
+    case "CLOSE_MODAL":
+      return { open: false };
+    default:
+      throw new Error();
+  }
+};
 
 const ScoreBoardPage = () => {
+  const [state, dispatch] = React.useReducer(exampleReducer, {
+    open: false,
+    dimmer: undefined,
+  });
+  const { open, dimmer } = state;
+
   const initialScoreBoardState = {
     totalRuns: 0,
     totalWickets: 0,
@@ -34,10 +52,10 @@ const ScoreBoardPage = () => {
     totalOvers,
   } = rootState.inn1;
   const { striker, nonStriker, currentBowler } = rootState.currentStats;
-  const [scoreBoardState, dispatch] = useReducer(
-    matchReducer,
-    initialScoreBoardState
-  );
+  // const [scoreBoardState, dispatch] = useReducer(
+  //   matchReducer,
+  //   initialScoreBoardState
+  // );
   // const { totalRuns, totalWickets, totalExtras } = scoreBoardState;
   const currentPartnerShip = () => {
     const partnershipRuns =
@@ -53,6 +71,7 @@ const ScoreBoardPage = () => {
 
   const checkAndChange = () => {
     if (totalOvers % 1 === 0 && totalOvers !== 0) {
+      dispatch({ type: "OPEN_MODAL" });
       rootDispatch({ type: CHANGE_STRIKER });
     }
   };
@@ -60,20 +79,13 @@ const ScoreBoardPage = () => {
     rootDispatch({ type, player: battingTeam[striker] });
   };
 
+  const selectBatsman = (batsman) => {
+    console.log("Select batsman logic goes here!", batsman);
+    dispatch({ type: "CLOSE_MODAL" });
+  };
+
   useEffect(() => checkAndChange(), [rootState.inn1.totalOvers]);
 
-  const Counter = () => {
-    const initialState = { count: 0 };
-    const [state, dispatch] = useReducer(reducer, initialState);
-    // const [state, dispatch] = useReducer(reducer, { count: initialCount });
-    return (
-      <>
-        Count: {state.count}
-        <button onClick={() => dispatch({ type: "decrement" })}>-</button>
-        <button onClick={() => dispatch({ type: "increment" })}>+</button>
-      </>
-    );
-  };
   return (
     <>
       <div className="flex justify-center pa3">
@@ -180,7 +192,6 @@ const ScoreBoardPage = () => {
             >
               6
             </Button>
-            <Counter />
           </Button.Group>
         </div>
         <div className="mh3 w-100">
@@ -236,6 +247,36 @@ const ScoreBoardPage = () => {
           </Button.Group>
         </div>
       </div>
+      <Modal
+        dimmer={dimmer}
+        open={open}
+        onClose={() => dispatch({ type: "CLOSE_MODAL" })}
+      >
+        <Modal.Header>Use Google's location service?</Modal.Header>
+        <Modal.Content>
+          <div>
+            {Object.entries(battingTeam).map(([key, value], i) => (
+              <Form.Field key={i}>
+                <Radio
+                  className="b"
+                  key={i}
+                  label={value["playerName"]}
+                  disabled={striker === value["id"]}
+                  onChange={() => selectBatsman(value)}
+                />
+              </Form.Field>
+            ))}
+          </div>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button negative onClick={() => dispatch({ type: "CLOSE_MODAL" })}>
+            Disagree
+          </Button>
+          <Button positive onClick={() => dispatch({ type: "CLOSE_MODAL" })}>
+            Agree
+          </Button>
+        </Modal.Actions>
+      </Modal>
     </>
   );
 };

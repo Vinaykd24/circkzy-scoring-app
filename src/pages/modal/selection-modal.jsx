@@ -1,50 +1,34 @@
-import React from 'react';
-import { Modal, Form, Radio } from 'semantic-ui-react';
+import React, { useState } from "react";
+import { Modal, Form, Radio } from "semantic-ui-react";
 
 export const SelectionModalPage = ({
-  bowlerDetails,
-  currentBowler,
-  updateBowler,
+  playerList,
+  title,
+  handleEvent,
+  isOpen,
+  player,
 }) => {
-  const exampleReducer = (state, action) => {
-    switch (action.type) {
-      case 'close':
-        return { open: false };
-      case 'open':
-        return { open: true, size: action.size, dimmer: action.dimmer };
-      default:
-        throw new Error('Unsupported action...');
-    }
-  };
+  const [open, setOpen] = React.useState({ isOpen });
 
-  const [state, dispatch] = React.useReducer(exampleReducer, {
-    open: false,
-    size: undefined,
-  });
-  const { open, size, dimmer } = state;
-
-  const openModal = () => {
-    dispatch({ type: 'open', size: 'mini', dimmer: 'blurring' });
-  };
   return (
     <Modal
-      size={size}
+      size="mini"
       open={open}
-      dimmer={dimmer}
-      onClose={() => dispatch({ type: 'close' })}
+      dimmer="blurring"
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
     >
-      <Modal.Header>Delete Your Account</Modal.Header>
+      <Modal.Header>{title}</Modal.Header>
       <Modal.Content>
-        <p>Are you sure you want to delete your account</p>
         <div className="changeBowler">
-          {Object.entries(bowlerDetails).map(([key, value], i) => (
+          {Object.entries(playerList).map(([key, value], i) => (
             <Form.Field key={i}>
               <Radio
                 className="b"
                 key={i}
-                label={value['name']}
-                disabled={currentBowler['id'] === value['id']}
-                onChange={() => updateBowler(value)}
+                label={value["name"]}
+                disabled={player["id"] === value["id"]}
+                onChange={() => handleEvent(value)}
               />
             </Form.Field>
           ))}
