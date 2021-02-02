@@ -42,7 +42,7 @@ export const convertArrayToObject = (array) => {
   return array.reduce((obj, item) => {
     return {
       ...obj,
-      [item["id"]]: item,
+      [item['id']]: item,
     };
   }, initialValue);
 };
@@ -55,8 +55,8 @@ const updateOver = (state) => {
     ...state,
     inn1: {
       ...state.inn1,
-      totalOvers: _totalOvers,
-      totalBalls: _totalBalls,
+      totalOvers: state.inn1.totalOvers + _totalOvers,
+      totalBalls: state.inn1.totalBalls + _totalBalls,
     },
   };
 };
@@ -101,6 +101,7 @@ export const updateRuns = (state, player, runs) => {
             [bowlerId]: {
               ...bowler,
               balls: bowler.balls + 1,
+              overs: calcOver(bowler.balls + 1),
               runsGiven: bowler.runsGiven + runs,
             },
           },
@@ -132,6 +133,7 @@ export const updateRuns = (state, player, runs) => {
             [bowlerId]: {
               ...bowler,
               balls: bowler.balls + 1,
+              overs: calcOver(bowler.balls + 1),
               runsGiven: bowler.runsGiven + runs,
             },
           },
@@ -144,7 +146,7 @@ export const updateRuns = (state, player, runs) => {
 
 export const updateExtras = (state, type, runs, bowler) => {
   switch (type) {
-    case "WB":
+    case 'WB':
       return {
         ...state,
         inn1: {
@@ -165,7 +167,7 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
-    case "NB":
+    case 'NB':
       return {
         ...state,
         inn1: {

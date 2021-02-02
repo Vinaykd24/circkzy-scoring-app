@@ -1,9 +1,10 @@
-import React, { useContext, useState, useReducer, useEffect } from "react";
-import { Button, Modal, Label, Radio, Form, Icon } from "semantic-ui-react";
-import { matchReducer, reducer } from "./score.reducer";
+import React, { useContext, useState, useReducer, useEffect } from 'react';
+import { Button, Modal, Label, Radio, Form, Icon } from 'semantic-ui-react';
+import { matchReducer, reducer } from './score.reducer';
 
-import { MatchContext } from "../../providers/match/match.provider";
+import { MatchContext } from '../../providers/match/match.provider';
 import {
+  CHANGE_BOWLER,
   CHANGE_STRIKER,
   SET_BYES,
   SET_DOT_BALL,
@@ -15,14 +16,14 @@ import {
   SET_THREE_RUNS,
   SET_TWO_RUNS,
   SET_WIDE_BALL,
-} from "../../providers/match/match.actions";
+} from '../../providers/match/match.actions';
 // import SelectionModalPage from "../../pages/modal/selection-modal";
 
 const exampleReducer = (state, action) => {
   switch (action.type) {
-    case "OPEN_MODAL":
+    case 'OPEN_MODAL':
       return { open: true, dimmer: action.dimmer };
-    case "CLOSE_MODAL":
+    case 'CLOSE_MODAL':
       return { open: false };
     default:
       throw new Error();
@@ -71,7 +72,7 @@ const ScoreBoardPage = () => {
 
   const checkAndChange = () => {
     if (totalOvers % 1 === 0 && totalOvers !== 0) {
-      dispatch({ type: "OPEN_MODAL" });
+      dispatch({ type: 'OPEN_MODAL' });
       rootDispatch({ type: CHANGE_STRIKER });
     }
   };
@@ -79,9 +80,10 @@ const ScoreBoardPage = () => {
     rootDispatch({ type, player: battingTeam[striker] });
   };
 
-  const selectBatsman = (batsman) => {
-    console.log("Select batsman logic goes here!", batsman);
-    dispatch({ type: "CLOSE_MODAL" });
+  const selectBowler = (bowler) => {
+    console.log('Select bowler logic goes here!', bowler);
+    rootDispatch({ type: CHANGE_BOWLER, bowler: bowler.id });
+    dispatch({ type: 'CLOSE_MODAL' });
   };
 
   useEffect(() => checkAndChange(), [rootState.inn1.totalOvers]);
@@ -250,29 +252,29 @@ const ScoreBoardPage = () => {
       <Modal
         dimmer={dimmer}
         open={open}
-        onClose={() => dispatch({ type: "CLOSE_MODAL" })}
+        onClose={() => dispatch({ type: 'CLOSE_MODAL' })}
       >
         <Modal.Header>Use Google's location service?</Modal.Header>
         <Modal.Content>
           <div>
-            {Object.entries(battingTeam).map(([key, value], i) => (
+            {Object.entries(bowlingTeam).map(([key, value], i) => (
               <Form.Field key={i}>
                 <Radio
                   className="b"
                   key={i}
-                  label={value["playerName"]}
-                  disabled={striker === value["id"]}
-                  onChange={() => selectBatsman(value)}
+                  label={value['playerName']}
+                  disabled={currentBowler === value['id']}
+                  onChange={() => selectBowler(value)}
                 />
               </Form.Field>
             ))}
           </div>
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={() => dispatch({ type: "CLOSE_MODAL" })}>
+          <Button negative onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>
             Disagree
           </Button>
-          <Button positive onClick={() => dispatch({ type: "CLOSE_MODAL" })}>
+          <Button positive onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>
             Agree
           </Button>
         </Modal.Actions>

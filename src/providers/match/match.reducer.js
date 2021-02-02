@@ -17,13 +17,14 @@ import {
   SET_NO_BALL,
   SET_BYES,
   SET_LEG_BYES,
-} from "./match.actions";
+  CHANGE_BOWLER,
+} from './match.actions';
 import {
   addMatchDetailsToDb,
   removeObj,
   updateExtras,
   updateRuns,
-} from "./match.util";
+} from './match.util';
 
 // export const initialState = {
 //   count: 0,
@@ -70,45 +71,45 @@ export const initialState = {
     homeTeam: [],
     awayTeam: [],
     homeTeamClone: {
-      "5b6feb-b7ec-371-b6a4-01c48587b7": {
+      '5b6feb-b7ec-371-b6a4-01c48587b7': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "5b6feb-b7ec-371-b6a4-01c48587b7",
+        id: '5b6feb-b7ec-371-b6a4-01c48587b7',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Vinay",
+        playerName: 'Vinay',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
         wbs: 0,
         wkts: 0,
       },
-      "6e10a7a-2ae-3d2-0d22-2c736e0bc4": {
+      '6e10a7a-2ae-3d2-0d22-2c736e0bc4': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "6e10a7a-2ae-3d2-0d22-2c736e0bc4",
+        id: '6e10a7a-2ae-3d2-0d22-2c736e0bc4',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Ajit",
+        playerName: 'Ajit',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
         wbs: 0,
         wkts: 0,
       },
-      "f02fbc6-f5cf-85d8-0156-7b82c20645a": {
+      'f02fbc6-f5cf-85d8-0156-7b82c20645a': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "f02fbc6-f5cf-85d8-0156-7b82c20645a",
+        id: 'f02fbc6-f5cf-85d8-0156-7b82c20645a',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Sachin",
+        playerName: 'Sachin',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
@@ -117,45 +118,45 @@ export const initialState = {
       },
     },
     awayTeamClone: {
-      "0d7443-8ea0-11e6-acac-8a0f7f11117": {
+      '0d7443-8ea0-11e6-acac-8a0f7f11117': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "0d7443-8ea0-11e6-acac-8a0f7f11117",
+        id: '0d7443-8ea0-11e6-acac-8a0f7f11117',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Sai",
+        playerName: 'Sai',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
         wbs: 0,
         wkts: 0,
       },
-      "5ef7e66-48b6-4606-6a24-eab116e63c51": {
+      '5ef7e66-48b6-4606-6a24-eab116e63c51': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "5ef7e66-48b6-4606-6a24-eab116e63c51",
+        id: '5ef7e66-48b6-4606-6a24-eab116e63c51',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Ram",
+        playerName: 'Ram',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
         wbs: 0,
         wkts: 0,
       },
-      "364f6c-6fc5-40ca-f5c3-acad4e6c348": {
+      '364f6c-6fc5-40ca-f5c3-acad4e6c348': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "364f6c-6fc5-40ca-f5c3-acad4e6c348",
+        id: '364f6c-6fc5-40ca-f5c3-acad4e6c348',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Mohan",
+        playerName: 'Mohan',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
@@ -165,61 +166,61 @@ export const initialState = {
     },
   },
   matchDetails: {
-    homeTeamName: "",
-    awayTeamName: "",
-    venue: "",
-    tournametName: "",
-    tossWonBy: "",
-    electedTo: "",
-    teamBatingFirst: "",
+    homeTeamName: '',
+    awayTeamName: '',
+    venue: '',
+    tournametName: '',
+    tossWonBy: '',
+    electedTo: '',
+    teamBatingFirst: '',
     isHomTeamBattingFirst: false,
   },
   currentStats: {
-    currentBowler: "0d7443-8ea0-11e6-acac-8a0f7f11117",
-    nonStriker: "6e10a7a-2ae-3d2-0d22-2c736e0bc4",
-    striker: "5b6feb-b7ec-371-b6a4-01c48587b7",
+    currentBowler: '0d7443-8ea0-11e6-acac-8a0f7f11117',
+    nonStriker: '6e10a7a-2ae-3d2-0d22-2c736e0bc4',
+    striker: '5b6feb-b7ec-371-b6a4-01c48587b7',
   },
   inn1: {
     battingTeam: {
-      "5b6feb-b7ec-371-b6a4-01c48587b7": {
+      '5b6feb-b7ec-371-b6a4-01c48587b7': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "5b6feb-b7ec-371-b6a4-01c48587b7",
+        id: '5b6feb-b7ec-371-b6a4-01c48587b7',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Vinay",
+        playerName: 'Vinay',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
         wbs: 0,
         wkts: 0,
       },
-      "6e10a7a-2ae-3d2-0d22-2c736e0bc4": {
+      '6e10a7a-2ae-3d2-0d22-2c736e0bc4': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "6e10a7a-2ae-3d2-0d22-2c736e0bc4",
+        id: '6e10a7a-2ae-3d2-0d22-2c736e0bc4',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Ajit",
+        playerName: 'Ajit',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
         wbs: 0,
         wkts: 0,
       },
-      "f02fbc6-f5cf-85d8-0156-7b82c20645a": {
+      'f02fbc6-f5cf-85d8-0156-7b82c20645a': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "f02fbc6-f5cf-85d8-0156-7b82c20645a",
+        id: 'f02fbc6-f5cf-85d8-0156-7b82c20645a',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Sachin",
+        playerName: 'Sachin',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
@@ -228,45 +229,45 @@ export const initialState = {
       },
     },
     bowlingTeam: {
-      "0d7443-8ea0-11e6-acac-8a0f7f11117": {
+      '0d7443-8ea0-11e6-acac-8a0f7f11117': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "0d7443-8ea0-11e6-acac-8a0f7f11117",
+        id: '0d7443-8ea0-11e6-acac-8a0f7f11117',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Sai",
+        playerName: 'Sai',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
         wbs: 0,
         wkts: 0,
       },
-      "5ef7e66-48b6-4606-6a24-eab116e63c51": {
+      '5ef7e66-48b6-4606-6a24-eab116e63c51': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "5ef7e66-48b6-4606-6a24-eab116e63c51",
+        id: '5ef7e66-48b6-4606-6a24-eab116e63c51',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Ram",
+        playerName: 'Ram',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
         wbs: 0,
         wkts: 0,
       },
-      "364f6c-6fc5-40ca-f5c3-acad4e6c348": {
+      '364f6c-6fc5-40ca-f5c3-acad4e6c348': {
         balls: 0,
         ballsPlayed: 0,
         fours: 0,
-        id: "364f6c-6fc5-40ca-f5c3-acad4e6c348",
+        id: '364f6c-6fc5-40ca-f5c3-acad4e6c348',
         maidens: 0,
         nbs: 0,
         overs: 0,
-        playerName: "Mohan",
+        playerName: 'Mohan',
         runs: 0,
         runsGiven: 0,
         sixes: 0,
@@ -290,9 +291,9 @@ export const initialState = {
 
 export const matchReducer = (state, action) => {
   switch (action.type) {
-    case "increment":
+    case 'increment':
       return { ...state, count: state.count + 1 };
-    case "decrement":
+    case 'decrement':
       return { ...state, count: state.count - 1 };
     case ADD_MATCH_DETAILS:
       return {
@@ -398,32 +399,17 @@ export const matchReducer = (state, action) => {
           nonStriker: temp,
         },
       };
+    case CHANGE_BOWLER:
+      // const { currentBowler } = state.currentStats;
+      return {
+        ...state,
+        currentStats: {
+          ...state.currentStats,
+          currentBowler: action.bowler,
+        },
+      };
     case SET_DOT_BALL:
-      const bowlerId = state.currentStats.currentBowler;
-      const bowler = state.inn1.bowlingTeam[bowlerId];
       return updateRuns(state, action.player, 0);
-    // return {
-    //   ...state,
-    //   inn1: {
-    //     ...state.inn1,
-    //     totalBalls: _totalBalls,
-    //     totalOvers: calcOver(_totalBalls),
-    //     battingTeam: {
-    //       ...state.inn1.battingTeam,
-    //       [action.player.id]: {
-    //         ...action.player,
-    //         ballsPlayed: action.player.ballsPlayed + 1,
-    //       },
-    //     },
-    //     bowlingTeam: {
-    //       ...state.inn1.bowlingTeam,
-    //       [bowlerId]: {
-    //         ...bowler,
-    //         balls: bowler.balls + 1,
-    //       },
-    //     },
-    //   },
-    // };
     case SET_ONE_RUN:
       return updateRuns(state, action.player, 1);
     case SET_TWO_RUNS:
@@ -435,13 +421,13 @@ export const matchReducer = (state, action) => {
     case SET_SIX_RUNS:
       return updateRuns(state, action.player, 6);
     case SET_WIDE_BALL:
-      return updateExtras(state, "WB", 1, action.bowler);
+      return updateExtras(state, 'WB', 1, action.bowler);
     case SET_NO_BALL:
-      return updateExtras(state, "NB", 1, action.bowler);
+      return updateExtras(state, 'NB', 1, action.bowler);
     case SET_BYES:
-      return updateExtras(state, "BYES", 1, action.bowler);
+      return updateExtras(state, 'BYES', 1, action.bowler);
     case SET_LEG_BYES:
-      return updateExtras(state, "LBYES", 1, action.bowler);
+      return updateExtras(state, 'LBYES', 1, action.bowler);
     default:
       throw new Error();
   }
