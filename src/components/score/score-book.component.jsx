@@ -1,5 +1,13 @@
 import React, { useContext, useState, useReducer, useEffect } from 'react';
-import { Button, Modal, Label, Radio, Form, Icon } from 'semantic-ui-react';
+import {
+  Button,
+  Modal,
+  Label,
+  Radio,
+  Form,
+  Icon,
+  Dropdown,
+} from 'semantic-ui-react';
 import { matchReducer, reducer } from './score.reducer';
 
 import { MatchContext } from '../../providers/match/match.provider';
@@ -53,11 +61,11 @@ const ScoreBoardPage = () => {
     totalOvers,
   } = rootState.inn1;
   const { striker, nonStriker, currentBowler } = rootState.currentStats;
-  // const [scoreBoardState, dispatch] = useReducer(
-  //   matchReducer,
-  //   initialScoreBoardState
-  // );
-  // const { totalRuns, totalWickets, totalExtras } = scoreBoardState;
+  const options = [
+    { key: 1, text: 'Choice 1', value: 1 },
+    { key: 2, text: 'Choice 2', value: 2 },
+    { key: 3, text: 'Choice 3', value: 3 },
+  ];
   const currentPartnerShip = () => {
     const partnershipRuns =
       battingTeam[striker].runs + battingTeam[nonStriker].runs;
@@ -87,6 +95,12 @@ const ScoreBoardPage = () => {
   };
 
   useEffect(() => checkAndChange(), [rootState.inn1.totalOvers]);
+
+  const widePlusRuns = (event, { value }) => {
+    console.log(value);
+    let bird_name = event.target.textContent;
+    console.log(bird_name);
+  };
 
   return (
     <>
@@ -248,6 +262,7 @@ const ScoreBoardPage = () => {
             </Button>
           </Button.Group>
         </div>
+        <Dropdown clearable options={options} selection onChange={getBird} />
       </div>
       <Modal
         dimmer={dimmer}

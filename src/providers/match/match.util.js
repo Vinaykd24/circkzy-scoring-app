@@ -184,6 +184,40 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
+    case 'NB_PLUS_RUNS':
+      return {
+        ...state,
+        inn1: {
+          ...state.inn1,
+          totalRuns: state.inn1.totalRuns + runs,
+          totalExtras: state.inn1.totalExtras + runs,
+          bowlingTeam: {
+            ...state.inn1.bowlingTeam,
+            [bowler.id]: {
+              ...bowler,
+              nbs: bowler.nbs + runs,
+              runsGiven: bowler.runsGiven + runs,
+            },
+          },
+        },
+      };
+    case 'WIDE_PLUS_RUNS':
+      return {
+        ...state,
+        inn1: {
+          ...state.inn1,
+          totalRuns: state.inn1.totalRuns + runs,
+          totalExtras: state.inn1.totalExtras + runs,
+          bowlingTeam: {
+            ...state.inn1.bowlingTeam,
+            [bowler.id]: {
+              ...bowler,
+              wbs: bowler.nbs + runs,
+              runsGiven: bowler.runsGiven + runs,
+            },
+          },
+        },
+      };
 
     default:
       break;
