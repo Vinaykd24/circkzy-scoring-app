@@ -184,13 +184,17 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
-    case 'NB_PLUS_RUNS':
+    case 'NB_PLUS':
       return {
         ...state,
         inn1: {
           ...state.inn1,
           totalRuns: state.inn1.totalRuns + runs,
-          totalExtras: state.inn1.totalExtras + runs,
+          totalExtras: {
+            ...state.inn1.totalExtras,
+            nbs: state.inn1.totalExtras.nbs + runs,
+            total: state.inn1.totalExtras.total + runs,
+          },
           bowlingTeam: {
             ...state.inn1.bowlingTeam,
             [bowler.id]: {
@@ -201,24 +205,27 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
-    case 'WIDE_PLUS_RUNS':
+    case 'WB_PLUS':
       return {
         ...state,
         inn1: {
           ...state.inn1,
           totalRuns: state.inn1.totalRuns + runs,
-          totalExtras: state.inn1.totalExtras + runs,
+          totalExtras: {
+            ...state.inn1.totalExtras,
+            wbs: state.inn1.totalExtras.wbs + runs,
+            total: state.inn1.totalExtras.total + runs,
+          },
           bowlingTeam: {
             ...state.inn1.bowlingTeam,
             [bowler.id]: {
               ...bowler,
-              wbs: bowler.nbs + runs,
+              wbs: bowler.wbs + runs,
               runsGiven: bowler.runsGiven + runs,
             },
           },
         },
       };
-
     default:
       break;
   }

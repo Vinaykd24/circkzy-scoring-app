@@ -17,5 +17,10 @@ export const SET_WIDE_BALL = 'SET_WIDE_BALL';
 export const SET_NO_BALL = 'SET_NO_BALL';
 export const SET_LEG_BYES = 'SET_LEG_BYES';
 export const SET_BYES = 'SET_BYES';
+export const SET_WIDE_PLUS_RUNS = 'SET_WIDE_PLUS_RUNS';
+export const SET_NO_PLUS_RUNS = 'SET_NO_PLUS_RUNS';
+export const SET_BYE_PLUS_RUNS = 'SET_BYE_PLUS_RUNS';
+export const SET_LBYE_PLUS_RUNS = 'SET_LBYE_PLUS_RUNS';
+
 export const CHANGE_STRIKER = 'CHANGE_STRIKER';
 export const CHANGE_BOWLER = 'CHANGE_BOWLER';

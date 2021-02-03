@@ -24,6 +24,7 @@ import {
   SET_THREE_RUNS,
   SET_TWO_RUNS,
   SET_WIDE_BALL,
+  SET_WIDE_PLUS_RUNS,
 } from '../../providers/match/match.actions';
 // import SelectionModalPage from "../../pages/modal/selection-modal";
 
@@ -43,6 +44,7 @@ const ScoreBoardPage = () => {
     open: false,
     dimmer: undefined,
   });
+  const [widePlusValue, setWidePlusValue] = useState(0);
   const { open, dimmer } = state;
 
   const initialScoreBoardState = {
@@ -62,9 +64,12 @@ const ScoreBoardPage = () => {
   } = rootState.inn1;
   const { striker, nonStriker, currentBowler } = rootState.currentStats;
   const options = [
-    { key: 1, text: 'Choice 1', value: 1 },
-    { key: 2, text: 'Choice 2', value: 2 },
-    { key: 3, text: 'Choice 3', value: 3 },
+    { key: 2, text: 'Total 2', value: 2 },
+    { key: 3, text: 'Total 3', value: 3 },
+    { key: 4, text: 'Total 4', value: 4 },
+    { key: 5, text: 'Total 5', value: 5 },
+    { key: 6, text: 'Total 6', value: 6 },
+    { key: 7, text: 'Total 7', value: 7 },
   ];
   const currentPartnerShip = () => {
     const partnershipRuns =
@@ -98,8 +103,7 @@ const ScoreBoardPage = () => {
 
   const widePlusRuns = (event, { value }) => {
     console.log(value);
-    let bird_name = event.target.textContent;
-    console.log(bird_name);
+    rootDispatch({ type: SET_WIDE_PLUS_RUNS, extras: value });
   };
 
   return (
@@ -262,7 +266,26 @@ const ScoreBoardPage = () => {
             </Button>
           </Button.Group>
         </div>
-        <Dropdown clearable options={options} selection onChange={getBird} />
+        <div className="mh3 w-100">
+          <Dropdown
+            placeholder="Wide+"
+            compact
+            selection
+            options={options}
+            value=""
+            onChange={widePlusRuns}
+            className="ma2"
+          />
+          <Dropdown
+            placeholder="Wide+"
+            compact
+            selection
+            options={options}
+            value=""
+            onChange={widePlusRuns}
+            className="ma2"
+          />
+        </div>
       </div>
       <Modal
         dimmer={dimmer}

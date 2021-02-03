@@ -18,6 +18,10 @@ import {
   SET_BYES,
   SET_LEG_BYES,
   CHANGE_BOWLER,
+  SET_WIDE_PLUS_RUNS,
+  SET_NO_PLUS_RUNS,
+  SET_BYE_PLUS_RUNS,
+  SET_LBYE_PLUS_RUNS,
 } from './match.actions';
 import {
   addMatchDetailsToDb,
@@ -290,6 +294,9 @@ export const initialState = {
 };
 
 export const matchReducer = (state, action) => {
+  const { currentBowler } = state.currentStats;
+  const { bowlingTeam } = state.inn1;
+  const bowler = bowlingTeam[currentBowler];
   switch (action.type) {
     case 'increment':
       return { ...state, count: state.count + 1 };
@@ -428,6 +435,14 @@ export const matchReducer = (state, action) => {
       return updateExtras(state, 'BYES', 1, action.bowler);
     case SET_LEG_BYES:
       return updateExtras(state, 'LBYES', 1, action.bowler);
+    case SET_WIDE_PLUS_RUNS:
+      return updateExtras(state, 'WB_PLUS', action.extras, bowler);
+    case SET_NO_PLUS_RUNS:
+      return updateExtras(state, 'NB_PLUS', action.extras, bowler);
+    case SET_BYE_PLUS_RUNS:
+      return updateExtras(state, 'BYE_PLUS', action.extras, bowler);
+    case SET_LBYE_PLUS_RUNS:
+      return updateExtras(state, 'LBYE_PLUS', action.extras, bowler);
     default:
       throw new Error();
   }
