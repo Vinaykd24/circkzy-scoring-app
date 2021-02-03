@@ -1,4 +1,4 @@
-import React, { useContext, useState, useReducer, useEffect } from 'react';
+import React, { useContext, useState, useReducer, useEffect } from "react";
 import {
   Button,
   Modal,
@@ -7,16 +7,18 @@ import {
   Form,
   Icon,
   Dropdown,
-} from 'semantic-ui-react';
-import { matchReducer, reducer } from './score.reducer';
+} from "semantic-ui-react";
+import { matchReducer, reducer } from "./score.reducer";
 
-import { MatchContext } from '../../providers/match/match.provider';
+import { MatchContext } from "../../providers/match/match.provider";
 import {
   CHANGE_BOWLER,
   CHANGE_STRIKER,
   SET_BYES,
+  SET_BYE_PLUS_RUNS,
   SET_DOT_BALL,
   SET_FOUR_RUNS,
+  SET_LBYE_PLUS_RUNS,
   SET_LEG_BYES,
   SET_NO_BALL,
   SET_ONE_RUN,
@@ -25,14 +27,15 @@ import {
   SET_TWO_RUNS,
   SET_WIDE_BALL,
   SET_WIDE_PLUS_RUNS,
-} from '../../providers/match/match.actions';
+  SET_NO_PLUS_RUNS,
+} from "../../providers/match/match.actions";
 // import SelectionModalPage from "../../pages/modal/selection-modal";
 
 const exampleReducer = (state, action) => {
   switch (action.type) {
-    case 'OPEN_MODAL':
+    case "OPEN_MODAL":
       return { open: true, dimmer: action.dimmer };
-    case 'CLOSE_MODAL':
+    case "CLOSE_MODAL":
       return { open: false };
     default:
       throw new Error();
@@ -64,12 +67,12 @@ const ScoreBoardPage = () => {
   } = rootState.inn1;
   const { striker, nonStriker, currentBowler } = rootState.currentStats;
   const options = [
-    { key: 2, text: 'Total 2', value: 2 },
-    { key: 3, text: 'Total 3', value: 3 },
-    { key: 4, text: 'Total 4', value: 4 },
-    { key: 5, text: 'Total 5', value: 5 },
-    { key: 6, text: 'Total 6', value: 6 },
-    { key: 7, text: 'Total 7', value: 7 },
+    { key: 2, text: "Total 2", value: 2 },
+    { key: 3, text: "Total 3", value: 3 },
+    { key: 4, text: "Total 4", value: 4 },
+    { key: 5, text: "Total 5", value: 5 },
+    { key: 6, text: "Total 6", value: 6 },
+    { key: 7, text: "Total 7", value: 7 },
   ];
   const currentPartnerShip = () => {
     const partnershipRuns =
@@ -85,7 +88,7 @@ const ScoreBoardPage = () => {
 
   const checkAndChange = () => {
     if (totalOvers % 1 === 0 && totalOvers !== 0) {
-      dispatch({ type: 'OPEN_MODAL' });
+      dispatch({ type: "OPEN_MODAL" });
       rootDispatch({ type: CHANGE_STRIKER });
     }
   };
@@ -94,9 +97,9 @@ const ScoreBoardPage = () => {
   };
 
   const selectBowler = (bowler) => {
-    console.log('Select bowler logic goes here!', bowler);
+    console.log("Select bowler logic goes here!", bowler);
     rootDispatch({ type: CHANGE_BOWLER, bowler: bowler.id });
-    dispatch({ type: 'CLOSE_MODAL' });
+    dispatch({ type: "CLOSE_MODAL" });
   };
 
   useEffect(() => checkAndChange(), [rootState.inn1.totalOvers]);
@@ -104,6 +107,18 @@ const ScoreBoardPage = () => {
   const widePlusRuns = (event, { value }) => {
     console.log(value);
     rootDispatch({ type: SET_WIDE_PLUS_RUNS, extras: value });
+  };
+  const noBallPlusRuns = (event, { value }) => {
+    console.log(value);
+    rootDispatch({ type: SET_NO_PLUS_RUNS, extras: value });
+  };
+  const byesPlusRuns = (event, { value }) => {
+    console.log(value);
+    rootDispatch({ type: SET_BYE_PLUS_RUNS, extras: value });
+  };
+  const lByesPlusRuns = (event, { value }) => {
+    console.log(value);
+    rootDispatch({ type: SET_LBYE_PLUS_RUNS, extras: value });
   };
 
   return (
@@ -268,7 +283,7 @@ const ScoreBoardPage = () => {
         </div>
         <div className="mh3 w-100">
           <Dropdown
-            placeholder="Wide+"
+            placeholder="WB+"
             compact
             selection
             options={options}
@@ -277,12 +292,30 @@ const ScoreBoardPage = () => {
             className="ma2"
           />
           <Dropdown
-            placeholder="Wide+"
+            placeholder="NB+"
             compact
             selection
             options={options}
             value=""
-            onChange={widePlusRuns}
+            onChange={noBallPlusRuns}
+            className="ma2"
+          />
+          <Dropdown
+            placeholder="B+"
+            compact
+            selection
+            options={options}
+            value=""
+            onChange={byesPlusRuns}
+            className="ma2"
+          />
+          <Dropdown
+            placeholder="LB+"
+            compact
+            selection
+            options={options}
+            value=""
+            onChange={lByesPlusRuns}
             className="ma2"
           />
         </div>
@@ -290,7 +323,7 @@ const ScoreBoardPage = () => {
       <Modal
         dimmer={dimmer}
         open={open}
-        onClose={() => dispatch({ type: 'CLOSE_MODAL' })}
+        onClose={() => dispatch({ type: "CLOSE_MODAL" })}
       >
         <Modal.Header>Use Google's location service?</Modal.Header>
         <Modal.Content>
@@ -300,8 +333,8 @@ const ScoreBoardPage = () => {
                 <Radio
                   className="b"
                   key={i}
-                  label={value['playerName']}
-                  disabled={currentBowler === value['id']}
+                  label={value["playerName"]}
+                  disabled={currentBowler === value["id"]}
                   onChange={() => selectBowler(value)}
                 />
               </Form.Field>
@@ -309,10 +342,10 @@ const ScoreBoardPage = () => {
           </div>
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>
+          <Button negative onClick={() => dispatch({ type: "CLOSE_MODAL" })}>
             Disagree
           </Button>
-          <Button positive onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>
+          <Button positive onClick={() => dispatch({ type: "CLOSE_MODAL" })}>
             Agree
           </Button>
         </Modal.Actions>

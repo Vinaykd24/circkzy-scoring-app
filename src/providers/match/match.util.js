@@ -42,7 +42,7 @@ export const convertArrayToObject = (array) => {
   return array.reduce((obj, item) => {
     return {
       ...obj,
-      [item['id']]: item,
+      [item["id"]]: item,
     };
   }, initialValue);
 };
@@ -145,8 +145,9 @@ export const updateRuns = (state, player, runs) => {
 };
 
 export const updateExtras = (state, type, runs, bowler) => {
+  const _totalBalls = state.inn1.totalBalls + 1;
   switch (type) {
-    case 'WB':
+    case "WB":
       return {
         ...state,
         inn1: {
@@ -167,7 +168,7 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
-    case 'NB':
+    case "NB":
       return {
         ...state,
         inn1: {
@@ -184,7 +185,7 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
-    case 'NB_PLUS':
+    case "NB_PLUS":
       return {
         ...state,
         inn1: {
@@ -205,7 +206,7 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
-    case 'WB_PLUS':
+    case "WB_PLUS":
       return {
         ...state,
         inn1: {
@@ -222,6 +223,52 @@ export const updateExtras = (state, type, runs, bowler) => {
               ...bowler,
               wbs: bowler.wbs + runs,
               runsGiven: bowler.runsGiven + runs,
+            },
+          },
+        },
+      };
+    case "BYE_PLUS":
+      return {
+        ...state,
+        inn1: {
+          ...state.inn1,
+          totalBalls: _totalBalls,
+          totalOvers: calcOver(_totalBalls),
+          totalRuns: state.inn1.totalRuns + runs,
+          totalExtras: {
+            ...state.inn1.totalExtras,
+            byes: state.inn1.totalExtras.byes + runs,
+            total: state.inn1.totalExtras.total + runs,
+          },
+          bowlingTeam: {
+            ...state.inn1.bowlingTeam,
+            [bowler.id]: {
+              ...bowler,
+              balls: bowler.balls + 1,
+              overs: calcOver(bowler.balls + 1),
+            },
+          },
+        },
+      };
+    case "LBYE_PLUS":
+      return {
+        ...state,
+        inn1: {
+          ...state.inn1,
+          totalBalls: _totalBalls,
+          totalOvers: calcOver(_totalBalls),
+          totalRuns: state.inn1.totalRuns + runs,
+          totalExtras: {
+            ...state.inn1.totalExtras,
+            lBye: state.inn1.totalExtras.lBye + runs,
+            total: state.inn1.totalExtras.total + runs,
+          },
+          bowlingTeam: {
+            ...state.inn1.bowlingTeam,
+            [bowler.id]: {
+              ...bowler,
+              balls: bowler.balls + 1,
+              overs: calcOver(bowler.balls + 1),
             },
           },
         },
