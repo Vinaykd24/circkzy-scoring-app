@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext } from 'react';
 import {
   Button,
   Modal,
@@ -7,9 +7,10 @@ import {
   Form,
   Icon,
   Dropdown,
-} from "semantic-ui-react";
+  Select,
+} from 'semantic-ui-react';
 
-import { MatchContext } from "../../providers/match/match.provider";
+import { MatchContext } from '../../providers/match/match.provider';
 import {
   CHANGE_BOWLER,
   CHANGE_STRIKER,
@@ -27,19 +28,20 @@ import {
   SET_WIDE_BALL,
   SET_WIDE_PLUS_RUNS,
   SET_NO_PLUS_RUNS,
-} from "../../providers/match/match.actions";
+  WICKET_FALLEN,
+} from '../../providers/match/match.actions';
 
 const ScoreReducer = (state, action) => {
   switch (action.type) {
-    case "OPEN_MODAL":
+    case 'OPEN_MODAL':
       return { ...state, open: true, dimmer: action.dimmer };
-    case "CLOSE_MODAL":
+    case 'CLOSE_MODAL':
       return { open: false };
-    case "OPEN_BATSMAN_MODAL":
+    case 'OPEN_BATSMAN_MODAL':
       return { ...state, openSecond: true };
-    case "OUT_BATSMAN":
+    case 'OUT_BATSMAN':
       return { ...state, outBatsman: action.playerId };
-    case "SAVE_BATSMAN":
+    case 'SAVE_BATSMAN':
       return { ...state, newBatsman: action.playerId };
     default:
       throw new Error();
@@ -57,22 +59,27 @@ const UpdateScoreComponent = () => {
     outBatsman: null,
   });
   const options = [
-    { key: 2, text: "Total 2", value: 2 },
-    { key: 3, text: "Total 3", value: 3 },
-    { key: 4, text: "Total 4", value: 4 },
-    { key: 5, text: "Total 5", value: 5 },
-    { key: 6, text: "Total 6", value: 6 },
-    { key: 7, text: "Total 7", value: 7 },
+    { key: 2, text: 'Total 2', value: 2 },
+    { key: 3, text: 'Total 3', value: 3 },
+    { key: 4, text: 'Total 4', value: 4 },
+    { key: 5, text: 'Total 5', value: 5 },
+    { key: 6, text: 'Total 6', value: 6 },
+    { key: 7, text: 'Total 7', value: 7 },
   ];
 
   const wkt_options = [
-    { key: 1, text: "Caught Behind", value: 1 },
-    { key: 2, text: "Caught and Bowled", value: 2 },
-    { key: 3, text: "Caught", value: 3 },
-    { key: 4, text: "Bowled", value: 4 },
-    { key: 5, text: "Run Out", value: 5 },
-    { key: 6, text: "Hit Wicket", value: 6 },
-    { key: 7, text: "Time Out", value: 7 },
+    { key: 1, text: 'Caught Behind', value: 1 },
+    { key: 2, text: 'Caught and Bowled', value: 2 },
+    { key: 3, text: 'Caught', value: 3 },
+    { key: 4, text: 'Bowled', value: 4 },
+    { key: 5, text: 'Run Out', value: 5 },
+    { key: 6, text: 'Hit Wicket', value: 6 },
+    { key: 7, text: 'Time Out', value: 7 },
+  ];
+
+  const current_batsmen = [
+    { key: 1, text: battingTeam[striker]['playerName'], value: striker },
+    { key: 2, text: battingTeam[nonStriker]['playerName'], value: nonStriker },
   ];
 
   const { open, dimmer, openSecond, outBatsman } = state;
@@ -104,14 +111,17 @@ const UpdateScoreComponent = () => {
   };
 
   const selectBowler = (bowler) => {
-    console.log("Select bowler logic goes here!", bowler);
+    console.log('Select bowler logic goes here!', bowler);
     rootDispatch({ type: CHANGE_BOWLER, bowler: bowler.id });
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch({ type: 'CLOSE_MODAL' });
   };
 
   const wicketFallen = (batsManId, isStrikerOut) => {
     console.log(batsManId, isStrikerOut);
+    rootDispatch({ type: WICKET_FALLEN });
   };
+
+  const convertObjToArray = (obj) => {};
   return (
     <>
       <div className="flex flex-column items-center justify-center tc">
@@ -268,14 +278,14 @@ const UpdateScoreComponent = () => {
           />
         </div>
       </div>
-      <Button onClick={() => dispatch({ type: "OPEN_BATSMAN_MODAL" })}>
+      <Button onClick={() => dispatch({ type: 'OPEN_BATSMAN_MODAL' })}>
         Default
       </Button>
       {/* Select Next Batsman Modal */}
       <Modal
         dimmer={dimmer}
         open={openSecond}
-        onClose={() => dispatch({ type: "CLOSE_MODAL" })}
+        onClose={() => dispatch({ type: 'CLOSE_MODAL' })}
       >
         <Modal.Header>Select Next Batsman</Modal.Header>
         <Modal.Content>
@@ -304,15 +314,40 @@ const UpdateScoreComponent = () => {
                 onChange={() => wicketFallen(nonStriker, false)}
               />
             </Form.Field>
+
+            <Form>
+              <Form.Group widths="equal">
+                <Form.Field
+                  control={Select}
+                  options={current_batsmen}
+                  label={{
+                    children: 'Select out batsman',
+                    htmlFor: 'form-select-control-gender',
+                  }}
+                  placeholder="Select out batsman"
+                  onChange={() => wicketFallen(striker, !false)}
+                />
+                <Form.Field
+                  control={Select}
+                  options={wkt_options}
+                  label={{
+                    children: 'How Out?',
+                    htmlFor: 'form-select-control-gender',
+                  }}
+                  placeholder="How Out?"
+                  onChange={() => wicketFallen(striker, !false)}
+                />
+              </Form.Group>
+            </Form>
             <Form.Field>Select Next Batsman</Form.Field>
             {Object.entries(battingTeam).map(([key, value], i) => (
               <Form.Field key={i}>
                 <Radio
                   className="b"
                   key={i}
-                  label={value["playerName"]}
+                  label={value['playerName']}
                   disabled={
-                    striker === value["id"] || nonStriker === value["id"]
+                    striker === value['id'] || nonStriker === value['id']
                   }
                   onChange={() => selectBowler(value)}
                 />
