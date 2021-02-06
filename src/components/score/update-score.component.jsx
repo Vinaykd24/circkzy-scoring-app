@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from "react";
 import {
   Button,
   Modal,
@@ -8,9 +8,9 @@ import {
   Icon,
   Dropdown,
   Select,
-} from 'semantic-ui-react';
+} from "semantic-ui-react";
 
-import { MatchContext } from '../../providers/match/match.provider';
+import { MatchContext } from "../../providers/match/match.provider";
 import {
   CHANGE_BOWLER,
   CHANGE_STRIKER,
@@ -29,19 +29,19 @@ import {
   SET_WIDE_PLUS_RUNS,
   SET_NO_PLUS_RUNS,
   WICKET_FALLEN,
-} from '../../providers/match/match.actions';
+} from "../../providers/match/match.actions";
 
 const ScoreReducer = (state, action) => {
   switch (action.type) {
-    case 'OPEN_MODAL':
+    case "OPEN_MODAL":
       return { ...state, open: true, dimmer: action.dimmer };
-    case 'CLOSE_MODAL':
+    case "CLOSE_MODAL":
       return { open: false };
-    case 'OPEN_BATSMAN_MODAL':
+    case "OPEN_BATSMAN_MODAL":
       return { ...state, openSecond: true };
-    case 'OUT_BATSMAN':
+    case "OUT_BATSMAN":
       return { ...state, outBatsman: action.playerId };
-    case 'SAVE_BATSMAN':
+    case "SAVE_BATSMAN":
       return { ...state, newBatsman: action.playerId };
     default:
       throw new Error();
@@ -58,28 +58,33 @@ const UpdateScoreComponent = () => {
     openSecond: false,
     outBatsman: null,
   });
+  const [formData, setFormData] = useState({
+    outBatsmanId: null,
+    howOut: null,
+    nextBatsmanId: null,
+  });
   const options = [
-    { key: 2, text: 'Total 2', value: 2 },
-    { key: 3, text: 'Total 3', value: 3 },
-    { key: 4, text: 'Total 4', value: 4 },
-    { key: 5, text: 'Total 5', value: 5 },
-    { key: 6, text: 'Total 6', value: 6 },
-    { key: 7, text: 'Total 7', value: 7 },
+    { key: 2, text: "Total 2", value: 2 },
+    { key: 3, text: "Total 3", value: 3 },
+    { key: 4, text: "Total 4", value: 4 },
+    { key: 5, text: "Total 5", value: 5 },
+    { key: 6, text: "Total 6", value: 6 },
+    { key: 7, text: "Total 7", value: 7 },
   ];
 
   const wkt_options = [
-    { key: 1, text: 'Caught Behind', value: 1 },
-    { key: 2, text: 'Caught and Bowled', value: 2 },
-    { key: 3, text: 'Caught', value: 3 },
-    { key: 4, text: 'Bowled', value: 4 },
-    { key: 5, text: 'Run Out', value: 5 },
-    { key: 6, text: 'Hit Wicket', value: 6 },
-    { key: 7, text: 'Time Out', value: 7 },
+    { key: 1, text: "Caught Behind", value: 1 },
+    { key: 2, text: "Caught and Bowled", value: 2 },
+    { key: 3, text: "Caught", value: 3 },
+    { key: 4, text: "Bowled", value: 4 },
+    { key: 5, text: "Run Out", value: 5 },
+    { key: 6, text: "Hit Wicket", value: 6 },
+    { key: 7, text: "Time Out", value: 7 },
   ];
 
   const current_batsmen = [
-    { key: 1, text: battingTeam[striker]['playerName'], value: striker },
-    { key: 2, text: battingTeam[nonStriker]['playerName'], value: nonStriker },
+    { key: 1, text: battingTeam[striker]["playerName"], value: striker },
+    { key: 2, text: battingTeam[nonStriker]["playerName"], value: nonStriker },
   ];
 
   const { open, dimmer, openSecond, outBatsman } = state;
@@ -111,9 +116,9 @@ const UpdateScoreComponent = () => {
   };
 
   const selectBowler = (bowler) => {
-    console.log('Select bowler logic goes here!', bowler);
+    console.log("Select bowler logic goes here!", bowler);
     rootDispatch({ type: CHANGE_BOWLER, bowler: bowler.id });
-    dispatch({ type: 'CLOSE_MODAL' });
+    dispatch({ type: "CLOSE_MODAL" });
   };
 
   const wicketFallen = (batsManId, isStrikerOut) => {
@@ -121,7 +126,28 @@ const UpdateScoreComponent = () => {
     rootDispatch({ type: WICKET_FALLEN });
   };
 
-  const convertObjToArray = (obj) => {};
+  const convertObjToArray = (obj) => {
+    let toArray = Object.values(obj);
+    toArray = toArray.filter((pl) => striker !== pl.id && nonStriker !== pl.id);
+    toArray = [...toArray].map((player, i) => {
+      return { key: i, text: player.playerName, value: player.id };
+    });
+
+    return toArray;
+  };
+
+  const setOutBatsman = (event, { value }) => {
+    setFormData({ ...formData, outBatsman: value });
+  };
+  const setHowOut = (event, { value }) => {
+    setFormData({ ...formData, howOut: value });
+  };
+  const setNextBatsman = (event, { value }) => {
+    setFormData({ ...formData, nextBatsmanId: value });
+  };
+  const handleSubmit = () => {
+    console.log(formData);
+  };
   return (
     <>
       <div className="flex flex-column items-center justify-center tc">
@@ -278,81 +304,52 @@ const UpdateScoreComponent = () => {
           />
         </div>
       </div>
-      <Button onClick={() => dispatch({ type: 'OPEN_BATSMAN_MODAL' })}>
+      <Button onClick={() => dispatch({ type: "OPEN_BATSMAN_MODAL" })}>
         Default
       </Button>
       {/* Select Next Batsman Modal */}
       <Modal
         dimmer={dimmer}
         open={openSecond}
-        onClose={() => dispatch({ type: 'CLOSE_MODAL' })}
+        onClose={() => dispatch({ type: "CLOSE_MODAL" })}
       >
         <Modal.Header>Select Next Batsman</Modal.Header>
         <Modal.Content>
           <div>
-            <Dropdown
-              placeholder="How Out?"
-              compact
-              selection
-              options={wkt_options}
-              value=""
-              onChange={widePlusRuns}
-              className="ma2"
-            />
-            <Form.Field>Select Out Batsman</Form.Field>
-            <Form.Field>
-              <Radio
-                className="b"
-                label={battingTeam[striker].playerName}
-                onChange={() => wicketFallen(striker, !false)}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Radio
-                className="b"
-                label={battingTeam[nonStriker].playerName}
-                onChange={() => wicketFallen(nonStriker, false)}
-              />
-            </Form.Field>
-
             <Form>
               <Form.Group widths="equal">
                 <Form.Field
                   control={Select}
                   options={current_batsmen}
                   label={{
-                    children: 'Select out batsman',
-                    htmlFor: 'form-select-control-gender',
+                    children: "Select out batsman",
+                    htmlFor: "form-select-control-gender",
                   }}
                   placeholder="Select out batsman"
-                  onChange={() => wicketFallen(striker, !false)}
+                  onChange={setOutBatsman}
                 />
                 <Form.Field
                   control={Select}
                   options={wkt_options}
                   label={{
-                    children: 'How Out?',
-                    htmlFor: 'form-select-control-gender',
+                    children: "How Out?",
+                    htmlFor: "form-select-control-gender",
                   }}
                   placeholder="How Out?"
-                  onChange={() => wicketFallen(striker, !false)}
+                  onChange={setHowOut}
+                />
+                <Form.Field
+                  control={Select}
+                  options={convertObjToArray(battingTeam)}
+                  label={{
+                    children: "Select Next Batsman?",
+                    htmlFor: "form-select-control-gender",
+                  }}
+                  placeholder="How Out?"
+                  onChange={setNextBatsman}
                 />
               </Form.Group>
             </Form>
-            <Form.Field>Select Next Batsman</Form.Field>
-            {Object.entries(battingTeam).map(([key, value], i) => (
-              <Form.Field key={i}>
-                <Radio
-                  className="b"
-                  key={i}
-                  label={value['playerName']}
-                  disabled={
-                    striker === value['id'] || nonStriker === value['id']
-                  }
-                  onChange={() => selectBowler(value)}
-                />
-              </Form.Field>
-            ))}
           </div>
         </Modal.Content>
       </Modal>
