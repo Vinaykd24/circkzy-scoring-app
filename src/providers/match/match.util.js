@@ -312,7 +312,7 @@ export const updateWicket = (state, action) => {
       ...state,
       currentStats: {
         ...state.currentStats,
-        striker: action.data.nextBatsmanId,
+        nonStriker: action.data.nextBatsmanId,
       },
       inn1: {
         ...state.inn1,
