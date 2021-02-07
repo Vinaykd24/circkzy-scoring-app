@@ -23,12 +23,14 @@ import {
   SET_BYE_PLUS_RUNS,
   SET_LBYE_PLUS_RUNS,
   WICKET_FALLEN,
+  NEW_BATSMAN,
 } from './match.actions';
 import {
   addMatchDetailsToDb,
   removeObj,
   updateExtras,
   updateRuns,
+  updateWicket,
 } from './match.util';
 
 // export const initialState = {
@@ -298,6 +300,7 @@ export const matchReducer = (state, action) => {
   const { currentBowler } = state.currentStats;
   const { bowlingTeam } = state.inn1;
   const bowler = bowlingTeam[currentBowler];
+  const { striker, nonStriker } = state.currentStats;
   switch (action.type) {
     case 'increment':
       return { ...state, count: state.count + 1 };
@@ -397,7 +400,6 @@ export const matchReducer = (state, action) => {
         currentStats: action.currentStats,
       };
     case CHANGE_STRIKER:
-      const { striker, nonStriker } = state.currentStats;
       const temp = striker;
       return {
         ...state,
@@ -416,6 +418,8 @@ export const matchReducer = (state, action) => {
           currentBowler: action.bowler,
         },
       };
+    case NEW_BATSMAN:
+      return updateWicket(state, action);
     case WICKET_FALLEN:
       return {
         ...state,

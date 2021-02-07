@@ -42,7 +42,7 @@ export const convertArrayToObject = (array) => {
   return array.reduce((obj, item) => {
     return {
       ...obj,
-      [item["id"]]: item,
+      [item['id']]: item,
     };
   }, initialValue);
 };
@@ -147,7 +147,7 @@ export const updateRuns = (state, player, runs) => {
 export const updateExtras = (state, type, runs, bowler) => {
   const _totalBalls = state.inn1.totalBalls + 1;
   switch (type) {
-    case "WB":
+    case 'WB':
       return {
         ...state,
         inn1: {
@@ -168,7 +168,7 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
-    case "NB":
+    case 'NB':
       return {
         ...state,
         inn1: {
@@ -185,7 +185,7 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
-    case "NB_PLUS":
+    case 'NB_PLUS':
       return {
         ...state,
         inn1: {
@@ -206,7 +206,7 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
-    case "WB_PLUS":
+    case 'WB_PLUS':
       return {
         ...state,
         inn1: {
@@ -227,7 +227,7 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
-    case "BYE_PLUS":
+    case 'BYE_PLUS':
       return {
         ...state,
         inn1: {
@@ -250,7 +250,7 @@ export const updateExtras = (state, type, runs, bowler) => {
           },
         },
       };
-    case "LBYE_PLUS":
+    case 'LBYE_PLUS':
       return {
         ...state,
         inn1: {
@@ -275,5 +275,60 @@ export const updateExtras = (state, type, runs, bowler) => {
       };
     default:
       break;
+  }
+};
+
+export const updateWicket = (state, action) => {
+  const { striker, nonStriker, currentBowler } = state.currentStats;
+  const bowlerId = state.currentStats.currentBowler;
+  const bowler = state.inn1.bowlingTeam[bowlerId];
+  const _totalBalls = state.inn1.totalBalls + 1;
+  updateOver(state);
+  if (striker === action.data.outBatsmanId) {
+    return {
+      ...state,
+      currentStats: {
+        ...state.currentStats,
+        striker: action.data.nextBatsmanId,
+      },
+      inn1: {
+        ...state.inn1,
+        totalBalls: _totalBalls,
+        totalOvers: calcOver(_totalBalls),
+        totalWickets: state.inn1.totalWickets + 1,
+        bowlingTeam: {
+          ...state.inn1.bowlingTeam,
+          [currentBowler]: {
+            ...bowler,
+            balls: bowler.balls + 1,
+            overs: calcOver(bowler.balls + 1),
+            wkts: bowler.wkts + 1,
+          },
+        },
+      },
+    };
+  } else if (nonStriker === action.data.outBatsmanId) {
+    return {
+      ...state,
+      currentStats: {
+        ...state.currentStats,
+        striker: action.data.nextBatsmanId,
+      },
+      inn1: {
+        ...state.inn1,
+        totalBalls: _totalBalls,
+        totalOvers: calcOver(_totalBalls),
+        totalWickets: state.inn1.totalWickets + 1,
+        bowlingTeam: {
+          ...state.inn1.bowlingTeam,
+          [currentBowler]: {
+            ...bowler,
+            balls: bowler.balls + 1,
+            overs: calcOver(bowler.balls + 1),
+            wkts: bowler.wkts + 1,
+          },
+        },
+      },
+    };
   }
 };
