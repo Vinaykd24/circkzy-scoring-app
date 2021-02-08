@@ -312,6 +312,8 @@ export const updateExtras = (state, type, runs, bowler) => {
 
 export const updateWicket = (state, action) => {
   const { striker, nonStriker, currentBowler } = state.currentStats;
+  const stikerClone = state.inn1.battingTeam[striker];
+  const nonStrikerClone = state.inn1.battingTeam[nonStriker];
   const bowlerId = state.currentStats.currentBowler;
   const bowler = state.inn1.bowlingTeam[bowlerId];
   const _totalBalls = state.inn1.totalBalls + 1;
@@ -340,13 +342,22 @@ export const updateWicket = (state, action) => {
             player2: nonStriker,
           },
         },
+        battingTeam: {
+          ...state.inn1.battingTeam,
+          [striker]: {
+            ...stikerClone,
+            ballsPlayed: stikerClone.ballsPlayed + 1,
+            isOut: true,
+          },
+        },
         bowlingTeam: {
           ...state.inn1.bowlingTeam,
           [currentBowler]: {
             ...bowler,
             balls: bowler.balls + 1,
             overs: calcOver(bowler.balls + 1),
-            wkts: bowler.wkts + 1,
+            wkts:
+              action.data.howOut === 'Run Out' ? bowler.wkts : bowler.wkts + 1,
           },
         },
       },
@@ -375,13 +386,22 @@ export const updateWicket = (state, action) => {
             player2: nonStriker,
           },
         },
+        battingTeam: {
+          ...state.inn1.battingTeam,
+          [nonStriker]: {
+            ...nonStrikerClone,
+            ballsPlayed: nonStrikerClone.ballsPlayed + 1,
+            isOut: true,
+          },
+        },
         bowlingTeam: {
           ...state.inn1.bowlingTeam,
           [currentBowler]: {
             ...bowler,
             balls: bowler.balls + 1,
             overs: calcOver(bowler.balls + 1),
-            wkts: bowler.wkts + 1,
+            wkts:
+              action.data.howOut === 'Run Out' ? bowler.wkts : bowler.wkts + 1,
           },
         },
       },

@@ -55,6 +55,11 @@ import {
 //   inn1: {
 //     battingTeam: {},
 //     bowlingTeam: {},
+// currentPartnership: {
+//   runs: 0,
+//   balls: 0,
+// },
+// partnerships: {},
 //     totalRuns: 0,
 //     totalWickets: 0,
 //     totalExtras: 0,
@@ -203,6 +208,23 @@ export const initialState = {
         sixes: 0,
         wbs: 0,
         wkts: 0,
+        isOut: false,
+      },
+      '2b6feb-b7ec-371-b6a4-01c48588b3': {
+        balls: 0,
+        ballsPlayed: 0,
+        fours: 0,
+        id: '2b6feb-b7ec-371-b6a4-01c48588b3',
+        maidens: 0,
+        nbs: 0,
+        overs: 0,
+        playerName: 'Adam',
+        runs: 0,
+        runsGiven: 0,
+        sixes: 0,
+        wbs: 0,
+        wkts: 0,
+        isOut: false,
       },
       '6e10a7a-2ae-3d2-0d22-2c736e0bc4': {
         balls: 0,
@@ -218,6 +240,7 @@ export const initialState = {
         sixes: 0,
         wbs: 0,
         wkts: 0,
+        isOut: false,
       },
       'f02fbc6-f5cf-85d8-0156-7b82c20645a': {
         balls: 0,
@@ -233,6 +256,7 @@ export const initialState = {
         sixes: 0,
         wbs: 0,
         wkts: 0,
+        isOut: false,
       },
     },
     bowlingTeam: {
@@ -250,6 +274,7 @@ export const initialState = {
         sixes: 0,
         wbs: 0,
         wkts: 0,
+        isOut: false,
       },
       '5ef7e66-48b6-4606-6a24-eab116e63c51': {
         balls: 0,
@@ -265,6 +290,7 @@ export const initialState = {
         sixes: 0,
         wbs: 0,
         wkts: 0,
+        isOut: false,
       },
       '364f6c-6fc5-40ca-f5c3-acad4e6c348': {
         balls: 0,
@@ -280,6 +306,7 @@ export const initialState = {
         sixes: 0,
         wbs: 0,
         wkts: 0,
+        isOut: false,
       },
     },
     currentPartnership: {
@@ -336,6 +363,7 @@ export const matchReducer = (state, action) => {
               wkts: 0,
               wbs: 0,
               nbs: 0,
+              isOut: false,
             },
           },
         },
@@ -360,6 +388,7 @@ export const matchReducer = (state, action) => {
               wkts: 0,
               wbs: 0,
               nbs: 0,
+              isOut: false,
             },
           },
         },

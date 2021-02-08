@@ -74,13 +74,13 @@ const UpdateScoreComponent = () => {
   ];
 
   const wkt_options = [
-    { key: 1, text: 'Caught Behind', value: 1 },
-    { key: 2, text: 'Caught and Bowled', value: 2 },
-    { key: 3, text: 'Caught', value: 3 },
-    { key: 4, text: 'Bowled', value: 4 },
-    { key: 5, text: 'Run Out', value: 5 },
-    { key: 6, text: 'Hit Wicket', value: 6 },
-    { key: 7, text: 'Time Out', value: 7 },
+    { key: 1, text: 'Caught Behind', value: 'Caught Behind' },
+    { key: 2, text: 'Caught and Bowled', value: 'Caught and Bowled' },
+    { key: 3, text: 'Caught', value: 'Caught' },
+    { key: 4, text: 'Bowled', value: 'Bowled' },
+    { key: 5, text: 'Run Out', value: 'Run Out' },
+    { key: 6, text: 'Hit Wicket', value: 'Hit Wicket' },
+    { key: 7, text: 'Time Out', value: 'Time Out' },
   ];
 
   const current_batsmen = [
@@ -129,7 +129,9 @@ const UpdateScoreComponent = () => {
 
   const convertObjToArray = (obj) => {
     let toArray = Object.values(obj);
-    toArray = toArray.filter((pl) => striker !== pl.id && nonStriker !== pl.id);
+    toArray = toArray.filter(
+      (pl) => striker !== pl.id && nonStriker !== pl.id && !pl.isOut
+    );
     toArray = [...toArray].map((player, i) => {
       return { key: i, text: player.playerName, value: player.id };
     });
