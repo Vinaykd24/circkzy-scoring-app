@@ -51,7 +51,7 @@ import {
 //     teamBatingFirst: '',
 //     isHomTeamBattingFirst: false,
 //   },
-//   currentStats: { striker: '', nonStriker: '', currentBowler: '' },
+//   currentStats: { striker: '', nonStriker: '', currentBowler: '', currentOver: [], },
 //   inn1: {
 //     battingTeam: {},
 //     bowlingTeam: {},
@@ -191,6 +191,7 @@ export const initialState = {
     currentBowler: '0d7443-8ea0-11e6-acac-8a0f7f11117',
     nonStriker: '6e10a7a-2ae-3d2-0d22-2c736e0bc4',
     striker: '5b6feb-b7ec-371-b6a4-01c48587b7',
+    currentOver: [],
   },
   inn1: {
     battingTeam: {

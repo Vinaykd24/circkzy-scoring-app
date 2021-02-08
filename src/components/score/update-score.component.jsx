@@ -321,11 +321,7 @@ const UpdateScoreComponent = () => {
         </Button>
       </div>
       {/* Select Next Batsman Modal */}
-      <Modal
-        dimmer={dimmer}
-        open={openSecond}
-        onClose={() => dispatch({ type: 'CLOSE_MODAL' })}
-      >
+      <Modal dimmer={dimmer} open={openSecond}>
         <Modal.Header>Select Next Batsman</Modal.Header>
         <Modal.Content>
           <div>

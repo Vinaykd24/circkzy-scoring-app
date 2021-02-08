@@ -14,7 +14,12 @@ const CurrentScoreboard = () => {
     totalOvers,
     currentPartnership,
   } = rootState.inn1;
-  const { striker, nonStriker, currentBowler } = rootState.currentStats;
+  const {
+    striker,
+    nonStriker,
+    currentBowler,
+    currentOver,
+  } = rootState.currentStats;
   // const currentPartnerShip = () => {
   //   const partnershipRuns =
   //     battingTeam[striker].runs + battingTeam[nonStriker].runs;
@@ -69,6 +74,16 @@ const CurrentScoreboard = () => {
           <code>
             {currentPartnership['runs']}({currentPartnership['balls']})
           </code>
+        </div>
+      </div>
+      <div className="flex justify-center">
+        <div className="outline pa3 tc mt2">
+          <p>Ball-by-Ball</p>
+          {currentOver.map((ball, i) => (
+            <span className="ba br-100 dib h2 pt1 w2 mr1" key={i}>
+              {ball}
+            </span>
+          ))}
         </div>
       </div>
     </>

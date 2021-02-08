@@ -1,4 +1,4 @@
-import React, { useContext, useState, useReducer, useEffect } from "react";
+import React, { useContext, useState, useReducer, useEffect } from 'react';
 import {
   Button,
   Modal,
@@ -7,25 +7,25 @@ import {
   Form,
   Icon,
   Dropdown,
-} from "semantic-ui-react";
+} from 'semantic-ui-react';
 
-import { MatchContext } from "../../providers/match/match.provider";
+import { MatchContext } from '../../providers/match/match.provider';
 import {
   CHANGE_BOWLER,
   CHANGE_STRIKER,
-} from "../../providers/match/match.actions";
-import CurrentScoreboard from "../../pages/currentScoreboard";
-import UpdateScoreComponent from "./update-score.component";
+} from '../../providers/match/match.actions';
+import CurrentScoreboard from '../../pages/currentScoreboard';
+import UpdateScoreComponent from './update-score.component';
 
 const exampleReducer = (state, action) => {
   switch (action.type) {
-    case "OPEN_MODAL":
+    case 'OPEN_MODAL':
       return { ...state, open: true, dimmer: action.dimmer };
-    case "CLOSE_MODAL":
+    case 'CLOSE_MODAL':
       return { open: false };
-    case "OPEN_BATSMAN_MODAL":
+    case 'OPEN_BATSMAN_MODAL':
       return { ...state, openSecond: true };
-    case "SAVE_BATSMAN":
+    case 'SAVE_BATSMAN':
       return { ...state, outBatsman: action.playerId };
     default:
       throw new Error();
@@ -46,15 +46,15 @@ const ScoreBoardPage = () => {
 
   const checkAndChange = () => {
     if (totalOvers % 1 === 0 && totalOvers !== 0) {
-      dispatch({ type: "OPEN_MODAL" });
+      dispatch({ type: 'OPEN_MODAL' });
       rootDispatch({ type: CHANGE_STRIKER });
     }
   };
 
   const selectBowler = (bowler) => {
-    console.log("Select bowler logic goes here!", bowler);
+    console.log('Select bowler logic goes here!', bowler);
     rootDispatch({ type: CHANGE_BOWLER, bowler: bowler.id });
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch({ type: 'CLOSE_MODAL' });
   };
 
   useEffect(() => checkAndChange(), [rootState.inn1.totalOvers]);
@@ -63,11 +63,7 @@ const ScoreBoardPage = () => {
     <>
       <CurrentScoreboard />
       <UpdateScoreComponent />
-      <Modal
-        dimmer={dimmer}
-        open={open}
-        onClose={() => dispatch({ type: "CLOSE_MODAL" })}
-      >
+      <Modal dimmer={dimmer} open={open}>
         <Modal.Header>Change Bowler</Modal.Header>
         <Modal.Content>
           <div>
@@ -76,8 +72,10 @@ const ScoreBoardPage = () => {
                 <Radio
                   className="b"
                   key={i}
-                  label={value["playerName"]}
-                  disabled={currentBowler === value["id"]}
+                  label={value['playerName']}
+                  disabled={
+                    currentBowler === value['id'] || value['overs'] === 4
+                  }
                   onChange={() => selectBowler(value)}
                 />
               </Form.Field>

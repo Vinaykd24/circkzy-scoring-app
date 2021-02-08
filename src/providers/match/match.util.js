@@ -82,6 +82,7 @@ export const updateRuns = (state, player, runs) => {
           ...state.currentStats,
           striker: nonStriker,
           nonStriker: temp,
+          currentOver: [...state.currentStats.currentOver, runs],
         },
         inn1: {
           ...state.inn1,
@@ -117,6 +118,10 @@ export const updateRuns = (state, player, runs) => {
     case 6:
       return {
         ...state,
+        currentStats: {
+          ...state.currentStats,
+          currentOver: [...state.currentStats.currentOver, runs],
+        },
         inn1: {
           ...state.inn1,
           totalRuns: state.inn1.totalRuns + runs,
@@ -158,6 +163,10 @@ export const updateExtras = (state, type, runs, bowler) => {
     case 'WB':
       return {
         ...state,
+        currentStats: {
+          ...state.currentStats,
+          currentOver: [...state.currentStats.currentOver, runs],
+        },
         inn1: {
           ...state.inn1,
           totalRuns: state.inn1.totalRuns + runs,
@@ -183,6 +192,10 @@ export const updateExtras = (state, type, runs, bowler) => {
     case 'NB':
       return {
         ...state,
+        currentStats: {
+          ...state.currentStats,
+          currentOver: [...state.currentStats.currentOver, runs],
+        },
         inn1: {
           ...state.inn1,
           totalRuns: state.inn1.totalRuns + runs,
@@ -204,6 +217,10 @@ export const updateExtras = (state, type, runs, bowler) => {
     case 'NB_PLUS':
       return {
         ...state,
+        currentStats: {
+          ...state.currentStats,
+          currentOver: [...state.currentStats.currentOver, runs],
+        },
         inn1: {
           ...state.inn1,
           totalRuns: state.inn1.totalRuns + runs,
@@ -229,6 +246,10 @@ export const updateExtras = (state, type, runs, bowler) => {
     case 'WB_PLUS':
       return {
         ...state,
+        currentStats: {
+          ...state.currentStats,
+          currentOver: [...state.currentStats.currentOver, runs],
+        },
         inn1: {
           ...state.inn1,
           totalRuns: state.inn1.totalRuns + runs,
@@ -254,6 +275,10 @@ export const updateExtras = (state, type, runs, bowler) => {
     case 'BYE_PLUS':
       return {
         ...state,
+        currentStats: {
+          ...state.currentStats,
+          currentOver: [...state.currentStats.currentOver, runs],
+        },
         inn1: {
           ...state.inn1,
           totalBalls: _totalBalls,
@@ -281,6 +306,10 @@ export const updateExtras = (state, type, runs, bowler) => {
     case 'LBYE_PLUS':
       return {
         ...state,
+        currentStats: {
+          ...state.currentStats,
+          currentOver: [...state.currentStats.currentOver, runs],
+        },
         inn1: {
           ...state.inn1,
           totalBalls: _totalBalls,
@@ -324,6 +353,7 @@ export const updateWicket = (state, action) => {
       currentStats: {
         ...state.currentStats,
         striker: action.data.nextBatsmanId,
+        currentOver: [...state.currentStats.currentOver, 'W'],
       },
       inn1: {
         ...state.inn1,
@@ -368,6 +398,7 @@ export const updateWicket = (state, action) => {
       currentStats: {
         ...state.currentStats,
         nonStriker: action.data.nextBatsmanId,
+        currentOver: [...state.currentStats.currentOver, 'W'],
       },
       inn1: {
         ...state.inn1,
