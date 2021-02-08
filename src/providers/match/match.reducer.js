@@ -282,6 +282,11 @@ export const initialState = {
         wkts: 0,
       },
     },
+    currentPartnership: {
+      runs: 0,
+      balls: 0,
+    },
+    partnerships: {},
     totalRuns: 0,
     totalWickets: 0,
     totalExtras: {

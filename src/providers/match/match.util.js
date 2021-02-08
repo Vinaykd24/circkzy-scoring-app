@@ -88,6 +88,10 @@ export const updateRuns = (state, player, runs) => {
           totalRuns: state.inn1.totalRuns + runs,
           totalBalls: _totalBalls,
           totalOvers: calcOver(_totalBalls),
+          currentPartnership: {
+            runs: state.inn1.currentPartnership.runs + runs,
+            balls: state.inn1.currentPartnership.balls + 1,
+          },
           battingTeam: {
             ...state.inn1.battingTeam,
             [player.id]: {
@@ -118,6 +122,10 @@ export const updateRuns = (state, player, runs) => {
           totalRuns: state.inn1.totalRuns + runs,
           totalBalls: _totalBalls,
           totalOvers: calcOver(_totalBalls),
+          currentPartnership: {
+            runs: state.inn1.currentPartnership.runs + runs,
+            balls: state.inn1.currentPartnership.balls + 1,
+          },
           battingTeam: {
             ...state.inn1.battingTeam,
             [player.id]: {
@@ -158,6 +166,10 @@ export const updateExtras = (state, type, runs, bowler) => {
             wbs: state.inn1.totalExtras.wbs + runs,
             total: state.inn1.totalExtras.total + runs,
           },
+          currentPartnership: {
+            runs: state.inn1.currentPartnership.runs + runs,
+            balls: state.inn1.currentPartnership.balls + 1,
+          },
           bowlingTeam: {
             ...state.inn1.bowlingTeam,
             [bowler.id]: {
@@ -175,6 +187,10 @@ export const updateExtras = (state, type, runs, bowler) => {
           ...state.inn1,
           totalRuns: state.inn1.totalRuns + runs,
           totalExtras: state.inn1.totalExtras + runs,
+          currentPartnership: {
+            runs: state.inn1.currentPartnership.runs + runs,
+            balls: state.inn1.currentPartnership.balls + 1,
+          },
           bowlingTeam: {
             ...state.inn1.bowlingTeam,
             [bowler.id]: {
@@ -196,6 +212,10 @@ export const updateExtras = (state, type, runs, bowler) => {
             nbs: state.inn1.totalExtras.nbs + runs,
             total: state.inn1.totalExtras.total + runs,
           },
+          currentPartnership: {
+            runs: state.inn1.currentPartnership.runs + runs,
+            balls: state.inn1.currentPartnership.balls + 1,
+          },
           bowlingTeam: {
             ...state.inn1.bowlingTeam,
             [bowler.id]: {
@@ -216,6 +236,10 @@ export const updateExtras = (state, type, runs, bowler) => {
             ...state.inn1.totalExtras,
             wbs: state.inn1.totalExtras.wbs + runs,
             total: state.inn1.totalExtras.total + runs,
+          },
+          currentPartnership: {
+            runs: state.inn1.currentPartnership.runs + runs,
+            balls: state.inn1.currentPartnership.balls + 1,
           },
           bowlingTeam: {
             ...state.inn1.bowlingTeam,
@@ -240,6 +264,10 @@ export const updateExtras = (state, type, runs, bowler) => {
             byes: state.inn1.totalExtras.byes + runs,
             total: state.inn1.totalExtras.total + runs,
           },
+          currentPartnership: {
+            runs: state.inn1.currentPartnership.runs + runs,
+            balls: state.inn1.currentPartnership.balls + 1,
+          },
           bowlingTeam: {
             ...state.inn1.bowlingTeam,
             [bowler.id]: {
@@ -262,6 +290,10 @@ export const updateExtras = (state, type, runs, bowler) => {
             ...state.inn1.totalExtras,
             lBye: state.inn1.totalExtras.lBye + runs,
             total: state.inn1.totalExtras.total + runs,
+          },
+          currentPartnership: {
+            runs: state.inn1.currentPartnership.runs + runs,
+            balls: state.inn1.currentPartnership.balls + 1,
           },
           bowlingTeam: {
             ...state.inn1.bowlingTeam,
@@ -296,6 +328,18 @@ export const updateWicket = (state, action) => {
         totalBalls: _totalBalls,
         totalOvers: calcOver(_totalBalls),
         totalWickets: state.inn1.totalWickets + 1,
+        currentPartnership: {
+          runs: 0,
+          balls: 0,
+        },
+        partnerships: {
+          ...state.inn1.partnerships,
+          [state.inn1.totalWickets + 1]: {
+            ...state.inn1.currentPartnership,
+            player1: striker,
+            player2: nonStriker,
+          },
+        },
         bowlingTeam: {
           ...state.inn1.bowlingTeam,
           [currentBowler]: {
@@ -319,6 +363,18 @@ export const updateWicket = (state, action) => {
         totalBalls: _totalBalls,
         totalOvers: calcOver(_totalBalls),
         totalWickets: state.inn1.totalWickets + 1,
+        currentPartnership: {
+          runs: 0,
+          balls: 0,
+        },
+        partnerships: {
+          ...state.inn1.partnerships,
+          [state.inn1.totalWickets + 1]: {
+            ...state.inn1.currentPartnership,
+            player1: striker,
+            player2: nonStriker,
+          },
+        },
         bowlingTeam: {
           ...state.inn1.bowlingTeam,
           [currentBowler]: {

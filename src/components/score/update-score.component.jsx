@@ -311,6 +311,12 @@ const UpdateScoreComponent = () => {
             className="ma2"
           />
         </div>
+        <Button
+          size="big"
+          onClick={() => dispatch({ type: 'OPEN_BATSMAN_MODAL' })}
+        >
+          End of Inn
+        </Button>
       </div>
       {/* Select Next Batsman Modal */}
       <Modal

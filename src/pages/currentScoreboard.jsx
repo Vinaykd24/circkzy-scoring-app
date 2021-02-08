@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
-import { MatchContext } from "../providers/match/match.provider";
+import React, { useContext } from 'react';
+import { MatchContext } from '../providers/match/match.provider';
 
 const CurrentScoreboard = () => {
   const { rootState } = useContext(MatchContext);
+
   // console.log(rootState);
   const {
     battingTeam,
@@ -11,16 +12,17 @@ const CurrentScoreboard = () => {
     totalWickets,
     totalExtras,
     totalOvers,
+    currentPartnership,
   } = rootState.inn1;
   const { striker, nonStriker, currentBowler } = rootState.currentStats;
+  // const currentPartnerShip = () => {
+  //   const partnershipRuns =
+  //     battingTeam[striker].runs + battingTeam[nonStriker].runs;
+  //   const partnershipBallsPlayed =
+  //     battingTeam[striker].ballsPlayed + battingTeam[nonStriker].ballsPlayed;
+  //   return `${partnershipRuns}(${partnershipBallsPlayed})`;
+  // };
 
-  const currentPartnerShip = () => {
-    const partnershipRuns =
-      battingTeam[striker].runs + battingTeam[nonStriker].runs;
-    const partnershipBallsPlayed =
-      battingTeam[striker].ballsPlayed + battingTeam[nonStriker].ballsPlayed;
-    return `${partnershipRuns}(${partnershipBallsPlayed})`;
-  };
   return (
     <>
       <div className="flex justify-center pa3">
@@ -63,7 +65,10 @@ const CurrentScoreboard = () => {
       <div className="flex justify-center">
         <div className="outline pa3 tc">
           <p>Current Partnership:</p>
-          <code>{currentPartnerShip()}</code>
+          {/* <code>{currentPartnerShip()}</code> */}
+          <code>
+            {currentPartnership['runs']}({currentPartnership['balls']})
+          </code>
         </div>
       </div>
     </>
