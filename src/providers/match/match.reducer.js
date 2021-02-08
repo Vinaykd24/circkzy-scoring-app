@@ -24,6 +24,7 @@ import {
   SET_LBYE_PLUS_RUNS,
   WICKET_FALLEN,
   NEW_BATSMAN,
+  END_OF_INN1,
 } from './match.actions';
 import {
   addMatchDetailsToDb,
@@ -36,6 +37,7 @@ import { testInitialState } from './test-data';
 
 export const initialState = {
   count: 0,
+  isFirstInnCompleted: false,
   playerList: {
     homeTeam: [],
     awayTeam: [],
@@ -104,7 +106,7 @@ export const initialState = {
 
 export const matchReducer = (state, action) => {
   const { currentBowler } = state.currentStats;
-  const { bowlingTeam } = state.inn1;
+  const { bowlingTeam } = !state.isFirstInnCompleted ? state.inn1 : state.inn2;
   const bowler = bowlingTeam[currentBowler];
   const { striker, nonStriker } = state.currentStats;
   switch (action.type) {
@@ -238,19 +240,41 @@ export const matchReducer = (state, action) => {
     case NEW_BATSMAN:
       return updateWicket(state, action);
     case WICKET_FALLEN:
-      return {
-        ...state,
-        inn1: {
-          ...state.inn1,
-          totalWickets: state.inn1.totalWickets + 1,
-          bowlingTeam: {
-            ...state.inn1.bowlingTeam,
-            [currentBowler]: {
-              ...bowler,
-              wkts: bowler.wkts + 1,
+      if (!state.isFirstInnCompleted) {
+        return {
+          ...state,
+          inn1: {
+            ...state.inn1,
+            totalWickets: state.inn1.totalWickets + 1,
+            bowlingTeam: {
+              ...state.inn1.bowlingTeam,
+              [currentBowler]: {
+                ...bowler,
+                wkts: bowler.wkts + 1,
+              },
             },
           },
-        },
+        };
+      } else {
+        return {
+          ...state,
+          inn2: {
+            ...state.inn2,
+            totalWickets: state.inn1.totalWickets + 1,
+            bowlingTeam: {
+              ...state.inn1.bowlingTeam,
+              [currentBowler]: {
+                ...bowler,
+                wkts: bowler.wkts + 1,
+              },
+            },
+          },
+        };
+      }
+    case END_OF_INN1:
+      return {
+        ...state,
+        isFirstInnCompleted: action.isFirstInnCompleted,
       };
     case SET_DOT_BALL:
       return updateRuns(state, action.player, 0);

@@ -5,13 +5,14 @@ const CurrentScoreboard = ({ isFirstInn }) => {
   const { rootState } = useContext(MatchContext);
 
   console.log(isFirstInn);
+  const currentInn = isFirstInn ? 'inn1' : 'inn2';
   const {
     totalRuns,
     totalWickets,
     totalExtras,
     totalOvers,
     currentPartnership,
-  } = rootState.inn1;
+  } = rootState[currentInn];
   const {
     striker,
     nonStriker,

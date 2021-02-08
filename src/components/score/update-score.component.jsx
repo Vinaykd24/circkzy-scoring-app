@@ -32,6 +32,7 @@ import {
   SET_NO_PLUS_RUNS,
   WICKET_FALLEN,
   NEW_BATSMAN,
+  END_OF_INN1,
 } from '../../providers/match/match.actions';
 
 const ScoreReducer = (state, action) => {
@@ -158,6 +159,7 @@ const UpdateScoreComponent = ({ isFirstInn }) => {
   };
 
   const endOfInn = () => {
+    rootDispatch({ type: END_OF_INN1, isFirstInnCompleted: true });
     history.push({
       pathname: '/currentStats',
       state: { isFirstInn: false },

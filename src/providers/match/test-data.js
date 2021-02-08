@@ -1,5 +1,6 @@
 export const testInitialState = {
   count: 0,
+  isFirstInnCompleted: false,
   playerList: {
     homeTeam: [],
     awayTeam: [],
