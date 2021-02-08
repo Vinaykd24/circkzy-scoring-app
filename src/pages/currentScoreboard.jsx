@@ -79,11 +79,19 @@ const CurrentScoreboard = () => {
       <div className="flex justify-center">
         <div className="outline pa3 tc mt2">
           <p>Ball-by-Ball</p>
-          {currentOver.map((ball, i) => (
-            <span className="ba br-100 dib h2 pt1 w2 mr1" key={i}>
-              {ball}
-            </span>
-          ))}
+          {currentOver !== undefined
+            ? currentOver.map((ball, i) => (
+                <span
+                  className={
+                    'ba br-100 dib h2 pt1 w2 mr1 ' +
+                    (ball === 'W' ? 'bg-red' : '')
+                  }
+                  key={i}
+                >
+                  {ball}
+                </span>
+              ))
+            : ''}
         </div>
       </div>
     </>
