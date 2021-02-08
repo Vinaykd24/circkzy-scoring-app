@@ -1,4 +1,5 @@
 import React, { useContext, useState, useReducer, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Button,
   Modal,
@@ -33,6 +34,7 @@ const exampleReducer = (state, action) => {
 };
 
 const ScoreBoardPage = () => {
+  const location = useLocation();
   const [state, dispatch] = React.useReducer(exampleReducer, {
     open: false,
     dimmer: undefined,
@@ -41,7 +43,14 @@ const ScoreBoardPage = () => {
   const { open, dimmer } = state;
 
   const { rootState, rootDispatch } = useContext(MatchContext);
-  const { battingTeam, bowlingTeam, totalOvers } = rootState.inn1;
+
+  const battingTeam = location.state.isFirstInn
+    ? rootState.inn1.battingTeam
+    : rootState.inn2.battingTeam;
+  const bowlingTeam = location.state.isFirstInn
+    ? rootState.inn1.bowlingTeam
+    : rootState.inn2.bowlingTeam;
+  const { totalOvers } = rootState.inn1;
   const { striker, nonStriker, currentBowler } = rootState.currentStats;
 
   const checkAndChange = () => {
@@ -52,7 +61,6 @@ const ScoreBoardPage = () => {
   };
 
   const selectBowler = (bowler) => {
-    console.log('Select bowler logic goes here!', bowler);
     rootDispatch({ type: CHANGE_BOWLER, bowler: bowler.id });
     dispatch({ type: 'CLOSE_MODAL' });
   };
@@ -61,8 +69,8 @@ const ScoreBoardPage = () => {
 
   return (
     <>
-      <CurrentScoreboard />
-      <UpdateScoreComponent />
+      <CurrentScoreboard isFirstInn={location.state.isFirstInn} />
+      <UpdateScoreComponent isFirstInn={location.state.isFirstInn} />
       <Modal dimmer={dimmer} open={open}>
         <Modal.Header>Change Bowler</Modal.Header>
         <Modal.Content>

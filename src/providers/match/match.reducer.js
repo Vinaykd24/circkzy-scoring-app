@@ -34,73 +34,73 @@ import {
 } from './match.util';
 import { testInitialState } from './test-data';
 
-// export const initialState = {
-//   count: 0,
-//   playerList: {
-//     homeTeam: [],
-//     awayTeam: [],
-//     homeTeamClone: {},
-//     awayTeamClone: {},
-//   },
-//   matchDetails: {
-//     homeTeamName: '',
-//     awayTeamName: '',
-//     venue: '',
-//     tournametName: '',
-//     tossWonBy: '',
-//     electedTo: '',
-//     teamBatingFirst: '',
-//     isHomTeamBattingFirst: false,
-//   },
-//   currentStats: {
-//     striker: '',
-//     nonStriker: '',
-//     currentBowler: '',
-//     currentOver: [],
-//   },
-//   inn1: {
-//     battingTeam: {},
-//     bowlingTeam: {},
-//     currentPartnership: {
-//       runs: 0,
-//       balls: 0,
-//     },
-//     partnerships: {},
-//     totalRuns: 0,
-//     totalWickets: 0,
-//     totalExtras: {
-//       wbs: 0,
-//       nbs: 0,
-//       byes: 0,
-//       lBye: 0,
-//       total: 0,
-//     },
-//     totalOvers: 0,
-//     totalBalls: 0,
-//   },
-//   inn2: {
-//     battingTeam: {},
-//     bowlingTeam: {},
-//     currentPartnership: {
-//       runs: 0,
-//       balls: 0,
-//     },
-//     partnerships: {},
-//     totalRuns: 0,
-//     totalWickets: 0,
-//     totalExtras: {
-//       wbs: 0,
-//       nbs: 0,
-//       byes: 0,
-//       lBye: 0,
-//       total: 0,
-//     },
-//     totalOvers: 0,
-//     totalBalls: 0,
-//   },
-// };
+export const initialState = {
+  count: 0,
+  playerList: {
+    homeTeam: [],
+    awayTeam: [],
+    homeTeamClone: {},
+    awayTeamClone: {},
+  },
+  matchDetails: {
+    homeTeamName: '',
+    awayTeamName: '',
+    venue: '',
+    tournametName: '',
+    tossWonBy: '',
+    electedTo: '',
+    teamBatingFirst: '',
+    isHomTeamBattingFirst: false,
+  },
+  currentStats: {
+    striker: '',
+    nonStriker: '',
+    currentBowler: '',
+    currentOver: [],
+  },
+  inn1: {
+    battingTeam: {},
+    bowlingTeam: {},
+    currentPartnership: {
+      runs: 0,
+      balls: 0,
+    },
+    partnerships: {},
+    totalRuns: 0,
+    totalWickets: 0,
+    totalExtras: {
+      wbs: 0,
+      nbs: 0,
+      byes: 0,
+      lBye: 0,
+      total: 0,
+    },
+    totalOvers: 0,
+    totalBalls: 0,
+  },
+  inn2: {
+    battingTeam: {},
+    bowlingTeam: {},
+    currentPartnership: {
+      runs: 0,
+      balls: 0,
+    },
+    partnerships: {},
+    totalRuns: 0,
+    totalWickets: 0,
+    totalExtras: {
+      wbs: 0,
+      nbs: 0,
+      byes: 0,
+      lBye: 0,
+      total: 0,
+    },
+    totalOvers: 0,
+    totalBalls: 0,
+  },
+};
 
-export const initialState = testInitialState;
+// export const initialState = testInitialState;
 
 export const matchReducer = (state, action) => {
   const { currentBowler } = state.currentStats;
@@ -214,10 +214,7 @@ export const matchReducer = (state, action) => {
     case SET_INITIAL_STATS:
       return {
         ...state,
-        currentStats: {
-          ...state.currentStats,
-          ...action.currentStats,
-        },
+        currentStats: action.currentStats,
       };
     case CHANGE_STRIKER:
       const temp = striker;

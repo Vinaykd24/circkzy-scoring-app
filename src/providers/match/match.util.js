@@ -25,7 +25,7 @@ export const addMatchDetailsToDb = (matchDetails) => {
 };
 
 export const addPlayerObj = (state, player) => {
-  console.log([...state, { ...player }]);
+  // console.log([...state, { ...player }]);
 };
 
 export const updateCurrentStats = (stats, battingList, bowlingList) => {

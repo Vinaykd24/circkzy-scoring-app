@@ -1,13 +1,11 @@
 import React, { useContext } from 'react';
 import { MatchContext } from '../providers/match/match.provider';
 
-const CurrentScoreboard = () => {
+const CurrentScoreboard = ({ isFirstInn }) => {
   const { rootState } = useContext(MatchContext);
 
-  // console.log(rootState);
+  console.log(isFirstInn);
   const {
-    battingTeam,
-    bowlingTeam,
     totalRuns,
     totalWickets,
     totalExtras,
@@ -20,6 +18,13 @@ const CurrentScoreboard = () => {
     currentBowler,
     currentOver,
   } = rootState.currentStats;
+
+  const batTeam = isFirstInn
+    ? rootState.inn1.battingTeam
+    : rootState.inn2.battingTeam;
+  const bowlTeam = isFirstInn
+    ? rootState.inn1.bowlingTeam
+    : rootState.inn2.bowlingTeam;
   // const currentPartnerShip = () => {
   //   const partnershipRuns =
   //     battingTeam[striker].runs + battingTeam[nonStriker].runs;
@@ -41,28 +46,26 @@ const CurrentScoreboard = () => {
       </div>
       <div className="flex justify-center pa3">
         <div className="outline w-25 pa3 mr2">
-          <code>{battingTeam[striker].playerName}</code>
+          <code>{batTeam[striker].playerName}</code>
           <p>
             <code>
-              {battingTeam[striker].runs}({battingTeam[striker].ballsPlayed})
+              {batTeam[striker].runs}({batTeam[striker].ballsPlayed})
             </code>
           </p>
         </div>
         <div className="outline w-25 pa3 mr2">
-          <code>{battingTeam[nonStriker].playerName}</code>
+          <code>{batTeam[nonStriker].playerName}</code>
           <p>
             <code>
-              {battingTeam[nonStriker].runs}(
-              {battingTeam[nonStriker].ballsPlayed})
+              {batTeam[nonStriker].runs}({batTeam[nonStriker].ballsPlayed})
             </code>
           </p>
         </div>
         <div className="outline w-25 pa3 mr2">
-          <code>{bowlingTeam[currentBowler].playerName}</code>
+          <code>{bowlTeam[currentBowler].playerName}</code>
           <p>
             <code>
-              {bowlingTeam[currentBowler].overs}(
-              {bowlingTeam[currentBowler].wkts})
+              {bowlTeam[currentBowler].overs}({bowlTeam[currentBowler].wkts})
             </code>
           </p>
         </div>

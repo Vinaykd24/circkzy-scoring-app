@@ -1,19 +1,19 @@
-import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import uuid from "react-uuid";
-import { firestore } from "../../firebase/config";
-import { Button, Input, Form } from "semantic-ui-react";
-import PlayerListPage from "../../pages/player-list/player-list";
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import uuid from 'react-uuid';
+import { firestore } from '../../firebase/config';
+import { Button, Input, Form } from 'semantic-ui-react';
+import PlayerListPage from '../../pages/player-list/player-list';
 
-import { MatchContext } from "../../providers/match/match.provider";
-import AddPlayerFormPage from "./add-player-form.component";
+import { MatchContext } from '../../providers/match/match.provider';
+import AddPlayerFormPage from './add-player-form.component';
 import {
   ADD_AWAY_TEAM_PLAYER,
   ADD_HOME_TEAM_PLAYER,
   REMOVE_HOME_PLAYER,
   REMOVE_AWAY_PLAYER,
   SET_BATTING_TEAM,
-} from "../../providers/match/match.actions";
+} from '../../providers/match/match.actions';
 
 const AddPlayerPage = () => {
   let history = useHistory();
@@ -26,10 +26,9 @@ const AddPlayerPage = () => {
     rootState,
     rootDispatch,
   } = useContext(MatchContext);
-  console.log(rootState);
   const { playerList } = rootState;
-  const [awayPlayer, setAwayPlayer] = useState("");
-  const [homePlayer, setHomePlayer] = useState("");
+  const [awayPlayer, setAwayPlayer] = useState('');
+  const [homePlayer, setHomePlayer] = useState('');
   // const [homeTeamList, setHomeTeamList] = useState([]);
   // const [awayTeamList, setAwayTeamList] = useState([]);
   const [isPlayerListFinalized, setIsPlayerListFinalized] = useState(false);
@@ -44,7 +43,7 @@ const AddPlayerPage = () => {
     isHomeTeam
       ? rootDispatch({ type: ADD_HOME_TEAM_PLAYER, player: homePlayerObj })
       : rootDispatch({ type: ADD_AWAY_TEAM_PLAYER, player: homePlayerObj });
-    isHomeTeam ? setHomePlayer("") : setAwayPlayer("");
+    isHomeTeam ? setHomePlayer('') : setAwayPlayer('');
     // setHomeTeamList(homeTeamList.concat(homePlayerCopy));
     // setHomePlayer('');
     // if (playerList[teamCategory].length === 10) {
@@ -65,7 +64,7 @@ const AddPlayerPage = () => {
 
   const updateDb = async (teamCategory) => {
     await firestore
-      .collection("matches")
+      .collection('matches')
       .doc()
       .set({
         playerList: {
@@ -77,7 +76,10 @@ const AddPlayerPage = () => {
   const confirmPlayerList = () => {
     rootDispatch({ type: SET_BATTING_TEAM });
     updateBattingTeam();
-    history.push("/currentStats");
+    history.push({
+      pathname: '/currentStats',
+      state: { isFirstInn: true },
+    });
   };
   return (
     <>
@@ -102,7 +104,7 @@ const AddPlayerPage = () => {
               isHomeTeam={true}
             />
           ) : (
-            ""
+            ''
           )}
         </div>
         <div className="outline w-100 pa3 mr2">
@@ -124,7 +126,7 @@ const AddPlayerPage = () => {
               isHomeTeam={false}
             />
           ) : (
-            ""
+            ''
           )}
         </div>
       </div>

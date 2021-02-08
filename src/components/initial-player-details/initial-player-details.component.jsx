@@ -1,55 +1,42 @@
-import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import { Button } from "semantic-ui-react";
-import { SET_INITIAL_STATS } from "../../providers/match/match.actions";
+import React, { useState, useContext, useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
+import { SET_INITIAL_STATS } from '../../providers/match/match.actions';
 
-import { MatchContext } from "../../providers/match/match.provider";
+import { MatchContext } from '../../providers/match/match.provider';
 
 const InitialPlayerDetails = () => {
   let history = useHistory();
-  const {
-    inn1,
-    addCurrentStatsDetails,
-    matchDetails,
-    rootState,
-    rootDispatch,
-  } = useContext(MatchContext);
-  const { battingTeam, bowlingTeam } = rootState.inn1;
+  const location = useLocation();
+  const { addCurrentStatsDetails, rootState, rootDispatch } = useContext(
+    MatchContext
+  );
+  const battingTeam = location.state.isFirstInn
+    ? rootState.inn1.battingTeam
+    : rootState.inn2.battingTeam;
+  const bowlingTeam = location.state.isFirstInn
+    ? rootState.inn1.bowlingTeam
+    : rootState.inn2.bowlingTeam;
+  // const { battingTeam, bowlingTeam } = rootState.inn1;
   const [currentStats, setCurrentStats] = useState({
-    striker: "",
-    nonStriker: "",
-    currentBowler: "",
+    striker: '',
+    nonStriker: '',
+    currentBowler: '',
+    currentOver: [],
   });
-  // const [battingTeam, setBattingTeam] = useState(
-  //   matchDetails.isHomTeamBattingFirst ? homeTeamClone : awayTeamClone
-  // );
-  // const [bowlingTeam, setBowlingTeam] = useState(
-  //   matchDetails.isHomTeamBattingFirst ? awayTeamClone : homeTeamClone
-  // );
 
-  // console.log(
-  //   'batting first->>>',
-  //   battingTeam,
-  //   'bowling team->>>',
-  //   bowlingTeam
-  // );
-
-  // if (matchDetails.isHomTeamBattingFirst) {
-  //   setBattingTeam(homeTeamClone);
-  //   setBowlingTeam(awayTeamClone);
-  // } else {
-  //   setBattingTeam(awayTeamClone);
-  //   setBowlingTeam(homeTeamClone);
-  // }
   const _updateCurrentStats = () => {
     rootDispatch({ type: SET_INITIAL_STATS, currentStats: currentStats });
     addCurrentStatsDetails(currentStats);
     setCurrentStats({
-      striker: "",
-      nonStriker: "",
-      currentBowler: "",
+      striker: '',
+      nonStriker: '',
+      currentBowler: '',
     });
-    history.push("/scoreboard");
+    history.push({
+      pathname: '/scoreboard',
+      state: { isFirstInn: location.state.isFirstInn },
+    });
   };
   return (
     <>
@@ -67,11 +54,11 @@ const InitialPlayerDetails = () => {
           </option>
           {battingTeam !== null || battingTeam !== undefined
             ? Object.keys(battingTeam).map((keyName) => (
-                <option key={keyName} value={battingTeam[keyName]["id"]}>
-                  {battingTeam[keyName]["playerName"]}
+                <option key={keyName} value={battingTeam[keyName]['id']}>
+                  {battingTeam[keyName]['playerName']}
                 </option>
               ))
-            : ""}
+            : ''}
         </select>
         <label className="f6 b db mb2 pr2">Select Non-Striker</label>
         <select
@@ -86,11 +73,11 @@ const InitialPlayerDetails = () => {
           </option>
           {battingTeam !== null || battingTeam !== undefined
             ? Object.keys(battingTeam).map((keyName) => (
-                <option key={keyName} value={battingTeam[keyName]["id"]}>
-                  {battingTeam[keyName]["playerName"]}
+                <option key={keyName} value={battingTeam[keyName]['id']}>
+                  {battingTeam[keyName]['playerName']}
                 </option>
               ))
-            : ""}
+            : ''}
         </select>
         <label className="f6 b db mb2 pr2">Select Opening Bowler</label>
         <select
@@ -105,11 +92,11 @@ const InitialPlayerDetails = () => {
           </option>
           {bowlingTeam !== null || bowlingTeam !== undefined
             ? Object.keys(bowlingTeam).map((keyName) => (
-                <option key={keyName} value={bowlingTeam[keyName]["id"]}>
-                  {bowlingTeam[keyName]["playerName"]}
+                <option key={keyName} value={bowlingTeam[keyName]['id']}>
+                  {bowlingTeam[keyName]['playerName']}
                 </option>
               ))
-            : ""}
+            : ''}
         </select>
       </div>
       <div className="flex justify-center">

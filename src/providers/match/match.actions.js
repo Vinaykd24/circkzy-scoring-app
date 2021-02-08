@@ -27,3 +27,5 @@ export const CHANGE_BOWLER = 'CHANGE_BOWLER';
 export const NEW_BATSMAN = 'NEW_BATSMAN';
 
 export const WICKET_FALLEN = 'WICKET_FALLEN';
+
+export const END_OF_INN1 = 'END_OF_INN1';

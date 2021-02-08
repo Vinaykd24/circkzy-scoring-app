@@ -10,6 +10,8 @@ import {
   Select,
 } from 'semantic-ui-react';
 
+import { useHistory } from 'react-router-dom';
+
 import { MatchContext } from '../../providers/match/match.provider';
 import {
   CHANGE_BOWLER,
@@ -49,9 +51,16 @@ const ScoreReducer = (state, action) => {
   }
 };
 
-const UpdateScoreComponent = () => {
+const UpdateScoreComponent = ({ isFirstInn }) => {
+  let history = useHistory();
   const { rootState, rootDispatch } = useContext(MatchContext);
-  const { battingTeam, bowlingTeam, totalOvers } = rootState.inn1;
+  const battingTeam = isFirstInn
+    ? rootState.inn1.battingTeam
+    : rootState.inn2.battingTeam;
+  const bowlingTeam = isFirstInn
+    ? rootState.inn1.bowlingTeam
+    : rootState.inn2.bowlingTeam;
+  // const { battingTeam, bowlingTeam, totalOvers } = rootState.inn1;
   const { striker, nonStriker, currentBowler } = rootState.currentStats;
   const [state, dispatch] = React.useReducer(ScoreReducer, {
     open: false,
@@ -99,31 +108,25 @@ const UpdateScoreComponent = () => {
   };
 
   const widePlusRuns = (event, { value }) => {
-    console.log(value);
     rootDispatch({ type: SET_WIDE_PLUS_RUNS, extras: value });
   };
   const noBallPlusRuns = (event, { value }) => {
-    console.log(value);
     rootDispatch({ type: SET_NO_PLUS_RUNS, extras: value });
   };
   const byesPlusRuns = (event, { value }) => {
-    console.log(value);
     rootDispatch({ type: SET_BYE_PLUS_RUNS, extras: value });
   };
 
   const lByesPlusRuns = (event, { value }) => {
-    console.log(value);
     rootDispatch({ type: SET_LBYE_PLUS_RUNS, extras: value });
   };
 
   const selectBowler = (bowler) => {
-    console.log('Select bowler logic goes here!', bowler);
     rootDispatch({ type: CHANGE_BOWLER, bowler: bowler.id });
     dispatch({ type: 'CLOSE_MODAL' });
   };
 
   const wicketFallen = (batsManId, isStrikerOut) => {
-    console.log(batsManId, isStrikerOut);
     rootDispatch({ type: WICKET_FALLEN });
   };
 
@@ -152,6 +155,13 @@ const UpdateScoreComponent = () => {
     console.log(formData);
     rootDispatch({ type: NEW_BATSMAN, data: formData });
     dispatch({ type: 'CLOSE_MODAL' });
+  };
+
+  const endOfInn = () => {
+    history.push({
+      pathname: '/currentStats',
+      state: { isFirstInn: false },
+    });
   };
   return (
     <>
@@ -313,10 +323,7 @@ const UpdateScoreComponent = () => {
             className="ma2"
           />
         </div>
-        <Button
-          size="big"
-          onClick={() => dispatch({ type: 'OPEN_BATSMAN_MODAL' })}
-        >
+        <Button size="big" disabled={!isFirstInn} onClick={endOfInn}>
           End of Inn
         </Button>
       </div>

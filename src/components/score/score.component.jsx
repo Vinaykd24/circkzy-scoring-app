@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { Button, Modal, Label, Radio, Form, Icon } from "semantic-ui-react";
-import TableGridPage from "../../pages/table-grid";
-import batsManList from "../../data";
-import matchData from "../../tempData";
-import SelectionModalPage from "../../pages/modal/selection-modal";
-import { firestore } from "../../firebase/config";
+import React, { useState } from 'react';
+import { Button, Modal, Label, Radio, Form, Icon } from 'semantic-ui-react';
+import TableGridPage from '../../pages/table-grid';
+import batsManList from '../../data';
+import matchData from '../../tempData';
+import SelectionModalPage from '../../pages/modal/selection-modal';
+import { firestore } from '../../firebase/config';
 
 const exampleReducer = (state, action) => {
   switch (action.type) {
-    case "close":
+    case 'close':
       return { open: false };
-    case "open":
+    case 'open':
       return { open: true, size: action.size, dimmer: action.dimmer };
     default:
-      throw new Error("Unsupported action...");
+      throw new Error('Unsupported action...');
   }
 };
 
@@ -26,12 +26,12 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
   const [totalOvers, setTotalOvers] = useState(0);
   const [isWicketFallen, setIsWicketFallen] = useState(false);
   const [prgressiveOver, setPrgressiveOver] = useState([]);
-  const [striker, setStriker] = useState("bat1");
-  const [nonStriker, setNonStriker] = useState("bat2");
+  const [striker, setStriker] = useState('bat1');
+  const [nonStriker, setNonStriker] = useState('bat2');
   const [tempBatsmanList, setTempBatsmanList] = useState(batsManList);
   const [currentBowler, setCurrentBowler] = useState({
-    id: "bowl1",
-    name: "Nathan Lyon",
+    id: 'bowl1',
+    name: 'Nathan Lyon',
     balls: 0,
     overs: 0,
     wickets: 0,
@@ -42,8 +42,8 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
   });
   const [bowlerDetails, setBowlerDetails] = useState({
     bowl1: {
-      id: "bowl1",
-      name: "Nathan Lyon",
+      id: 'bowl1',
+      name: 'Nathan Lyon',
       balls: 0,
       overs: 0,
       wickets: 0,
@@ -53,8 +53,8 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
       nbs: 0,
     },
     bowl2: {
-      id: "bowl2",
-      name: "Michel Starc",
+      id: 'bowl2',
+      name: 'Michel Starc',
       balls: 0,
       overs: 0,
       wickets: 0,
@@ -66,16 +66,16 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
   });
   const [batsmenDetails, setBatsmenDetails] = useState({
     bat1: {
-      id: "bat1",
-      name: "Rohil Sharma",
+      id: 'bat1',
+      name: 'Rohil Sharma',
       runs: 0,
       ballsPlayed: 0,
       fours: 0,
       sixes: 0,
     },
     bat2: {
-      id: "bat2",
-      name: "Shubham Gill",
+      id: 'bat2',
+      name: 'Shubham Gill',
       runs: 0,
       ballsPlayed: 0,
       fours: 0,
@@ -87,39 +87,39 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
     if (totalWickets <= 10) {
       setIsWicketFallen(true);
       setTotalWickets(totalWickets + 1);
-      setPrgressiveOver(prgressiveOver.concat("W"));
+      setPrgressiveOver(prgressiveOver.concat('W'));
       setCurrentBowler({
         ...currentBowler,
-        wickets: currentBowler["wickets"]++,
+        wickets: currentBowler['wickets']++,
       });
     }
     updateOver();
-    setPrgressiveOver(prgressiveOver.concat("W"));
+    setPrgressiveOver(prgressiveOver.concat('W'));
   };
 
   const updateExtras = (extras, score) => {
     switch (extras) {
-      case "WB":
+      case 'WB':
         setTotalScore(totalScore + 1);
         setTotalExtras(totalExtras + 1);
         setCurrentBowler({
           ...currentBowler,
-          wides: currentBowler["wides"] + 1,
+          wides: currentBowler['wides'] + 1,
         });
         break;
-      case "NB":
+      case 'NB':
         setTotalScore(totalScore + 1);
         setTotalExtras(totalExtras + 1);
         setCurrentBowler({
           ...currentBowler,
-          wides: currentBowler["nbs"] + 1,
+          wides: currentBowler['nbs'] + 1,
         });
         break;
-      case "B":
+      case 'B':
         setTotalScore(totalScore + 1);
         setTotalExtras(totalExtras + 1);
         break;
-      case "LB":
+      case 'LB':
         setTotalScore(totalScore + 1);
         setTotalExtras(totalExtras + 1);
         break;
@@ -140,44 +140,44 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
     switch (score) {
       case 1:
       case 3:
-        batsmenDetails[striker]["runs"] += score;
+        batsmenDetails[striker]['runs'] += score;
         changeStriker();
         break;
       case 2:
-        batsmenDetails[striker]["runs"] += score;
+        batsmenDetails[striker]['runs'] += score;
         break;
       case 4:
-        batsmenDetails[striker]["runs"] += score;
-        batsmenDetails[striker]["fours"]++;
+        batsmenDetails[striker]['runs'] += score;
+        batsmenDetails[striker]['fours']++;
         break;
       case 6:
-        batsmenDetails[striker]["runs"] += score;
-        batsmenDetails[striker]["sixes"]++;
+        batsmenDetails[striker]['runs'] += score;
+        batsmenDetails[striker]['sixes']++;
         break;
       default:
         break;
     }
-    batsmenDetails[striker]["ballsPlayed"]++;
+    batsmenDetails[striker]['ballsPlayed']++;
   };
 
   const currentPartnerShip = () => {
     const runTotal =
-      batsmenDetails["bat1"]["runs"] + batsmenDetails["bat2"]["runs"];
+      batsmenDetails['bat1']['runs'] + batsmenDetails['bat2']['runs'];
     const ballTotal =
-      batsmenDetails["bat1"]["ballsPlayed"] +
-      batsmenDetails["bat2"]["ballsPlayed"];
+      batsmenDetails['bat1']['ballsPlayed'] +
+      batsmenDetails['bat2']['ballsPlayed'];
     return `${runTotal}(${ballTotal})`;
   };
 
   const updateScore = (score) => {
     setTotalScore(totalScore + score);
     updateBatsManScore(score);
-    const bowlId = currentBowler["id"];
+    const bowlId = currentBowler['id'];
     // setCurrentBowler({
     //   ...currentBowler,
     //   runsGiven: currentBowler['runsGiven'] + score,
     // });
-    currentBowler["runsGiven"] = currentBowler["runsGiven"] + score;
+    currentBowler['runsGiven'] = currentBowler['runsGiven'] + score;
     setBowlerDetails((preStateValue) => ({
       ...preStateValue,
       [bowlId]: currentBowler,
@@ -191,7 +191,7 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
     const _totalOvers = calcOver(_totalBalls);
     setTotalBalls(_totalBalls);
     setTotalOvers(_totalOvers);
-    const _currentBowlerTotalBalls = currentBowler["balls"] + 1;
+    const _currentBowlerTotalBalls = currentBowler['balls'] + 1;
     setCurrentBowler({
       ...currentBowler,
       balls: _currentBowlerTotalBalls,
@@ -208,22 +208,21 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
   };
 
   const updateBowler = (bowler) => {
-    if (currentBowler["id"] !== bowler["id"]) {
+    if (currentBowler['id'] !== bowler['id']) {
       setCurrentBowler(bowler);
       setBowlerDetails((prevStateValue) => ({
         ...prevStateValue,
-        [currentBowler["id"]]: currentBowler,
+        [currentBowler['id']]: currentBowler,
       }));
-      dispatch({ type: "close" });
+      dispatch({ type: 'close' });
     } else {
-      alert("You can not select same bowler again!");
+      alert('You can not select same bowler again!');
     }
   };
 
   const selectBatsman = (batsman) => {
-    console.log("Select batsman logic goes here!");
     setIsWicketFallen(false);
-    dispatch({ type: "close" });
+    dispatch({ type: 'close' });
   };
 
   const [state, dispatch] = React.useReducer(exampleReducer, {
@@ -233,18 +232,15 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
   const { open, size, dimmer } = state;
 
   const openModal = () => {
-    console.log(isWicketFallen);
-    dispatch({ type: "open", size: "mini", dimmer: "blurring" });
+    dispatch({ type: 'open', size: 'mini', dimmer: 'blurring' });
   };
 
   const handleClick = () => {
-    console.log("Clickeddd from child!");
+    console.log('Clickeddd from child!');
   };
 
   React.useEffect(() => {
-    console.log("Effect called");
     setIsWicketFallen(true);
-    console.log(isWicketFallen);
     if (isWicketFallen) {
       openModal();
     }
@@ -252,7 +248,7 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
 
   const tempSetDemoData = async () => {
     const batData = {
-      name: "Rohil Sharma",
+      name: 'Rohil Sharma',
       runs: 0,
       ballsPlayed: 0,
       fours: 0,
@@ -261,7 +257,7 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
       isStriker: false,
     };
     const bowlData = {
-      name: "Nathan Lyon",
+      name: 'Nathan Lyon',
       balls: 0,
       overs: 0,
       wickets: 0,
@@ -276,15 +272,15 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
   };
 
   const readCollection = async () => {
-    const citiesRef = firestore.collection("matches");
+    const citiesRef = firestore.collection('matches');
     const snapshot = await citiesRef.get();
     snapshot.forEach((doc) => {
-      console.log(doc.id, "=>", doc.data());
+      console.log(doc.id, '=>', doc.data());
     });
   };
 
   React.useEffect(() => {
-    const docRef = firestore.collection("matches").doc("xRYLB0CguU2ZfGRmpkAa");
+    const docRef = firestore.collection('matches').doc('xRYLB0CguU2ZfGRmpkAa');
     // const docRef = firestore.collection(
     //   '/matches/xRYLB0CguU2ZfGRmpkAa/inn1/batStats'
     // );
@@ -347,16 +343,16 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
         <Button size="huge" onClick={updateWickets}>
           Wicket
         </Button>
-        <Button size="huge" onClick={() => updateExtras("WB")}>
+        <Button size="huge" onClick={() => updateExtras('WB')}>
           WB
         </Button>
-        <Button size="huge" onClick={() => updateExtras("NB")}>
+        <Button size="huge" onClick={() => updateExtras('NB')}>
           NB
         </Button>
-        <Button size="huge" onClick={() => updateExtras("B")}>
+        <Button size="huge" onClick={() => updateExtras('B')}>
           B
         </Button>
-        <Button size="huge" onClick={() => updateExtras("LB")}>
+        <Button size="huge" onClick={() => updateExtras('LB')}>
           LB
         </Button>
         <Button
@@ -364,9 +360,9 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
           size="huge"
           onClick={() =>
             dispatch({
-              type: "open",
-              size: "mini",
-              dimmer: "blurring",
+              type: 'open',
+              size: 'mini',
+              dimmer: 'blurring',
             })
           }
         >
@@ -384,7 +380,7 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
             size={size}
             open={open}
             dimmer={dimmer}
-            onClose={() => dispatch({ type: "close" })}
+            onClose={() => dispatch({ type: 'close' })}
           >
             <Modal.Header>Select Next Batsman</Modal.Header>
             <Modal.Content>
@@ -395,8 +391,8 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
                     <Radio
                       className="b"
                       key={i}
-                      label={value["name"]}
-                      disabled={striker === value["id"]}
+                      label={value['name']}
+                      disabled={striker === value['id']}
                       onChange={() => selectBatsman(value)}
                     />
                   </Form.Field>
@@ -409,7 +405,7 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
             size={size}
             open={open}
             dimmer={dimmer}
-            onClose={() => dispatch({ type: "close" })}
+            onClose={() => dispatch({ type: 'close' })}
           >
             <Modal.Header>Chanage Bowler</Modal.Header>
             <Modal.Content>
@@ -420,8 +416,8 @@ const ScorePage = ({ homeTeam, awayTeam }) => {
                     <Radio
                       className="b"
                       key={i}
-                      label={value["name"]}
-                      disabled={currentBowler["id"] === value["id"]}
+                      label={value['name']}
+                      disabled={currentBowler['id'] === value['id']}
                       onChange={() => updateBowler(value)}
                     />
                   </Form.Field>
