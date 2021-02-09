@@ -1,11 +1,15 @@
-import React, { useContext } from "react";
-import { MatchContext } from "../providers/match/match.provider";
+import React, { useContext } from 'react';
+import { Button, Modal } from 'semantic-ui-react';
+
+import { MatchContext } from '../providers/match/match.provider';
 
 const CurrentScoreboard = ({ isFirstInn }) => {
+  const [open, setOpen] = React.useState(false);
   const { rootState } = useContext(MatchContext);
 
   console.log(isFirstInn);
-  const currentInn = isFirstInn ? "inn1" : "inn2";
+  const currentInn = isFirstInn ? 'inn1' : 'inn2';
+  const { isFirstInnCompleted, target } = rootState;
   const {
     totalRuns,
     totalWickets,
@@ -34,6 +38,16 @@ const CurrentScoreboard = ({ isFirstInn }) => {
   const bowlTeam = isFirstInn
     ? rootState.inn1.bowlingTeam
     : rootState.inn2.bowlingTeam;
+
+  React.useEffect(() => {
+    if (isFirstInnCompleted) {
+      if (totalRuns > target) {
+        setOpen(true);
+      } else if (totalWickets === 10) {
+        setOpen(true);
+      }
+    }
+  }, [isFirstInnCompleted, totalRuns, target, totalWickets]);
   // const currentPartnerShip = () => {
   //   const partnershipRuns =
   //     battingTeam[striker].runs + battingTeam[nonStriker].runs;
@@ -153,7 +167,7 @@ const CurrentScoreboard = ({ isFirstInn }) => {
           <p>Current Partnership:</p>
           {/* <code>{currentPartnerShip()}</code> */}
           <code>
-            {currentPartnership["runs"]}({currentPartnership["balls"]})
+            {currentPartnership['runs']}({currentPartnership['balls']})
           </code>
         </div>
       </div>
@@ -164,17 +178,28 @@ const CurrentScoreboard = ({ isFirstInn }) => {
             ? currentOver.map((ball, i) => (
                 <span
                   className={
-                    "ba br-100 dib h2 pt1 w2 mr1 " +
-                    (ball === "W" ? "bg-red" : "")
+                    'ba br-100 dib h2 pt1 w2 mr1 ' +
+                    (ball === 'W' ? 'bg-red' : '')
                   }
                   key={i}
                 >
                   {ball}
                 </span>
               ))
-            : ""}
+            : ''}
         </div>
       </div>
+      <Modal open={open}>
+        <Modal.Header>Thank you!</Modal.Header>
+        <Modal.Content>
+          <Modal.Description>
+            Your subscription has been confirmed
+          </Modal.Description>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setOpen(false)}>OK</Button>
+        </Modal.Actions>
+      </Modal>
     </>
   );
 };
