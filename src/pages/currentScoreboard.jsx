@@ -20,6 +20,8 @@ const CurrentScoreboard = ({ isFirstInn }) => {
     currentOver,
   } = rootState.currentStats;
 
+  const { homeTeamName, awayTeamName, tournametName } = rootState.matchDetails;
+
   const batTeam = isFirstInn
     ? rootState.inn1.battingTeam
     : rootState.inn2.battingTeam;
@@ -36,7 +38,14 @@ const CurrentScoreboard = ({ isFirstInn }) => {
 
   return (
     <>
-      <div className="flex justify-center pa3">
+      <div className="flex justify-center pa2">
+        <div className="outline pa3 tc ttu">
+          <div className="f1">{homeTeamName}</div>
+          <div className="f5 pa2">VS</div>
+          <div className="f1">{awayTeamName}</div>
+        </div>
+      </div>
+      <div className="flex justify-center pa2">
         <div className="outline w-50 pa3 mr2 tc">
           <div className="f1">
             {totalRuns}/{totalWickets}
@@ -45,7 +54,7 @@ const CurrentScoreboard = ({ isFirstInn }) => {
           <span className="f5 mt3 dib">Extras: {totalExtras.total}</span>
         </div>
       </div>
-      <div className="flex justify-center pa3">
+      <div className="flex justify-center pa2">
         <div className="outline w-25 pa3 mr2">
           <code>{batTeam[striker].playerName}</code>
           <p>
@@ -71,7 +80,7 @@ const CurrentScoreboard = ({ isFirstInn }) => {
           </p>
         </div>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center pa2">
         <div className="outline pa3 tc">
           <p>Current Partnership:</p>
           {/* <code>{currentPartnerShip()}</code> */}
@@ -80,7 +89,7 @@ const CurrentScoreboard = ({ isFirstInn }) => {
           </code>
         </div>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center pa2">
         <div className="outline pa3 tc mt2">
           <p>Ball-by-Ball</p>
           {currentOver !== undefined
