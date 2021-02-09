@@ -43,7 +43,7 @@ const ScoreBoardPage = () => {
   const { open, dimmer } = state;
 
   const { rootState, rootDispatch } = useContext(MatchContext);
-  const currentInn = !state.isFirstInnCompleted ? 'inn1' : 'inn2';
+  const currentInn = !rootState.isFirstInnCompleted ? 'inn1' : 'inn2';
 
   const battingTeam = location.state.isFirstInn
     ? rootState.inn1.battingTeam
@@ -66,7 +66,9 @@ const ScoreBoardPage = () => {
     dispatch({ type: 'CLOSE_MODAL' });
   };
 
-  useEffect(() => checkAndChange(), [rootState[currentInn].totalOvers]);
+  useEffect(() => {
+    checkAndChange();
+  }, [rootState[currentInn].totalOvers]);
 
   return (
     <>
