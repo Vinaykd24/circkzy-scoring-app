@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 import {
   Button,
   Modal,
@@ -8,11 +8,11 @@ import {
   Icon,
   Dropdown,
   Select,
-} from 'semantic-ui-react';
+} from "semantic-ui-react";
 
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
-import { MatchContext } from '../../providers/match/match.provider';
+import { MatchContext } from "../../providers/match/match.provider";
 import {
   CHANGE_BOWLER,
   CHANGE_STRIKER,
@@ -33,19 +33,19 @@ import {
   WICKET_FALLEN,
   NEW_BATSMAN,
   END_OF_INN1,
-} from '../../providers/match/match.actions';
+} from "../../providers/match/match.actions";
 
 const ScoreReducer = (state, action) => {
   switch (action.type) {
-    case 'OPEN_MODAL':
+    case "OPEN_MODAL":
       return { ...state, open: true, dimmer: action.dimmer };
-    case 'CLOSE_MODAL':
+    case "CLOSE_MODAL":
       return { open: false, openSecond: false };
-    case 'OPEN_BATSMAN_MODAL':
+    case "OPEN_BATSMAN_MODAL":
       return { ...state, openSecond: true };
-    case 'OUT_BATSMAN':
+    case "OUT_BATSMAN":
       return { ...state, outBatsman: action.playerId };
-    case 'SAVE_BATSMAN':
+    case "SAVE_BATSMAN":
       return { ...state, newBatsman: action.playerId };
     default:
       throw new Error();
@@ -75,27 +75,28 @@ const UpdateScoreComponent = ({ isFirstInn }) => {
     nextBatsmanId: null,
   });
   const options = [
-    { key: 2, text: 'Total 2', value: 2 },
-    { key: 3, text: 'Total 3', value: 3 },
-    { key: 4, text: 'Total 4', value: 4 },
-    { key: 5, text: 'Total 5', value: 5 },
-    { key: 6, text: 'Total 6', value: 6 },
-    { key: 7, text: 'Total 7', value: 7 },
+    { key: 2, text: "Total 2", value: 2 },
+    { key: 3, text: "Total 3", value: 3 },
+    { key: 4, text: "Total 4", value: 4 },
+    { key: 5, text: "Total 5", value: 5 },
+    { key: 6, text: "Total 6", value: 6 },
+    { key: 7, text: "Total 7", value: 7 },
   ];
 
   const wkt_options = [
-    { key: 1, text: 'Caught Behind', value: 'Caught Behind' },
-    { key: 2, text: 'Caught and Bowled', value: 'Caught and Bowled' },
-    { key: 3, text: 'Caught', value: 'Caught' },
-    { key: 4, text: 'Bowled', value: 'Bowled' },
-    { key: 5, text: 'Run Out', value: 'Run Out' },
-    { key: 6, text: 'Hit Wicket', value: 'Hit Wicket' },
-    { key: 7, text: 'Time Out', value: 'Time Out' },
+    { key: 8, text: "LBW", value: "LBW" },
+    { key: 4, text: "Bowled", value: "Bowled" },
+    { key: 1, text: "Caught Behind", value: "Caught Behind" },
+    { key: 2, text: "Caught and Bowled", value: "Caught and Bowled" },
+    { key: 3, text: "Caught", value: "Caught" },
+    { key: 5, text: "Run Out", value: "Run Out" },
+    { key: 6, text: "Hit Wicket", value: "Hit Wicket" },
+    { key: 7, text: "Time Out", value: "Time Out" },
   ];
 
   const current_batsmen = [
-    { key: 1, text: battingTeam[striker]['playerName'], value: striker },
-    { key: 2, text: battingTeam[nonStriker]['playerName'], value: nonStriker },
+    { key: 1, text: battingTeam[striker]["playerName"], value: striker },
+    { key: 2, text: battingTeam[nonStriker]["playerName"], value: nonStriker },
   ];
 
   const { open, dimmer, openSecond, outBatsman } = state;
@@ -124,7 +125,7 @@ const UpdateScoreComponent = ({ isFirstInn }) => {
 
   const selectBowler = (bowler) => {
     rootDispatch({ type: CHANGE_BOWLER, bowler: bowler.id });
-    dispatch({ type: 'CLOSE_MODAL' });
+    dispatch({ type: "CLOSE_MODAL" });
   };
 
   const wicketFallen = (batsManId, isStrikerOut) => {
@@ -155,13 +156,13 @@ const UpdateScoreComponent = ({ isFirstInn }) => {
   const handleSubmit = () => {
     console.log(formData);
     rootDispatch({ type: NEW_BATSMAN, data: formData });
-    dispatch({ type: 'CLOSE_MODAL' });
+    dispatch({ type: "CLOSE_MODAL" });
   };
 
   const endOfInn = () => {
     rootDispatch({ type: END_OF_INN1, isFirstInnCompleted: true });
     history.push({
-      pathname: '/currentStats',
+      pathname: "/currentStats",
       state: { isFirstInn: false },
     });
   };
@@ -234,7 +235,7 @@ const UpdateScoreComponent = ({ isFirstInn }) => {
           <Button.Group size="small">
             <Button
               size="huge"
-              onClick={() => dispatch({ type: 'OPEN_BATSMAN_MODAL' })}
+              onClick={() => dispatch({ type: "OPEN_BATSMAN_MODAL" })}
             >
               W
             </Button>
@@ -340,8 +341,8 @@ const UpdateScoreComponent = ({ isFirstInn }) => {
                   control={Select}
                   options={current_batsmen}
                   label={{
-                    children: 'Select out batsman',
-                    htmlFor: 'form-select-control-gender',
+                    children: "Select out batsman",
+                    htmlFor: "form-select-control-gender",
                   }}
                   placeholder="Select out batsman"
                   onChange={setOutBatsman}
@@ -350,8 +351,8 @@ const UpdateScoreComponent = ({ isFirstInn }) => {
                   control={Select}
                   options={wkt_options}
                   label={{
-                    children: 'How Out?',
-                    htmlFor: 'form-select-control-gender',
+                    children: "How Out?",
+                    htmlFor: "form-select-control-gender",
                   }}
                   placeholder="How Out?"
                   onChange={setHowOut}
@@ -360,8 +361,8 @@ const UpdateScoreComponent = ({ isFirstInn }) => {
                   control={Select}
                   options={convertObjToArray(battingTeam)}
                   label={{
-                    children: 'Select Next Batsman?',
-                    htmlFor: 'form-select-control-gender',
+                    children: "Select Next Batsman?",
+                    htmlFor: "form-select-control-gender",
                   }}
                   placeholder="How Out?"
                   onChange={setNextBatsman}

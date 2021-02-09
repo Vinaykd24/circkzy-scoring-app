@@ -25,19 +25,20 @@ import {
   WICKET_FALLEN,
   NEW_BATSMAN,
   END_OF_INN1,
-} from './match.actions';
+} from "./match.actions";
 import {
   addMatchDetailsToDb,
   removeObj,
   updateExtras,
   updateRuns,
   updateWicket,
-} from './match.util';
-import { testInitialState } from './test-data';
+} from "./match.util";
+import { testInitialState } from "./test-data";
 
 export const initialState = {
   count: 0,
   isFirstInnCompleted: false,
+  target: 0,
   playerList: {
     homeTeam: [],
     awayTeam: [],
@@ -45,19 +46,19 @@ export const initialState = {
     awayTeamClone: {},
   },
   matchDetails: {
-    homeTeamName: '',
-    awayTeamName: '',
-    venue: '',
-    tournametName: '',
-    tossWonBy: '',
-    electedTo: '',
-    teamBatingFirst: '',
+    homeTeamName: "",
+    awayTeamName: "",
+    venue: "",
+    tournametName: "",
+    tossWonBy: "",
+    electedTo: "",
+    teamBatingFirst: "",
     isHomTeamBattingFirst: false,
   },
   currentStats: {
-    striker: '',
-    nonStriker: '',
-    currentBowler: '',
+    striker: "",
+    nonStriker: "",
+    currentBowler: "",
     currentOver: [],
   },
   inn1: {
@@ -110,9 +111,9 @@ export const matchReducer = (state, action) => {
   const bowler = bowlingTeam[currentBowler];
   const { striker, nonStriker } = state.currentStats;
   switch (action.type) {
-    case 'increment':
+    case "increment":
       return { ...state, count: state.count + 1 };
-    case 'decrement':
+    case "decrement":
       return { ...state, count: state.count - 1 };
     case ADD_MATCH_DETAILS:
       return {
@@ -274,6 +275,7 @@ export const matchReducer = (state, action) => {
     case END_OF_INN1:
       return {
         ...state,
+        target: state.inn1.totalRuns,
         isFirstInnCompleted: action.isFirstInnCompleted,
       };
     case SET_DOT_BALL:
@@ -289,21 +291,21 @@ export const matchReducer = (state, action) => {
     case SET_SIX_RUNS:
       return updateRuns(state, action.player, 6);
     case SET_WIDE_BALL:
-      return updateExtras(state, 'WB', 1, action.bowler);
+      return updateExtras(state, "WB", 1, action.bowler);
     case SET_NO_BALL:
-      return updateExtras(state, 'NB', 1, action.bowler);
+      return updateExtras(state, "NB", 1, action.bowler);
     case SET_BYES:
-      return updateExtras(state, 'BYES', 1, action.bowler);
+      return updateExtras(state, "BYES", 1, action.bowler);
     case SET_LEG_BYES:
-      return updateExtras(state, 'LBYES', 1, action.bowler);
+      return updateExtras(state, "LBYES", 1, action.bowler);
     case SET_WIDE_PLUS_RUNS:
-      return updateExtras(state, 'WB_PLUS', action.extras, bowler);
+      return updateExtras(state, "WB_PLUS", action.extras, bowler);
     case SET_NO_PLUS_RUNS:
-      return updateExtras(state, 'NB_PLUS', action.extras, bowler);
+      return updateExtras(state, "NB_PLUS", action.extras, bowler);
     case SET_BYE_PLUS_RUNS:
-      return updateExtras(state, 'BYE_PLUS', action.extras, bowler);
+      return updateExtras(state, "BYE_PLUS", action.extras, bowler);
     case SET_LBYE_PLUS_RUNS:
-      return updateExtras(state, 'LBYE_PLUS', action.extras, bowler);
+      return updateExtras(state, "LBYE_PLUS", action.extras, bowler);
     default:
       throw new Error();
   }

@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Button, Input, Form } from 'semantic-ui-react';
-import { ADD_MATCH_DETAILS } from '../../providers/match/match.actions';
-import { MatchContext } from '../../providers/match/match.provider';
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { Button, Input, Form } from "semantic-ui-react";
+import { ADD_MATCH_DETAILS } from "../../providers/match/match.actions";
+import { MatchContext } from "../../providers/match/match.provider";
 
 const MatchDetails = () => {
   const { addMatchDetails, matchDetails, rootDispatch } = useContext(
@@ -11,13 +11,13 @@ const MatchDetails = () => {
   let history = useHistory();
 
   const [state, setstate] = useState({
-    homeTeamName: '',
-    awayTeamName: '',
-    venue: '',
-    tournametName: '',
-    tossWonBy: '',
-    electedTo: '',
-    teamBatingFirst: '',
+    homeTeamName: "",
+    awayTeamName: "",
+    venue: "",
+    tournametName: "",
+    tossWonBy: "",
+    electedTo: "",
+    teamBatingFirst: "",
     isHomTeamBattingFirst: false,
   });
 
@@ -28,38 +28,41 @@ const MatchDetails = () => {
     rootDispatch({ type: ADD_MATCH_DETAILS, matchDetails: state });
 
     setstate({
-      homeTeamName: '',
-      awayTeamName: '',
-      venue: '',
-      tournametName: '',
-      tossWonBy: '',
-      electedTo: '',
-      teamBatingFirst: '',
+      homeTeamName: "",
+      awayTeamName: "",
+      venue: "",
+      tournametName: "",
+      tossWonBy: "",
+      electedTo: "",
+      teamBatingFirst: "",
+      teamBatingSecond: "",
       isHomTeamBattingFirst: false,
     });
-    history.push('/addPlayers');
+    history.push("/addPlayers");
   };
 
   const updateSelection = (e) => {
     if (
       (state.homeTeamName.toLowerCase() ===
         state.tossWonBy.toLocaleLowerCase() &&
-        e.target.value === 'BAT') ||
+        e.target.value === "BAT") ||
       (state.awayTeamName.toLowerCase() ===
         state.tossWonBy.toLocaleLowerCase() &&
-        e.target.value === 'BOWL')
+        e.target.value === "BOWL")
     ) {
       setstate({
         ...state,
         electedTo: e.target.value,
         isHomTeamBattingFirst: true,
         teamBatingFirst: state.homeTeamName,
+        teamBatingSecond: state.awayTeamName,
       });
     } else {
       setstate({
         ...state,
         electedTo: e.target.value,
         teamBatingFirst: state.awayTeamName,
+        teamBatingSecond: state.homeTeamName,
       });
     }
   };
