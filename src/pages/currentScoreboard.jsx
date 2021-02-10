@@ -10,13 +10,15 @@ const CurrentScoreboard = ({ isFirstInn }) => {
   console.log(isFirstInn);
   const currentInn = isFirstInn ? 'inn1' : 'inn2';
   const { isFirstInnCompleted, target } = rootState;
-  const {
-    totalRuns,
-    totalWickets,
-    totalExtras,
-    totalOvers,
-    currentPartnership,
-  } = rootState[currentInn];
+  const totalRunsInn1 = rootState.inn1.totalRuns;
+  const totalWicketsInn1 = rootState.inn1.totalWickets;
+  const totalExtrasInn1 = rootState.inn1.totalExtras;
+  const totalOversInn1 = rootState.inn1.totalOvers;
+  const totalRunsInn2 = rootState.inn2.totalRuns;
+  const totalWicketsInn2 = rootState.inn2.totalWickets;
+  const totalExtrasInn2 = rootState.inn2.totalExtras;
+  const totalOversInn2 = rootState.inn2.totalOvers;
+  const { currentPartnership } = rootState[currentInn];
   const {
     striker,
     nonStriker,
@@ -41,13 +43,13 @@ const CurrentScoreboard = ({ isFirstInn }) => {
 
   React.useEffect(() => {
     if (isFirstInnCompleted) {
-      if (totalRuns > target) {
+      if (totalRunsInn2 > target) {
         setOpen(true);
-      } else if (totalWickets === 10) {
+      } else if (totalWicketsInn2 === 10) {
         setOpen(true);
       }
     }
-  }, [isFirstInnCompleted, totalRuns, target, totalWickets]);
+  }, [isFirstInnCompleted, totalRunsInn2, target, totalWicketsInn2]);
   // const currentPartnerShip = () => {
   //   const partnershipRuns =
   //     battingTeam[striker].runs + battingTeam[nonStriker].runs;
@@ -69,18 +71,18 @@ const CurrentScoreboard = ({ isFirstInn }) => {
         <div className="outline w-40 pa3 tc">
           <div className="f3 mb4 ttu">{teamBatingFirst}</div>
           <div className="f1">
-            {totalRuns}/{totalWickets}
+            {totalRunsInn1}/{totalWicketsInn1}
           </div>
-          <span className="f5 mt3 dib mr3">Overs: {totalOvers}/20</span>
-          <span className="f5 mt3 dib">Extras: {totalExtras.total}</span>
+          <span className="f5 mt3 dib mr3">Overs: {totalOversInn1}/20</span>
+          <span className="f5 mt3 dib">Extras: {totalExtrasInn1.total}</span>
         </div>
         <div className="outline w-40 pa3 tc">
           <div className="f3 mb4 ttu">{teamBatingSecond}</div>
           <div className="f1">
-            {totalRuns}/{totalWickets}
+            {totalRunsInn2}/{totalWicketsInn2}
           </div>
-          <span className="f5 mt3 dib mr3">Overs: {totalOvers}/20</span>
-          <span className="f5 mt3 dib">Extras: {totalExtras.total}</span>
+          <span className="f5 mt3 dib mr3">Overs: {totalOversInn2}/20</span>
+          <span className="f5 mt3 dib">Extras: {totalExtrasInn2.total}</span>
         </div>
       </div>
       <div className="flex justify-center pa2">
